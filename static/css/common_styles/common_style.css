@@ -25,7 +25,7 @@
     --height-aside: 90vh;
     --height-section: 1vh;
     
-    --color-base: hsl(19, 100%, 50%); 
+    --color-base: hsl(229, 93%, 35%); 
     --color-hue: 286; 
     --color1: color-mix(in srgb, var(--color-base) 100%, #dfdfdf 0%); 
     --color2: color-mix(in srgb, var(--color1) 100%, #ffffff 50%); 
