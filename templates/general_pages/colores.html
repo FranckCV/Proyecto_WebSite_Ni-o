@@ -1,0 +1,76 @@
+{% extends "maestra_general.html" %}
+<!-- CAMBIAR SEGUN MAESTRA A USAR -->
+
+{% block titulo %}
+COLORES
+{% endblock %}
+
+{% block estilos %}
+<style>
+    .general_body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #ffffff;
+    }
+
+    .general_element:not(section) {
+        display: none;
+    }
+
+    section {
+        padding: 20px;
+        /* flex-direction: column; */
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .color {
+        border: 5px solid #000000;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #000000;
+        text-decoration-color: #fff;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+<div style="background-color: var(--color-background);" class="color">Background</div>
+<div style="background-color: var(--color1);" class="color">color1</div>
+<div style="background-color: var(--color2);" class="color">color2</div>
+<div style="background-color: var(--color3);" class="color">color3</div>
+<div style="background-color: var(--color4);" class="color">color4</div>
+<div style="background-color: var(--color5);" class="color">color5</div>
+<div style="background-color: var(--color6);" class="color">color6</div>
+<div style="background-color: var(--color7);" class="color">color7</div>
+<div style="background-color: var(--color8);" class="color">color8</div>
+<div style="background-color: var(--color9);" class="color">color9</div>
+<div style="background-color: var(--color10);" class="color">color10</div>
+<div style="background-color: var(--color11);" class="color">color11</div>
+<div style="background-color: var(--color12);" class="color">color12</div>
+<div style="background-color: var(--color13);" class="color">color13</div>
+<div style="background-color: var(--color14);" class="color">color14</div>
+<div style="background-color: var(--color15);" class="color">color15</div>
+<div style="background-color: var(--color16);" class="color">color16</div>
+<div style="background-color: var(--color17);" class="color">color17</div>
+<div style="background-color: var(--color18);" class="color">color18</div>
+<div style="background-color: var(--color19);" class="color">color19</div>
+<div style="background-color: var(--color20);" class="color">color20</div>
+<div style="background-color: var(--color21);" class="color">color21</div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<!-- <script>
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--color1').trim();
+    console.log("El color generado es:", color);
+</script> -->
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "maestra_form.html" %}
+
+{% block titulo %}
+Inicio de Sesion
+{% endblock %}
+
+{% block estilos %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container_form cont_form_1">
+    <form class="login_form" action="">
+        <!-- <div class="form_element"> -->
+        <h2>Inicia Sesión</h2>
+        <!-- </div> -->
+        <!-- <div class="form_element"> -->
+        <input type="text" placeholder="Nombre de Usuario">
+        <input type="password" placeholder="Contraseña">
+        <!-- </div> -->
+        <!-- <div class="form_element"> -->
+        <button type="submit">Iniciar</button>
+        <p>
+            ¿No tienes una cuenta?
+            <a href="{{url_for('sign_up')}}">Registrate aquí</a>
+        </p>
+        <!-- </div> -->
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
