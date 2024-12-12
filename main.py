@@ -8,6 +8,12 @@ app = Flask(__name__, template_folder='templates')
 def generalPage(page):
     return "general_pages/"+page
 
+def encriptar(texto):
+    btexto = texto.encode('utf-8')
+    objHash = hashlib.sha256(btexto)
+    texto_encriptado = objHash.hexdigest()
+    return texto_encriptado
+
 
 @app.route("/")
 def index():
