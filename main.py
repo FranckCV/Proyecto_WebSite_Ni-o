@@ -35,6 +35,9 @@ def colores():
 def pregunta():
     return render_template(generalPage("pregunta.html"))
 
+@app.route("/resultado")
+def resultado():
+    return render_template(generalPage("resultado.html"))
 
 
 if __name__ == "__main__":
