@@ -3,7 +3,6 @@ VALUES (1, 'Fuego'),
     (2, 'Agua'),
     (3, 'Aire'),
     (4, 'Tierra');
-    
 INSERT INTO cualidad (id, nombre, descripcion, ELEMENTOid)
 VALUES (1, 'acepta riesgos', 'abc', 1),
     (2, 'agresivo/a', 'abc', 1),
@@ -110,3 +109,10 @@ VALUES (1, 'acepta riesgos', 'abc', 1),
     (103, 'investigador/a', 'abc', 4),
     (104, 'sagaz', 'abc', 4),
     (105, 'precavido/a', 'abc', 4);
+INSERT INTO administrador (id, nombres_completos, usuario, clave)
+VALUES (
+        1,
+        'Alicia Lizet Niño Effio',
+        'alicia123',
+        'alicia123'
+    );

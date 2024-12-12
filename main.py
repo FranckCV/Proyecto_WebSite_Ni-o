@@ -8,6 +8,9 @@ app = Flask(__name__, template_folder='templates')
 def generalPage(page):
     return "general_pages/"+page
 
+def adminPage(page):
+    return "admin_pages/"+page
+
 
 @app.route("/")
 def index():
@@ -16,7 +19,7 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template(generalPage("login.html"))
+    return render_template(adminPage("login.html"))
 
 
 @app.route("/sign_up")

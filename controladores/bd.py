@@ -5,3 +5,8 @@ def obtener_conexion():
                                 user='root',
                                 password='',
                                 db='')
+
+
+
+
+                                

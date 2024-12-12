@@ -12,6 +12,13 @@
 
 ### BD
 - Base de Datos en versiones primerizas (posibles cambios a posterior)
+- FALTAN INSERTS DE:
+  - Participante
+  - grupo
+  - administrador
+  - seleccion
+  - agrupacion
+  
 
 ### CSS
 - Mejorar diseño actual (es solo una base)
