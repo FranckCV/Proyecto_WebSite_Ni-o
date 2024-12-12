@@ -14,7 +14,7 @@ CREATE TABLE elemento (
 );
 CREATE TABLE cualidad (
     id int(10) NOT NULL AUTO_INCREMENT,
-    nomAdjetivo varchar(25) NOT NULL,
+    nombre varchar(25) NOT NULL,
     descripcion text NOT NULL,
     ELEMENTOid int(10) NOT NULL,
     PRIMARY KEY (id)
