@@ -8,6 +8,9 @@ app = Flask(__name__, template_folder='templates')
 def generalPage(page):
     return "general_pages/"+page
 
+def adminPage(page):
+    return "admin_pages/"+page
+
 def encriptar(texto):
     btexto = texto.encode('utf-8')
     objHash = hashlib.sha256(btexto)
@@ -22,7 +25,7 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template(generalPage("login.html"))
+    return render_template(adminPage("login.html"))
 
 
 @app.route("/sign_up")
@@ -34,8 +37,9 @@ def sign_up():
 def colores():
     return render_template(generalPage("colores.html"))
 
-
-
+@app.route("/pregunta")
+def pregunta():
+    return render_template(generalPage("pregunta.html"))
 
 
 

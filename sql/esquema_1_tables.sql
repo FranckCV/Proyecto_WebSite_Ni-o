@@ -4,7 +4,7 @@ CREATE TABLE participante (
     fecha_nacimiento date NOT NULL,
     telefono varchar(255) NOT NULL,
     correo varchar(255) NOT NULL,
-    fecha_registro timestamp not null default current_timestamp(),
+    fecha_registro timestamp NOT NULL,
     PRIMARY KEY (id)
 );
 CREATE TABLE elemento (
@@ -31,12 +31,6 @@ CREATE TABLE administrador (
     clave varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
-CREATE TABLE seleccion (
-    PARTICIPANTEid int(10) NOT NULL,
-    CUALIDADid int(10) NOT NULL,
-    estado tinyint(3) NOT NULL,
-    PRIMARY KEY (PARTICIPANTEid, CUALIDADid)
-);
 CREATE TABLE agrupacion (
     GRUPOid int(10) NOT NULL,
     CUALIDADid int(10) NOT NULL,
@@ -48,13 +42,24 @@ CREATE TABLE empresa (
     img_icono longblob NOT NULL,
     PRIMARY KEY (id)
 );
+CREATE TABLE seleccion (
+    PARTICIPANTEid int(10) NOT NULL,
+    AGRUPACIONGRUPOid int(10) NOT NULL,
+    AGRUPACIONCUALIDADid int(10) NOT NULL,
+    estado tinyint(3) NOT NULL,
+    PRIMARY KEY (
+        PARTICIPANTEid,
+        AGRUPACIONGRUPOid,
+        AGRUPACIONCUALIDADid
+    )
+);
 ALTER TABLE cualidad
-ADD CONSTRAINT FKCUALIDAD728706 FOREIGN KEY (ELEMENTOid) REFERENCES elemento (id);
-ALTER TABLE seleccion
-ADD CONSTRAINT FKSELECCION321704 FOREIGN KEY (PARTICIPANTEid) REFERENCES participante (id);
-ALTER TABLE seleccion
-ADD CONSTRAINT FKSELECCION809300 FOREIGN KEY (CUALIDADid) REFERENCES cualidad (id);
+ADD CONSTRAINT FKcualidad987686 FOREIGN KEY (ELEMENTOid) REFERENCES elemento (id);
 ALTER TABLE agrupacion
-ADD CONSTRAINT FKAGRUPACION429682 FOREIGN KEY (GRUPOid) REFERENCES grupo (id);
+ADD CONSTRAINT FKagrupacion984728 FOREIGN KEY (GRUPOid) REFERENCES grupo (id);
 ALTER TABLE agrupacion
-ADD CONSTRAINT FKAGRUPACION321689 FOREIGN KEY (CUALIDADid) REFERENCES cualidad (id);
+ADD CONSTRAINT FKagrupacion601253 FOREIGN KEY (CUALIDADid) REFERENCES cualidad (id);
+ALTER TABLE seleccion
+ADD CONSTRAINT FKseleccion231281 FOREIGN KEY (PARTICIPANTEid) REFERENCES participante (id);
+ALTER TABLE seleccion
+ADD CONSTRAINT FKseleccion780370 FOREIGN KEY (AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid) REFERENCES agrupacion (GRUPOid, CUALIDADid);
