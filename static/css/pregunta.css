@@ -43,6 +43,15 @@ body {
 
 .icon {
     font-size: 32px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .positive {
@@ -53,10 +62,18 @@ body {
     color: red;
 }
 
-.magnify {
+.magnify button {
     font-size: 32px;
     color: #333;
     margin-top: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.magnify button:hover {
+    color: #555;
 }
 
 .card:hover {

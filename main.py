@@ -28,8 +28,9 @@ def sign_up():
 def colores():
     return render_template(generalPage("colores.html"))
 
-
-
+@app.route("/pregunta")
+def pregunta():
+    return render_template(generalPage("pregunta.html"))
 
 
 
