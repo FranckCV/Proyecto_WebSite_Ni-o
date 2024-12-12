@@ -110,3 +110,4 @@ VALUES (1, 'acepta riesgos', 'arriesgado/a, intrépido/a', 1),
     (103, 'investigador/a', 'indagador/a, explorador/a', 4),
     (104, 'sagaz', 'astuto/a, perspicaz', 4),
     (105, 'precavido/a', 'cauteloso/a, prevenido/a', 4);
+
