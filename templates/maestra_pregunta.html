@@ -9,28 +9,55 @@
     <link rel="stylesheet" href="/static/css/common_styles/fontawesome.min.css" />
     <link rel="stylesheet" href="/static/css/common_styles/fonts.css" />
     <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
-    <link rel="stylesheet" href="/static/css/login_form.css">
+    <link rel="stylesheet" href="/static/css/pregunta.css">
     {% block estilos %}
     {% endblock %}
-    <title>
-        {% block titulo %}
-        {% endblock %}
-    </title>
+
 </head>
 
-<body class="general_body">
-
-    <section class="general_element">
-        {% block contenido %}
-        {% endblock %}
-    </section>
-
-    <script src="/static/js/common_scripts/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/common_scripts/bootstrap.min.js"></script>
-    <script src="/static/js/common_scripts/common_script.js"></script>
-    {% block scripts %}
-    {% endblock %}
-
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>ENTUSIASTA</h2>
+            <div class="icons">
+                <span class="icon positive">+</span>
+                <span class="icon negative">-</span>
+            </div>
+            <div class="magnify">
+                🔍
+            </div>
+        </div>
+        <div class="card">
+            <h2>RÁPIDO</h2>
+            <div class="icons">
+                <span class="icon positive">+</span>
+                <span class="icon negative">-</span>
+            </div>
+            <div class="magnify">
+                🔍
+            </div>
+        </div>
+        <div class="card">
+            <h2>LÓGICO</h2>
+            <div class="icons">
+                <span class="icon positive">+</span>
+                <span class="icon negative">-</span>
+            </div>
+            <div class="magnify">
+                🔍
+            </div>
+        </div>
+        <div class="card">
+            <h2>APACIBLE</h2>
+            <div class="icons">
+                <span class="icon positive">+</span>
+                <span class="icon negative">-</span>
+            </div>
+            <div class="magnify">
+                🔍
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
