@@ -4,7 +4,8 @@ VALUES (1, 'Fuego'),
     (3, 'Aire'),
     (4, 'Tierra');
     
-INSERT INTO cualidad (id, nomAdjetivo, descripcion, ELEMENTOid)
+
+INSERT INTO cualidad (id, nombre, descripcion, ELEMENTOid)
 VALUES (1, 'acepta riesgos', 'arriesgado/a, intrépido/a', 1),
     (2, 'agresivo/a', 'combativo/a, provocador/a', 1),
     (3, 'atrevido/a', 'osado/a, audaz', 1),
