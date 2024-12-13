@@ -9,6 +9,15 @@ app = Flask(__name__, template_folder='templates')
 def generalPage(page):
     return "general_pages/"+page
 
+def adminPage(page):
+    return "admin_pages/"+page
+
+def encriptar(texto):
+    btexto = texto.encode('utf-8')
+    objHash = hashlib.sha256(btexto)
+    texto_encriptado = objHash.hexdigest()
+    return texto_encriptado
+
 
 @app.route("/")
 def index():
@@ -17,7 +26,7 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template(generalPage("login.html"))
+    return render_template(adminPage("login.html"))
 
 
 @app.route("/sign_up")
@@ -34,6 +43,9 @@ def pregunta(id_grupo):
     cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
     return render_template("pregunta.html", cualidades=cualidades , id_grupo=id_grupo)
 
+@app.route("/resultado")
+def resultado():
+    return render_template(generalPage("resultado.html"))
 
 
 if __name__ == "__main__":
