@@ -65,7 +65,6 @@ def llenar_grafico_barras(participante_id):
         return resultado
     except Exception as e:
         return e
-<<<<<<< HEAD
     
 def verificar_cantidad_seleccionada(participante_id, grupo_id):
     conexion = obtener_conexion()
@@ -74,13 +73,8 @@ def verificar_cantidad_seleccionada(participante_id, grupo_id):
             sql = "SELECT COUNT(*) FROM seleccion WHERE participanteid = %s AND agrupaciongrupoid = %s"
             cursor.execute(sql, (participante_id, grupo_id))
             cantidad = cursor.fetchone()[0]
-            
-            return cantidad == 2
-          
+        conexion.close()      
+        return cantidad == 2  
     except Exception as e:
         print(f"Error al verificar la cantidad seleccionada: {e}")
         return False  
-    conexion.close()  
-=======
-    
->>>>>>> 27d6888626b672a9f9d87e6c95b4479b3c413f54
