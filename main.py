@@ -97,6 +97,10 @@ def pregunta_anterior():
     cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
     return redirect(url_for("pregunta", id_grupo=id_grupo))
 
+@app.route("/colores")
+def colores():
+    return render_template(generalPage("colores.html"))
+
 ###############################################################################################################
 
 @app.route("/resultado")
