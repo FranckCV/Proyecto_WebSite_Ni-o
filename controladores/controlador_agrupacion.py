@@ -1,4 +1,5 @@
 from controladores.bd import obtener_conexion
+
 def obtener_cantidad_grupo():
     conexion = obtener_conexion()
     try:
