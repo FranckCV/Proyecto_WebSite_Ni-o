@@ -5,6 +5,8 @@ import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
 from datetime import datetime, date
+from clases.User import User
+import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
 
@@ -31,6 +33,17 @@ def index():
 @app.route("/login")
 def login():
     return render_template(adminPage("login.html"))
+
+@app.route("/sign_in", methods=['POST'])
+def sign_in():
+    username = request.form['username']
+    password = request.form['password']
+    
+    if not username or not password:
+        return jsonify({"error": "Faltan credenciales"}), 400
+
+    response = controlador_user.login(username, password)
+    return jsonify(response)
 
 
 @app.route("/sign_up")
