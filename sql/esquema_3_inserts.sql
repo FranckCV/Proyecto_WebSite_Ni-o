@@ -1,10 +1,7 @@
 INSERT INTO administrador (id, nombres_completos, usuario, clave)
-VALUES (
-        1,
-        'Alicia Lizet Niño Effio',
-        'alicia123',
-        'alicia123'
-    );
+VALUES 
+    (1,'Alicia Lizet Niño Effio','alicia123','alicia123'),
+    (2,'César Eduardo Bravo Díaz','cesar456','cesar456');
 
 INSERT INTO elemento (id, nomElemento)
 VALUES (1, 'Fuego'),
@@ -267,3 +264,80 @@ VALUES
     (28, 94),
     (28, 12),
     (28, 47);
+
+
+INSERT INTO `participante` (`id`, `nombres`, `fecha_nacimiento`, `telefono`, `correo`, `fecha_registro`)
+ VALUES (NULL, 'Fabi', '2005-01-06', '906300962', 'fabianapm060126@gmail.com', '2024-12-13 02:44:58');
+
+-- Inserts de prueba (participantes)
+INSERT INTO participante (nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
+VALUES 
+('Carlos', 'Gómez Sánchez', '1990-05-15', '555-1234', 'carlos.gomez@example.com', CURRENT_TIMESTAMP),
+('María', 'López Pérez', '1985-09-20', '555-5678', 'maria.lopez@example.com', CURRENT_TIMESTAMP),
+('Juan', 'Ramírez Díaz', '2000-03-12', '555-9101', 'juan.ramirez@example.com', CURRENT_TIMESTAMP),
+('Ana', 'Martínez Torres', '1995-11-08', '555-1122', 'ana.martinez@example.com', CURRENT_TIMESTAMP);
+
+
+-- Inserts de selección
+INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONCUALIDADid, AGRUPACIONCUALIDADid, estado)
+VALUES
+-- Test de Carlos
+(1, 1, 21, 1),
+(1, 1, 35, 0),
+(1, 2, 57, 1),
+(1, 2, 94, 0),
+(1, 3, 3, 1),
+(1, 3, 61, 0),
+(1, 4, 74, 1),
+(1, 4, 88, 0),
+(1, 5, 91, 1),
+(1, 5, 23, 0),
+(1, 6, 62, 1),
+(1, 6, 89, 0),
+(1, 7, 60, 1),
+(1, 7, 43, 0),
+(1, 8, 8, 1),
+(1, 8, 76, 0),
+(1, 9, 9, 1),
+(1, 9, 45, 0),
+(1, 10, 31, 1),
+(1, 10, 1, 0),
+(1, 11, 75, 1),
+(1, 11, 105, 0),
+(1, 12, 10, 1),
+(1, 12, 58, 0),
+(1, 13, 30, 1),
+(1, 13, 65, 0),
+(1, 14, 28, 1),
+(1, 14, 72, 0),
+(1, 15, 14, 1),
+(1, 15, 55, 0),
+(1, 16, 5, 1),
+(1, 16, 84, 0),
+(1, 17, 63, 1),
+(1, 17, 24, 0),
+(1, 18, 68, 1),
+(1, 18, 32, 0),
+(1, 19, 64, 1),
+(1, 19, 40, 0),
+(1, 20, 52, 1),
+(1, 20, 59, 0),
+(1, 21, 69, 1),
+(1, 21, 13, 0),
+(1, 22, 73, 1),
+(1, 22, 101, 0),
+(1, 23, 6, 1),
+(1, 23, 41, 0),
+(1, 24, 17, 1),
+(1, 24, 56, 0),
+(1, 25, 7, 1),
+(1, 25, 34, 0),
+(1, 26, 4, 1),
+(1, 26, 49, 0),
+(1, 27, 100, 1),
+(1, 27, 37, 0),
+(1, 28, 12, 1),
+(1, 28, 47, 0);
+
+
+

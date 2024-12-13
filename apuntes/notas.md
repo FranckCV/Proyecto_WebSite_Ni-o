@@ -1,10 +1,8 @@
 ### ORGANIZACIÓN ACTUAL
 
+![alt text](diagramaBD.png)
 
-![alt text](image.png)
-
-![alt text](image-1.png)
-
+![alt text](relacionTrabajo.png)
 
 
 -----
@@ -13,11 +11,8 @@
 ### BD
 - Base de Datos en versiones primerizas (posibles cambios a posterior)
 - FALTAN INSERTS DE:
-  - Participante
-  - grupo
   - administrador
   - seleccion
-  - agrupacion
   
 
 ### CSS

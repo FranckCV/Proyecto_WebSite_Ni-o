@@ -1,0 +1,23 @@
+.container {
+    height: 100%;
+}
+
+table {
+    color: black;
+}
+
+td , th {
+    border: 1px solid black;
+    text-align: center;
+}
+
+a {
+    color: black;
+}
+
+th {
+    padding-inline: 20px;
+}
+
+
+
