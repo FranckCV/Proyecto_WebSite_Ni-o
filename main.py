@@ -61,12 +61,16 @@ def guardar_participante():
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
-    cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
-    return render_template("pregunta.html", cualidades=cualidades , id_grupo=id_grupo)
+    participante_id = request.cookies.get('id_participante_cookie') 
+    if participante_id:
+        cualidades = controlador_agrupacion.obtener_cualidades(id_grupo) 
+        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo)
+    else:
+        return redirect("/sign_up") 
 
 @app.route("/seleccionar_positivo", methods=["POST"])
 def seleccionar_positivo():
-    participante_id = 1
+    participante_id = request.cookies.get('id_participante_cookie')
     grupo_id = request.form["grupo"]
     cualidad_id = request.form["positive"]
     estado = True
@@ -76,7 +80,7 @@ def seleccionar_positivo():
 
 @app.route("/seleccionar_negativo" , methods=["POST"] )
 def seleccionar_negativo():
-    participante_id = 1
+    participante_id = request.cookies.get('id_participante_cookie')
     grupo_id = request.form["grupo"]
     cualidad_id = request.form["negative"]
     estado = False
@@ -94,7 +98,6 @@ def siguiente_pregunta():
 def pregunta_anterior():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual - 1
-    cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
     return redirect(url_for("pregunta", id_grupo=id_grupo))
 
 @app.route("/colores")
