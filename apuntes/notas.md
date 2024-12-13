@@ -1,6 +1,5 @@
 ### ORGANIZACIÓN ACTUAL
 
-
 ![alt text](diagramaBD.png)
 
 ![alt text](relacionTrabajo.png)
