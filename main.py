@@ -63,8 +63,9 @@ def guardar_participante():
 def pregunta(id_grupo):
     participante_id = request.cookies.get('id_participante_cookie') 
     if participante_id:
-        cualidades = controlador_agrupacion.obtener_cualidades(id_grupo) 
-        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo)
+        cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo) 
+        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado)
     else:
         return redirect("/sign_up") 
 
