@@ -266,7 +266,8 @@ VALUES
     (28, 47);
 
 
-
+INSERT INTO `participante` (`id`, `nombres`, `fecha_nacimiento`, `telefono`, `correo`, `fecha_registro`)
+ VALUES (NULL, 'Fabi', '2005-01-06', '906300962', 'fabianapm060126@gmail.com', '2024-12-13 02:44:58');
 
 
 

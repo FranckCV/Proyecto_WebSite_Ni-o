@@ -3,30 +3,59 @@
 {% block titulo %}
 Resultados
 {% endblock %}
+
 {% block estilos %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="../../static/css/resultado.css">
 {% endblock %}
 
 {% block contenido %}
-
 <body>
+    <!-- Campos ocultos para almacenar cada valor individualmente -->
+    <input type="hidden" id="label_1" value="{{ data['labels'][0] }}">
+    <input type="hidden" id="label_2" value="{{ data['labels'][1] }}">
+    <input type="hidden" id="label_3" value="{{ data['labels'][2] }}">
+    <input type="hidden" id="label_4" value="{{ data['labels'][3] }}">
+
+    <input type="hidden" id="data_1" value="{{ data['data'][0] }}">
+    <input type="hidden" id="data_2" value="{{ data['data'][1] }}">
+    <input type="hidden" id="data_3" value="{{ data['data'][2] }}">
+    <input type="hidden" id="data_4" value="{{ data['data'][3] }}">
+
     <div class="chart-container">
         <canvas id="grafica_resultado"></canvas>
     </div>
 
-</body>
 {% endblock %}
 
 {% block scripts %}
 <script>
     window.addEventListener("DOMContentLoaded", () => {
+        // Obtener los valores de los campos ocultos
+        const labels = [
+            document.getElementById("label_1").value,
+            document.getElementById("label_2").value,
+            document.getElementById("label_3").value,
+            document.getElementById("label_4").value
+        ];
+
+        const dataValues = [
+            document.getElementById("data_1").value,
+            document.getElementById("data_2").value,
+            document.getElementById("data_3").value,
+            document.getElementById("data_4").value
+        ];
+
+        // Asegúrate de que los valores se estén cargando correctamente
+        console.log("Labels:", labels);
+        console.log("Data:", dataValues);
+
         let miCanvas = document.getElementById("grafica_resultado").getContext("2d");
 
         var chart = new Chart(miCanvas, {
             type: "bar",
             data: {
-                labels: ["Tierra", "Fuego", "Agua", "Aire"],
+                labels: labels,
                 datasets: [{
                     label: "Resultado de test",
                     backgroundColor: [
@@ -42,7 +71,7 @@ Resultados
                         "rgb(105, 105, 105)"
                     ],
                     borderWidth: 1,
-                    data: [12, 20, 15, -10]
+                    data: dataValues
                 }]
             },
             options: {
