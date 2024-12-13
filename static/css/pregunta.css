@@ -1,86 +1,113 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 20px;
-}
+    justify-content: center;
+  }
 
-.card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 220px;
-    padding: 20px;
-    text-align: center;
+body{
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+  
+#head{
+    margin: 20px;
 }
 
-.card h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+
+
+  .card {
+    width: 45%; 
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease; 
+  }
+  
+  .card:hover {
+    transform: translateY(-10px); 
+  }
+  
+  .card h2 {
+    font-size: 1.5rem;
     color: #333;
-}
-
-.icons {
+    margin-bottom: 10px;
+  }
+  
+  .icons {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.icon {
-    font-size: 32px;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .icon {
     border: none;
-    background-color: transparent;
-    cursor: pointer;
+    background-color: #e0e0e0;
     padding: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.icon:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.positive {
-    color: green;
-}
-
-.negative {
-    color: red;
-}
-
-.magnify button {
-    font-size: 32px;
-    color: #333;
-    margin-top: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    height: 35px;
+    width: 35px;
+  }
+  
+  .icon:hover {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.1);
+  }
+  
+  .magnify button {
+    font-size: 1.5rem;
     background-color: transparent;
     border: none;
     cursor: pointer;
+    color: #007bff;
     transition: color 0.3s ease;
-}
-
-.magnify button:hover {
-    color: #555;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    transition: transform 0.3s ease-in-out;
-}
-
-.card:active {
-    transform: translateY(2px);
-}
+  }
+  
+  .magnify button:hover {
+    color: #0056b3;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    transform: translateY(-5px); 
+  }
+  
+  button i {
+    margin-right: 10px; 
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  button:hover {
+    animation: bounce 0.5s ease infinite; 
+  }
+  

@@ -1,16 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado</title>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <link rel="stylesheet" href="../../static/css/resultado.css">
-</head>
+{% extends "maestra_general.html" %}
+
+{% block titulo %}
+Resultados
+{% endblock %}
+{% block estilos %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="../../static/css/resultado.css">
+{% endblock %}
+
+{% block contenido %}
+
 <body>
-    <div id="google-chart" class="chart-container">
-        <!-- Aquí debes insertar el código del gráfico de barras -->
+    <div class="chart-container">
+        <canvas id="grafica_resultado"></canvas>
     </div>
-    <script src="../../static/js/grafico_resultado.js"></script>
+
 </body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        let miCanvas = document.getElementById("grafica_resultado").getContext("2d");
+
+        var chart = new Chart(miCanvas, {
+            type: "bar",
+            data: {
+                labels: ["Tierra", "Fuego", "Agua", "Aire"],
+                datasets: [{
+                    label: "Resultado de test",
+                    backgroundColor: [
+                        "rgb(165, 42, 42)",
+                        "rgb(255, 69, 0)",
+                        "rgb(30, 144, 255)",
+                        "rgb(169, 169, 169)"
+                    ],
+                    borderColor: [
+                        "rgb(139, 0, 0)",
+                        "rgb(220, 20, 60)",
+                        "rgb(0, 0, 139)",
+                        "rgb(105, 105, 105)"
+                    ],
+                    borderWidth: 1,
+                    data: [12, 20, 15, -10]
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        barPercentage: 0.5,
+                        categoryPercentage: 0.9
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
