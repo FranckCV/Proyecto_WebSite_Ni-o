@@ -87,11 +87,12 @@ def pregunta_anterior():
 
 @app.route("/resultado")
 def resultado():
-    prueba = list(controlador_agrupacion.funcion_prueba_jpd())
+    participante_id = 1
+    prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
     data = {
-        "labels": [prueba[3][1], prueba[0][1], prueba[1][1], prueba[2][1]],
-        "data": [prueba[3][2], prueba[0][2], prueba[1][2], prueba[2][2]]
+        "labels": [prueba[3][0], prueba[2][0], prueba[0][0], prueba[1][0]],
+        "data": [prueba[3][1], prueba[2][1], prueba[0][1], prueba[1][1]]
     }
     return render_template(generalPage("resultado.html"), data=data)
 

@@ -34,3 +34,28 @@ def insertar_seleccion(participante_id, grupo_id, cualidad_id,estado):
 
     except Exception as e:
         return f"Error al procesar la selección: {e}"
+    
+
+def llenar_grafico_barras(participante_id):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = """
+                SELECT
+                e.nomElemento,
+                SUM(CASE WHEN s.estado = 1 THEN 1 ELSE 0 END) - 
+                SUM(CASE WHEN s.estado = 0 THEN 1 ELSE 0 END) AS suma_estado
+                FROM seleccion s
+                JOIN agrupacion a ON s.AGRUPACIONGRUPOid = a.GRUPOid AND s.AGRUPACIONCUALIDADid = a.CUALIDADid
+                JOIN cualidad c ON a.CUALIDADid = c.id
+                JOIN elemento e ON c.ELEMENTOid = e.id
+                WHERE s.PARTICIPANTEid = %s
+                GROUP BY e.nomElemento
+                ORDER BY e.nomElemento;
+            """
+            cursor.execute(sql, participante_id)
+            pruebita = cursor.fetchall() 
+        conexion.close()
+        return pruebita
+    except Exception as e:
+        return e
