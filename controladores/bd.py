@@ -4,7 +4,7 @@ def obtener_conexion():
                                 port=3307,
                                 user='root',
                                 password='',
-                                db='')
+                                db='bd_elementos')
 
 
 
