@@ -5,6 +5,8 @@ import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
 from datetime import datetime, date
+from clases.User import User
+import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
 
@@ -31,6 +33,17 @@ def index():
 @app.route("/login")
 def login():
     return render_template(adminPage("login.html"))
+
+@app.route("/sign_in", methods=['POST'])
+def sign_in():
+    username = request.form['username']
+    password = request.form['password']
+    
+    if not username or not password:
+        return jsonify({"error": "Faltan credenciales"}), 400
+
+    response = controlador_user.login(username, password)
+    return jsonify(response)
 
 
 @app.route("/sign_up")
@@ -119,13 +132,15 @@ def resultado():
     except ValueError:
         return "Error: El ID del participante en la cookie no es válido.", 400
     
+    print(participante_id)
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
     
     data = {
-        "labels": [prueba[3][0], prueba[2][0], prueba[0][0], prueba[1][0]],
-        "data": [prueba[3][1], prueba[2][1], prueba[0][1], prueba[1][1]]
+        "labels": [item[0] for item in prueba],
+        "data": [int(item[1]) for item in prueba]
     }
+
     return render_template(generalPage("resultado.html"), data=data)
 
 
