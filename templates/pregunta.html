@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/common_styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/all.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/fontawesome.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/fonts.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
+    <link rel="stylesheet" href="/static/css/pregunta.css" />
+    {% block estilos %}
+
+    {% endblock %}
+  </head>
+
+  <body>
+    <h1 id="head">Pregunta # {{id_grupo}}</h1>
+    <form>
+      <div class="container">
+        {% for cualidad in cualidades %}
+          <div class="card">
+            <h2>{{ cualidad.1 }}</h2>
+            <div class="icons">
+              <button class="icon positive">+</button>
+              <button class="icon negative">-</button>
+            </div>
+            <div class="magnify">
+              <button>🔍</button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <button class="flecha"><i class="fa-solid fa-arrow-right"></i></button>
+    </form>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session, make_response,  redirect, url_for
+import controladores.controlador_agrupacion as controlador_agrupacion
 import hashlib
 import base64
 from datetime import datetime, date
@@ -37,9 +38,10 @@ def sign_up():
 def colores():
     return render_template(generalPage("colores.html"))
 
-@app.route("/pregunta")
-def pregunta():
-    return render_template(generalPage("pregunta.html"))
+@app.route("/pregunta=<int:id_grupo>")
+def pregunta(id_grupo):
+    cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
+    return render_template("pregunta.html", cualidades=cualidades , id_grupo=id_grupo)
 
 @app.route("/resultado")
 def resultado():
