@@ -45,6 +45,10 @@ def pregunta():
 def resultado():
     return render_template(generalPage("resultado.html"))
 
+# @app.route("/resultado_v2")
+# def resultado_v2():
+#     return render_template(generalPage("resultado_v2.html"))
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
