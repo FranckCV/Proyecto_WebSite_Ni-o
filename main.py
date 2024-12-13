@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session, make_response,  redirect, url_for
 import controladores.controlador_agrupacion as controlador_agrupacion
+import controladores.controlador_participante as controlador_participante
 import hashlib
 import base64
 from datetime import datetime, date
@@ -38,6 +39,9 @@ def sign_up():
 def colores():
     return render_template(generalPage("colores.html"))
 
+
+
+
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
     cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
@@ -50,6 +54,15 @@ def resultado():
 # @app.route("/resultado_v2")
 # def resultado_v2():
 #     return render_template(generalPage("resultado_v2.html"))
+
+
+
+
+
+@app.route("/dashboard")
+def dashboard():
+    resultados = controlador_participante.obtener_resultados()
+    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
 
 
 if __name__ == "__main__":

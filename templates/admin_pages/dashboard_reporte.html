@@ -1,0 +1,162 @@
+{% extends 'maestra_administrador.html' %}
+{% block titulo %}
+ress
+{% endblock %}
+
+{% block estilos %}
+<!-- <link rel="stylesheet" href="static/css/administrativa/listados.css" /> -->
+<link rel="stylesheet" href="/static/css/dashboard.css" />
+{% endblock %}
+
+{% block contenido %}
+<div class="container-fluid" id="">
+  <div class="row">
+    <div class="col">
+      <!-- cambiar -->
+      <h2 class="fw-bolder">zzzzz</h2>
+    </div>
+
+    {% if nombreBusqueda %}
+    <div class="col-2">
+      <div class="input-group">
+        <a class="button is-success add-btn" href="{{ url_for('index') }}">
+          <!-- cambiar -->
+          <button type="button" class="main_btn btn_return">Volver al Listado General</button>
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-3">
+
+      <table id="grid_ress" cellspacing="0">
+        <tbody>
+          <tr>
+            <th colspan="3">ress</th>
+          </tr>
+          <tr>
+            <th>Total</th>
+            <th>Disp</th>
+            <th>No Disp</th>
+          </tr>
+          <tr>
+            <td id="num_ress"></td>
+            <td id="num_disp_si"></td>
+            <td id="num_disp_no"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="col">
+      <form enctype="multipart/form-data" method="GET" action="{{ url_for('index') }}">
+        <!-- cambiar -->
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Buscar por nombre" aria-label="Recipient's username"
+            aria-describedby="button-addon2" id="buscarElemento" name="buscarElemento" maxlength="45" {% if
+            nombreBusqueda %} value="{{nombreBusqueda}}" {% endif %} />
+          <button class="btn btn-outline-secondary searchi" type="submit" id="button-addon2">
+            <img src="/static/img/elementosCRUD/loupe.png" alt="buscar" class="search_loupe" />
+          </button>
+          <!-- cambiar -->
+          <a href="{{ url_for('index') }}" class="button is-success add-btn">
+            <button type="button" class="main_btn">Agregar</button>
+          </a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="table-container">
+    <table cellspacing="0" class="">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Completo</th>
+          <th>Edad</th>
+          <th>Telefono</th>
+          <th>Correo Electronico</th>
+          <th>Fecha Registro</th>
+          <th>Resultado Fuego</th>
+          <th>Resultado Aire</th>
+          <th>Resultado Agua</th>
+          <th>Resultado Tierra</th>
+          <th class="opciones_column">Opciones</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody">
+        {% for res in resultados %}
+        <tr class="
+            {% if res.5 == 1 %}
+              fila_disp_si
+            {% else %}
+              fila_disp_no
+            {% endif %}
+            ">
+          <td class="celda_id">{{ res.0 }}</td>
+          <td>{{ res.1 }}</td>
+          <td>{{ res.2 }}</td>
+          <td>{{ res.3 }}</td>
+          <td>{{ res.4 }}</td>
+          <td>{{ res.5 }}</td>
+          <td>{{ res.6 }}</td>
+          <td>{{ res.7 }}</td>
+          <td>{{ res.8 }}</td>
+          <td>{{ res.9 }}</td>
+
+          <td class="opciones_column">
+            <div class="acciones">
+              <!-- cambiar -->
+              <a class="opciones_fila" href="{{url_for('index', id=res[0])}}">
+                <button type="submit">
+                  <i class="fa-solid fa-link"></i>
+                </button>
+              </a>
+              <!-- cambiar -->
+              <a class="opciones_fila" href="{{ url_for('index', id=res.0) }}">
+                <button type="submit">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+              </a>
+              <!-- cambiar -->
+              <form class="opciones_fila" action="{{ url_for('index') }}" method="POST"
+                onsubmit="return confirmarEliminacion()" id="deleteF">
+                <input type="hidden" name="id" value="{{ res.0 }}" />
+                <button type="submit">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </form>
+
+            </div>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div id="overlayImage" class="overlayImage" onclick="closeImage()">
+    <img id="enlargedImage" class="enlarged-image" />
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function confirmarEliminacion() {
+    return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
+  }
+</script>
+<!-- <script src="/static/js/admin_productos.js"></script>
+  <script src="/static/js/filtroCRUDListado.js"></script>
+  <script src="/static/js/imgsCRUDimagencompleta.js"></script> -->
+{% endblock %}

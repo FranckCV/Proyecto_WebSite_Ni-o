@@ -11,7 +11,6 @@
 ### BD
 - Base de Datos en versiones primerizas (posibles cambios a posterior)
 - FALTAN INSERTS DE:
-  - Participante
   - administrador
   - seleccion
   

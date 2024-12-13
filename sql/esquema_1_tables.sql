@@ -1,6 +1,7 @@
 CREATE TABLE participante (
     id int(10) NOT NULL AUTO_INCREMENT,
     nombres varchar(255) NOT NULL,
+    apellidos varchar(255) NOT NULL,
     fecha_nacimiento date NOT NULL,
     telefono varchar(255) NOT NULL,
     correo varchar(255) NOT NULL,
