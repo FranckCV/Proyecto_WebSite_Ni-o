@@ -16,11 +16,10 @@ def obtener_cualidades(id):
     try:
         with conexion.cursor() as cursor:
             sql = """
-                select g.nomgrupo, c.nombre 
+                select a.cualidadid, c.nombre 
                 from agrupacion a
-                inner join grupo g on g.id = a.GRUPOid
                 inner join cualidad c on c.id = a.CUALIDADid
-                where g.id = %s
+                where a.grupoid = %s
             """
             cursor.execute(sql, (id,))
             cualidades = cursor.fetchall() 
