@@ -37,11 +37,25 @@ def login():
 def sign_up():
     return render_template(generalPage("sign_up.html"))
 
-
-@app.route("/colores")
-def colores():
-    return render_template(generalPage("colores.html"))
-
+@app.route("/guardar_participante", methods=["POST"])
+def guardar_participante():
+    nombres = request.form["nombres"]
+    fecha_nacimiento = request.form["fecha_nacimiento"]
+    telefono = request.form["telefono"]
+    correo = request.form["correo"]
+    
+    id_participante = controlador_participante.insertar_participante(
+        nombres=nombres,
+        fecha_nacimiento=fecha_nacimiento,
+        telefono=telefono,
+        correo=correo
+    )
+    
+    id_grupo_inicial = 1
+    
+    respuesta = redirect(url_for('pregunta', id_grupo=id_grupo_inicial))
+    respuesta.set_cookie('id_participante_cookie', str(id_participante))
+    return respuesta
 
 ##############################################################################################################
 
@@ -87,9 +101,19 @@ def pregunta_anterior():
 
 @app.route("/resultado")
 def resultado():
-    participante_id = 1
+    participante_id = request.cookies.get('id_participante_cookie')
+
+    if not participante_id:
+        return "Error: No se encontró el ID del participante en la cookie.", 400
+    
+    try:
+        participante_id = int(participante_id)
+    except ValueError:
+        return "Error: El ID del participante en la cookie no es válido.", 400
+    
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
+    
     data = {
         "labels": [prueba[3][0], prueba[2][0], prueba[0][0], prueba[1][0]],
         "data": [prueba[3][1], prueba[2][1], prueba[0][1], prueba[1][1]]
