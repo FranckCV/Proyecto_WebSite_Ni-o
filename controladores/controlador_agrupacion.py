@@ -17,7 +17,7 @@ def obtener_cualidades(id):
     try:
         with conexion.cursor() as cursor:
             sql = """
-                select a.cualidadid, c.nombre 
+                select a.cualidadid, c.nombre, c.descripcion 
                 from agrupacion a
                 inner join cualidad c on c.id = a.CUALIDADid
                 where a.grupoid = %s
