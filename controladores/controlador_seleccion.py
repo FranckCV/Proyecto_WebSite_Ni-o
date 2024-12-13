@@ -42,20 +42,27 @@ def llenar_grafico_barras(participante_id):
         with conexion.cursor() as cursor:
             sql = """
                 SELECT
-                e.nomElemento,
-                SUM(CASE WHEN s.estado = 1 THEN 1 ELSE 0 END) - 
-                SUM(CASE WHEN s.estado = 0 THEN 1 ELSE 0 END) AS suma_estado
-                FROM seleccion s
-                JOIN agrupacion a ON s.AGRUPACIONGRUPOid = a.GRUPOid AND s.AGRUPACIONCUALIDADid = a.CUALIDADid
-                JOIN cualidad c ON a.CUALIDADid = c.id
-                JOIN elemento e ON c.ELEMENTOid = e.id
-                WHERE s.PARTICIPANTEid = %s
+                    e.nomElemento,
+                    COALESCE(SUM(CASE WHEN s.estado = 1 THEN 1 ELSE 0 END), 0) - 
+                    COALESCE(SUM(CASE WHEN s.estado = 0 THEN 1 ELSE 0 END), 0) AS suma_estado
+                FROM elemento e
+                LEFT JOIN cualidad c ON e.id = c.ELEMENTOid
+                LEFT JOIN agrupacion a ON c.id = a.CUALIDADid
+                LEFT JOIN seleccion s ON a.GRUPOid = s.AGRUPACIONGRUPOid AND a.CUALIDADid = s.AGRUPACIONCUALIDADid AND s.PARTICIPANTEid = %s
                 GROUP BY e.nomElemento
-                ORDER BY e.nomElemento;
+                ORDER BY 
+                    CASE 
+                        WHEN e.nomElemento = 'Fuego' THEN 1
+                        WHEN e.nomElemento = 'Aire' THEN 2
+                        WHEN e.nomElemento = 'Agua' THEN 3
+                        WHEN e.nomElemento = 'Tierra' THEN 4
+                        ELSE 5 -- En caso de que haya un elemento no esperado
+                    END;
             """
-            cursor.execute(sql, participante_id)
-            pruebita = cursor.fetchall() 
+            cursor.execute(sql, (participante_id,))
+            resultado = cursor.fetchall()
         conexion.close()
-        return pruebita
+        return resultado
     except Exception as e:
         return e
+    
