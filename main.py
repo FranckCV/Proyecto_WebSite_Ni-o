@@ -45,7 +45,14 @@ def pregunta(id_grupo):
 
 @app.route("/resultado")
 def resultado():
-    return render_template(generalPage("resultado.html"))
+    prueba = list(controlador_agrupacion.funcion_prueba_jpd())
+    print(prueba)
+    data = {
+        "labels": [prueba[3][1], prueba[0][1], prueba[1][1], prueba[2][1]],
+        "data": [prueba[3][2], prueba[0][2], prueba[1][2], prueba[2][2]]
+    }
+    return render_template(generalPage("resultado.html"), data=data)
+
 
 # @app.route("/resultado_v2")
 # def resultado_v2():

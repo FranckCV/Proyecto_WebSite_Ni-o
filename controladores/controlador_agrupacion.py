@@ -28,3 +28,21 @@ def obtener_cualidades(id):
         return cualidades
     except Exception as e:
         return e
+
+
+def funcion_prueba_jpd():
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = """
+                SELECT e.id AS ElementoID, e.nomElemento AS Elemento, COUNT(c.id) AS CantidadCualidades
+                FROM elemento e
+                LEFT JOIN cualidad c ON e.id = c.ELEMENTOid
+                GROUP BY e.id, e.nomElemento;
+            """
+            cursor.execute(sql)
+            pruebita = cursor.fetchall() 
+        conexion.close()
+        return pruebita
+    except Exception as e:
+        return e
