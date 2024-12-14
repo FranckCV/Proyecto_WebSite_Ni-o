@@ -4,6 +4,7 @@ import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
+from flask_socketio import SocketIO, emit 
 from datetime import datetime, date
 from clases.User import User
 import controladores.controlador_user as controlador_user
@@ -157,6 +158,14 @@ def resultado():
 def dashboard():
     resultados = controlador_participante.obtener_resultados()
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
+
+
+
+@app.route("/buscarResultado")
+def buscarResultado():
+    nombreBusqueda = request.args.get("buscarElemento")
+    resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
+    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
 
 
 

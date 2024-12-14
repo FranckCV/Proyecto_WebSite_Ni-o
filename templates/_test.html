@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 30px;
+            margin-bottom: 10px;
+            display: flex;
+            /* flex-direction: column; */
+            gap: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: red;
+            text-align: center;
+            color: white;
+            line-height: 30px;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        #progressText {
+            font-weight: bold;
+            margin-top: 5px;
+            /* z-index: 9900; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bloque">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <input type="number" id="progressInput" value="25.5">
+
+    </div>
+
+    <div class="bloque">
+        <!-- <p id="progressText">0%</p> -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <input type="number" id="progressInput" value="75.5">
+        <!-- <p id="progressInput">25.5</p> -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const bloques = document.querySelectorAll(".bloque");
+            bloques.forEach(bloque => {
+
+                const progressBar = bloque.querySelector("#progressBar");
+                // const progressText = bloque.querySelector("#progressText");
+                const progressInput = bloque.querySelector("#progressInput");
+
+                const calculateColor = (percentage) => {
+                    const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));
+                    const green = Math.min(255, Math.floor((percentage / 100) * 255));
+                    return `rgb(${red}, ${green}, 0)`;
+                };
+
+                function calcularValor() {
+                    var percentage = parseFloat(progressInput.value);
+                    progressBar.style.width = `${percentage}%`;
+                    progressBar.style.backgroundColor = calculateColor(percentage);
+                    // progressText.style.backgroundColor = calculateColor(percentage);
+                    // progressText.textContent = `${percentage}%`;
+                }
+
+                calcularValor();
+
+                progressInput.addEventListener("input", (event) => {
+                    calcularValor();
+                });
+
+            });
+        });
+
+    </script>
+</body>
+
+</html>
