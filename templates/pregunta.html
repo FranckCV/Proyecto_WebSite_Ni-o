@@ -62,7 +62,7 @@
           <input type="hidden" name="grupo" value="{{ id_grupo }}" />
           <button class="flecha" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
         </form>
-      {% else %}
+      {% elif id_grupo==28 and verificado%}
       <form action="{{ url_for('resultado') }}">
         <button class="flecha" type="submit">Mostrar resultado</button>
       </form>

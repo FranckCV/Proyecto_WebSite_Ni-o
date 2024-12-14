@@ -30,7 +30,11 @@ def index():
     participante_id = request.cookies.get('id_participante_cookie')
     if participante_id:
         id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_id)
-        return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo)
+        if id_grupo==28 and verificado:
+            return render_template(generalPage("index.html"))
+        else:
+            return redirect(url_for('pregunta', id_grupo=id_grupo)) 
     else:   
         return render_template(generalPage("index.html"))
 
