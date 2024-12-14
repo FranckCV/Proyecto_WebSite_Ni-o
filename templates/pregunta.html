@@ -24,13 +24,21 @@
             <form action="{{ url_for('seleccionar_positivo') }}" method="POST">
               <input type="hidden" name="grupo" value="{{ id_grupo }}" />
               <input type="hidden" name="positive" value="{{ cualidad.0 }}" />
-              <button type="submit" class="icon positive">+</button>
+              {% if (seleccion_positiva is not none and seleccion_positiva != cualidad.0)  or seleccion_negativa==cualidad.0%}
+                <button type="submit" disabled class="icon positive_desactivado">+</button>
+              {% else %}
+                <button type="submit" class="icon positive">+</button>
+              {% endif %}
             </form>
 
             <form action="{{ url_for('seleccionar_negativo') }}" method="POST">
               <input type="hidden" name="grupo" value="{{ id_grupo }}" />
               <input type="hidden" name="negative" value="{{ cualidad.0 }}" />
-              <button type="submit" class="icon negative">-</button>
+              {% if (seleccion_negativa is not none and seleccion_negativa != cualidad.0) or seleccion_positiva== cualidad.0%}
+                <button type="submit" disabled class="icon negative_desactivado">-</button>
+              {% else %}
+                <button type="submit" class="icon negative">-</button>
+              {% endif %}
             </form>
           </div>
           <div class="magnify">
@@ -44,18 +52,21 @@
     </div>
     <div id="flechas">
       {% if id_grupo != 1 %}
-      <form action="{{ url_for('pregunta_anterior') }}" method="POST">
+        <form action="{{ url_for('pregunta_anterior') }}" method="POST">
           <input type="hidden" name="grupo" value="{{ id_grupo }}" />
           <button class="flecha" type="submit"><i class="fa-solid fa-arrow-left"></i></button>
-      </form>
-  {% endif %}
-  {% if id_grupo < 28 and verificado %}
-      <form action="{{ url_for('siguiente_pregunta') }}" method="POST">
+        </form>
+      {% endif %}
+      {% if id_grupo < 28 and verificado %}
+        <form action="{{ url_for('siguiente_pregunta') }}" method="POST">
           <input type="hidden" name="grupo" value="{{ id_grupo }}" />
           <button class="flecha" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+      {% elif id_grupo==28 and verificado%}
+      <form action="{{ url_for('resultado') }}">
+        <button class="flecha" type="submit">Mostrar resultado</button>
       </form>
-  {% endif %}
-  
+      {% endif %}
     </div>
 
     <script src="/static/js/pregunta.js"></script>

@@ -11,7 +11,8 @@ Resultados
 
 {% block contenido %}
 <body>
-    <!-- Campos ocultos para almacenar cada valor individualmente -->
+    <input type="hidden" id="nombre_participante" value="{{ nombre_participante }}">
+
     <input type="hidden" id="label_1" value="{{ data['labels'][0] }}">
     <input type="hidden" id="label_2" value="{{ data['labels'][1] }}">
     <input type="hidden" id="label_3" value="{{ data['labels'][2] }}">
@@ -21,6 +22,16 @@ Resultados
     <input type="hidden" id="data_2" value="{{ data['data'][1] }}">
     <input type="hidden" id="data_3" value="{{ data['data'][2] }}">
     <input type="hidden" id="data_4" value="{{ data['data'][3] }}">
+
+    <!-- <input type="hidden" id="label_1" value="{{ data['labels'][0] }}">
+    <input type="hidden" id="label_2" value="{{ data['labels'][1] }}">
+    <input type="hidden" id="label_3" value="{{ data['labels'][2] }}">
+    <input type="hidden" id="label_4" value="{{ data['labels'][3] }}">
+
+    <input type="hidden" id="data_1" value="5">
+    <input type="hidden" id="data_2" value="25">
+    <input type="hidden" id="data_3" value="-4">
+    <input type="hidden" id="data_4" value="-3"> -->
 
     <div class="chart-container">
         <canvas id="grafica_resultado"></canvas>
@@ -32,23 +43,72 @@ Resultados
 <script>
     window.addEventListener("DOMContentLoaded", () => {
         // Obtener los valores de los campos ocultos
+        const nombre_participante = document.getElementById("nombre_participante").value;
+
         const labels = [
-            document.getElementById("label_1").value,
-            document.getElementById("label_2").value,
-            document.getElementById("label_3").value,
-            document.getElementById("label_4").value
+            document.getElementById("label_1").value, // Fuego
+            document.getElementById("label_2").value, // Aire
+            document.getElementById("label_3").value, // Agua
+            document.getElementById("label_4").value  // Tierra
         ];
 
         const dataValues = [
-            document.getElementById("data_1").value,
-            document.getElementById("data_2").value,
-            document.getElementById("data_3").value,
-            document.getElementById("data_4").value
+            parseFloat(document.getElementById("data_1").value), // Fuego
+            parseFloat(document.getElementById("data_2").value), // Aire
+            parseFloat(document.getElementById("data_3").value), // Agua
+            parseFloat(document.getElementById("data_4").value)  // Tierra
         ];
+
+        // Colores correspondientes a los elementos
+        const colors = {
+            fuego: "rgb(255, 69, 0)",    // Naranja para fuego
+            aire: "rgb(169, 169, 169)", // Gris para aire
+            agua: "rgb(30, 144, 255)",  // Azul para agua
+            tierra: "rgb(165, 42, 42)"  // Marrón para tierra
+        };
+
+        // Cálculos de los valores combinados
+        const fuegoVsAgua = dataValues[0] - dataValues[2]; // Fuego - Agua
+        const tierraVsAire = dataValues[3] - dataValues[1]; // Tierra - Aire
+
+        // Determinar el elemento predominante (cuadro principal)
+        let maxElement = "";
+        if (Math.abs(fuegoVsAgua) >= Math.abs(tierraVsAire)) {
+            maxElement = fuegoVsAgua >= 0 ? "fuego" : "agua";
+        } else {
+            maxElement = tierraVsAire >= 0 ? "tierra" : "aire";
+        }
+
+        // Determinar el segundo elemento más fuerte (borde del cuadro)
+        let secondElement = "";
+        if (maxElement === "fuego" || maxElement === "agua") {
+            // Comparar entre tierra y aire
+            if (Math.abs(dataValues[3]) === Math.abs(dataValues[1])) {
+                // Empate, el borde será el mismo color que el predominante
+                secondElement = maxElement;
+            } else {
+                secondElement = dataValues[3] >= dataValues[1] ? "tierra" : "aire";
+            }
+        } else {
+            // Comparar entre fuego y agua
+            if (Math.abs(dataValues[0]) === Math.abs(dataValues[2])) {
+                // Empate, el borde será el mismo color que el predominante
+                secondElement = maxElement;
+            } else {
+                secondElement = dataValues[0] >= dataValues[2] ? "fuego" : "agua";
+            }
+        }
+
+        const maxColor = colors[maxElement];
+        const secondColor = colors[secondElement];
 
         // Asegúrate de que los valores se estén cargando correctamente
         console.log("Labels:", labels);
         console.log("Data:", dataValues);
+        console.log("Elemento predominante:", maxElement);
+        console.log("Elemento secundario:", secondElement);
+        console.log("Color predominante:", maxColor);
+        console.log("Color secundario:", secondColor);
 
         let miCanvas = document.getElementById("grafica_resultado").getContext("2d");
 
@@ -57,24 +117,34 @@ Resultados
             data: {
                 labels: labels,
                 datasets: [{
-                    label: "Resultado de test",
+                    label: "Resultado de " + nombre_participante,
                     backgroundColor: [
-                        "rgb(255, 69, 0)",
-                        "rgb(169, 169, 169)",
-                        "rgb(30, 144, 255)",
-                        "rgb(165, 42, 42)"
+                        colors.fuego, colors.aire, colors.agua, colors.tierra // Colores de las barras
                     ],
                     borderColor: [
-                        "rgb(139, 0, 0)",
-                        "rgb(220, 20, 60)",
-                        "rgb(0, 0, 139)",
-                        "rgb(105, 105, 105)"
+                        colors.fuego, colors.aire, colors.agua, colors.tierra // Bordes de las barras
                     ],
                     borderWidth: 1,
                     data: dataValues
                 }]
             },
             options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            generateLabels: (chart) => {
+                                // Personalización del cuadro de la leyenda
+                                let originalLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                                originalLabels.forEach((label) => {
+                                    label.fillStyle = maxColor;    // Color según el elemento combinado predominante
+                                    label.strokeStyle = secondColor; // Borde según el segundo más fuerte
+                                    label.lineWidth = 3;          // Ancho del borde
+                                });
+                                return originalLabels;
+                            }
+                        }
+                    }
+                },
                 scales: {
                     x: {
                         barPercentage: 0.5,
@@ -88,4 +158,6 @@ Resultados
         });
     });
 </script>
+
+
 {% endblock %}

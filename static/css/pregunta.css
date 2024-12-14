@@ -46,7 +46,6 @@ body{
   
   .icon {
     border: none;
-    background-color: #e0e0e0;
     padding: 10px;
     border-radius: 50%;
     cursor: pointer;
@@ -55,8 +54,27 @@ body{
     width: 35px;
   }
   
+  .positive{
+    background-color: #10833c;
+  }
+
+ .negative{
+    background-color: #a42323;
+  }
+
+  .positive_desactivado,
+  .negative_desactivado {
+    background-color: #858181 !important;
+    cursor: none;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  
+
+
   .icon:hover {
-    background-color: #007bff;
+    background-color: #d2a207;
     color: white;
     transform: scale(1.1);
   }
@@ -83,7 +101,9 @@ body{
     align-items: center;
     width: 75%;
   }
-
+.flecha{
+  background-color: rgb(75, 75, 203);
+}
   .texto_boton{
     display: flex;
     justify-content: center;
@@ -95,7 +115,6 @@ body{
   }
 
   button {
-    background-color: #007bff;
     color: white;
     border: none;
     padding: 12px 24px;

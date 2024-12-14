@@ -28,7 +28,18 @@ def encriptar(texto):
 
 @app.route("/")
 def index():
-    return render_template(generalPage("index.html"))
+    participante_id = request.cookies.get('id_participante_cookie')
+    if participante_id:
+        id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_id)
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo)
+        if id_grupo==28 and verificado:
+            response = make_response(render_template(generalPage("index.html")))
+            response.delete_cookie("id_participante_cookie")
+            return response
+        else:
+            return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+    else:   
+        return render_template(generalPage("index.html"))
 
 
 @app.route("/login")
@@ -79,7 +90,10 @@ def pregunta(id_grupo):
     if participante_id:
         cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
         verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo) 
-        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado)
+        seleccion_positiva = controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_id,id_grupo) 
+        print(seleccion_positiva)
+        seleccion_negativa = controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_id,id_grupo)
+        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado,seleccion_negativa=seleccion_negativa,seleccion_positiva=seleccion_positiva )
     else:
         return redirect("/sign_up") 
 
@@ -136,13 +150,14 @@ def resultado():
     print(participante_id)
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
-    
+    nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
+    print(nombre_participante[1])
     data = {
         "labels": [item[0] for item in prueba],
         "data": [int(item[1]) for item in prueba]
     }
 
-    return render_template(generalPage("resultado.html"), data=data)
+    return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_participante[1]))
 
 
 
