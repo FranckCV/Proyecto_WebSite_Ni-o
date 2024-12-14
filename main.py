@@ -27,7 +27,12 @@ def encriptar(texto):
 
 @app.route("/")
 def index():
-    return render_template(generalPage("index.html"))
+    participante_id = request.cookies.get('id_participante_cookie')
+    if participante_id:
+        id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_id)
+        return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+    else:   
+        return render_template(generalPage("index.html"))
 
 
 @app.route("/login")
@@ -78,7 +83,10 @@ def pregunta(id_grupo):
     if participante_id:
         cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
         verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo) 
-        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado)
+        seleccion_positiva = controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_id,id_grupo) 
+        print(seleccion_positiva)
+        seleccion_negativa = controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_id,id_grupo)
+        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado,seleccion_negativa=seleccion_negativa,seleccion_positiva=seleccion_positiva )
     else:
         return redirect("/sign_up") 
 

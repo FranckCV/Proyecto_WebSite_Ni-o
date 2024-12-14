@@ -78,3 +78,42 @@ def verificar_cantidad_seleccionada(participante_id, grupo_id):
     except Exception as e:
         print(f"Error al verificar la cantidad seleccionada: {e}")
         return False  
+
+def obtener_id_cualidad_positiva_seleccionada(participante_id, grupo_id):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = "SELECT agrupacioncualidadid FROM seleccion WHERE participanteid = %s AND agrupaciongrupoid = %s and estado = true"
+            cursor.execute(sql, (participante_id, grupo_id))
+            seleccion = cursor.fetchone()
+        conexion.close()      
+        return seleccion[0] if seleccion else None  
+    except Exception as e:
+        print(f"Error al verificar la cantidad seleccionada: {e}")
+        return False  
+    
+def obtener_id_cualidad_negativa_seleccionada(participante_id, grupo_id):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = "SELECT agrupacioncualidadid FROM seleccion WHERE participanteid = %s AND agrupaciongrupoid = %s and estado = false"
+            cursor.execute(sql, (participante_id, grupo_id))
+            seleccion = cursor.fetchone()
+        conexion.close()      
+        return seleccion[0] if seleccion else None 
+    except Exception as e:
+        print(f"Error al verificar la cantidad seleccionada: {e}")
+        return False  
+
+def obtener_ultima_seleccion(participante_id):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = "SELECT max(agrupaciongrupoid) FROM seleccion WHERE participanteid = %s "
+            cursor.execute(sql, (participante_id,))
+            ultima_seleccion = cursor.fetchone()
+        conexion.close()      
+        return ultima_seleccion[0] if ultima_seleccion else None 
+    except Exception as e:
+        print(f"Error al verificar la cantidad seleccionada: {e}")
+        return False  
