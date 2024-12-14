@@ -60,7 +60,7 @@ Dashboard
             aria-describedby="button-addon2" id="buscarElemento" name="buscarElemento" maxlength="45" {% if
             nombreBusqueda %} value="{{nombreBusqueda}}" {% endif %} />
           <button class="btn btn-outline-secondary searchi" type="submit" id="button-addon2">
-            <img src="/static/img/elementosCRUD/loupe.png" alt="buscar" class="search_loupe" />
+            <i class="fa-solid fa-magnifying-glass"></i>
           </button>
           <!-- cambiar -->
           <a href="{{ url_for('index') }}" class="button is-success add-btn">
@@ -73,7 +73,7 @@ Dashboard
   </div>
 
   <div class="table-container">
-    <table cellspacing="0" class="">
+    <table cellspacing="0" class="table_listado">
       <thead>
         <tr>
           <th>ID</th>
@@ -92,7 +92,7 @@ Dashboard
       <tbody id="productTableBody">
         {% for res in resultados %}
         <tr class="
-            {% if res.5 == 1 %}
+            {% if res.5 == 100 %}
               fila_disp_si
             {% else %}
               fila_disp_no
@@ -155,7 +155,8 @@ Dashboard
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
   }
 </script>
+<script src="/static/js/filtroCRUDListado.js"></script>
+
 <!-- <script src="/static/js/admin_productos.js"></script>
-  <script src="/static/js/filtroCRUDListado.js"></script>
   <script src="/static/js/imgsCRUDimagencompleta.js"></script> -->
 {% endblock %}

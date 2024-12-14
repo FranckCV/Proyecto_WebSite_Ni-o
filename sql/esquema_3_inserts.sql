@@ -265,17 +265,17 @@ VALUES
     (28, 12),
     (28, 47);
 
-
-INSERT INTO `participante` (`id`, `nombres`, `fecha_nacimiento`, `telefono`, `correo`, `fecha_registro`)
- VALUES (NULL, 'Fabi', '2005-01-06', '906300962', 'fabianapm060126@gmail.com', '2024-12-13 02:44:58');
-
 -- Inserts de prueba (participantes)
-INSERT INTO participante (nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
+INSERT INTO participante (id,nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
 VALUES 
-('Carlos', 'Gómez Sánchez', '1990-05-15', '555-1234', 'carlos.gomez@example.com', CURRENT_TIMESTAMP),
-('María', 'López Pérez', '1985-09-20', '555-5678', 'maria.lopez@example.com', CURRENT_TIMESTAMP),
-('Juan', 'Ramírez Díaz', '2000-03-12', '555-9101', 'juan.ramirez@example.com', CURRENT_TIMESTAMP),
-('Ana', 'Martínez Torres', '1995-11-08', '555-1122', 'ana.martinez@example.com', CURRENT_TIMESTAMP);
+(1,'Carlos', 'Gómez Sánchez', '1990-05-15', '555-1234', 'carlos.gomez@example.com', CURRENT_TIMESTAMP),
+(2,'María', 'López Pérez', '1985-09-20', '555-5678', 'maria.lopez@example.com', CURRENT_TIMESTAMP),
+(3,'Juan', 'Ramírez Díaz', '2000-03-12', '555-9101', 'juan.ramirez@example.com', CURRENT_TIMESTAMP),
+(4,'Ana', 'Martínez Torres', '1995-11-08', '555-1122', 'ana.martinez@example.com', CURRENT_TIMESTAMP);
+
+
+INSERT INTO `participante` (`id`, `nombres`, apellidos,`fecha_nacimiento`, `telefono`, `correo`, `fecha_registro`)
+ VALUES (5, 'Fabi', 'PM', '2005-01-06', '906300962', 'fabianapm060126@gmail.com', '2024-12-13 02:44:58');
 
 
 -- Inserts de selección
