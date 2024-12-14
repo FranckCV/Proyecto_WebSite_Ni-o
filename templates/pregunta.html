@@ -24,7 +24,7 @@
             <form action="{{ url_for('seleccionar_positivo') }}" method="POST">
               <input type="hidden" name="grupo" value="{{ id_grupo }}" />
               <input type="hidden" name="positive" value="{{ cualidad.0 }}" />
-              {% if seleccion_positiva is not none and seleccion_positiva != cualidad.0 %}
+              {% if (seleccion_positiva is not none and seleccion_positiva != cualidad.0)  or seleccion_negativa==cualidad.0%}
                 <button type="submit" disabled class="icon positive_desactivado">+</button>
               {% else %}
                 <button type="submit" class="icon positive">+</button>
@@ -34,7 +34,7 @@
             <form action="{{ url_for('seleccionar_negativo') }}" method="POST">
               <input type="hidden" name="grupo" value="{{ id_grupo }}" />
               <input type="hidden" name="negative" value="{{ cualidad.0 }}" />
-              {% if seleccion_negativa is not none and seleccion_negativa != cualidad.0 %}
+              {% if (seleccion_negativa is not none and seleccion_negativa != cualidad.0) or seleccion_positiva== cualidad.0%}
                 <button type="submit" disabled class="icon negative_desactivado">-</button>
               {% else %}
                 <button type="submit" class="icon negative">-</button>

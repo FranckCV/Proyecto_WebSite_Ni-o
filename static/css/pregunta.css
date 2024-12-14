@@ -60,17 +60,17 @@ body{
 
  .negative{
     background-color: #a42323;
-    cursor: none;
   }
 
-  .positive_desactivado{
-    background-color: #858181;
-  }
-
-  .negative_desactivado{
-    background-color: #858181;
+  .positive_desactivado,
+  .negative_desactivado {
+    background-color: #858181 !important;
     cursor: none;
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
   }
+  
 
 
   .icon:hover {
