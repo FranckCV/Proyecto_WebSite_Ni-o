@@ -55,4 +55,13 @@ def insertar_participante(nombres, fecha_nacimiento, telefono, correo):
         conexion.close()
         return f"Error al insertar participante: {str(e)}"
 
-
+def buscar_participante(id_participante):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql= '''
+            SELECT * from participante where id = %s;
+        '''
+        cursor.execute(sql, (id_participante))
+        result = cursor.fetchone()
+    conexion.close()
+    return result

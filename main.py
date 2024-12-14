@@ -149,13 +149,14 @@ def resultado():
     print(participante_id)
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
-    
+    nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
+    print(nombre_participante[1])
     data = {
         "labels": [item[0] for item in prueba],
         "data": [int(item[1]) for item in prueba]
     }
 
-    return render_template(generalPage("resultado.html"), data=data)
+    return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_participante[1]))
 
 
 
