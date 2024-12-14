@@ -5,6 +5,8 @@ import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
 from datetime import datetime, date
+from clases.User import User
+import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
 
@@ -32,27 +34,57 @@ def index():
 def login():
     return render_template(adminPage("login.html"))
 
+@app.route("/sign_in", methods=['POST'])
+def sign_in():
+    username = request.form['username']
+    password = request.form['password']
+    
+    if not username or not password:
+        return jsonify({"error": "Faltan credenciales"}), 400
+
+    response = controlador_user.login(username, password)
+    return jsonify(response)
+
 
 @app.route("/sign_up")
 def sign_up():
     return render_template(generalPage("sign_up.html"))
 
-
-@app.route("/colores")
-def colores():
-    return render_template(generalPage("colores.html"))
-
+@app.route("/guardar_participante", methods=["POST"])
+def guardar_participante():
+    nombres = request.form["nombres"]
+    fecha_nacimiento = request.form["fecha_nacimiento"]
+    telefono = request.form["telefono"]
+    correo = request.form["correo"]
+    
+    id_participante = controlador_participante.insertar_participante(
+        nombres=nombres,
+        fecha_nacimiento=fecha_nacimiento,
+        telefono=telefono,
+        correo=correo
+    )
+    
+    id_grupo_inicial = 1
+    
+    respuesta = redirect(url_for('pregunta', id_grupo=id_grupo_inicial))
+    respuesta.set_cookie('id_participante_cookie', str(id_participante))
+    return respuesta
 
 ##############################################################################################################
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
-    cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
-    return render_template("pregunta.html", cualidades=cualidades , id_grupo=id_grupo)
+    participante_id = request.cookies.get('id_participante_cookie') 
+    if participante_id:
+        cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo) 
+        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado)
+    else:
+        return redirect("/sign_up") 
 
 @app.route("/seleccionar_positivo", methods=["POST"])
 def seleccionar_positivo():
-    participante_id = 1
+    participante_id = request.cookies.get('id_participante_cookie')
     grupo_id = request.form["grupo"]
     cualidad_id = request.form["positive"]
     estado = True
@@ -62,7 +94,7 @@ def seleccionar_positivo():
 
 @app.route("/seleccionar_negativo" , methods=["POST"] )
 def seleccionar_negativo():
-    participante_id = 1
+    participante_id = request.cookies.get('id_participante_cookie')
     grupo_id = request.form["grupo"]
     cualidad_id = request.form["negative"]
     estado = False
@@ -80,19 +112,35 @@ def siguiente_pregunta():
 def pregunta_anterior():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual - 1
-    cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
     return redirect(url_for("pregunta", id_grupo=id_grupo))
+
+@app.route("/colores")
+def colores():
+    return render_template(generalPage("colores.html"))
 
 ###############################################################################################################
 
 @app.route("/resultado")
 def resultado():
-    prueba = list(controlador_agrupacion.funcion_prueba_jpd())
+    participante_id = request.cookies.get('id_participante_cookie')
+
+    if not participante_id:
+        return "Error: No se encontró el ID del participante en la cookie.", 400
+    
+    try:
+        participante_id = int(participante_id)
+    except ValueError:
+        return "Error: El ID del participante en la cookie no es válido.", 400
+    
+    print(participante_id)
+    prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
+    
     data = {
-        "labels": [prueba[3][1], prueba[0][1], prueba[1][1], prueba[2][1]],
-        "data": [prueba[3][2], prueba[0][2], prueba[1][2], prueba[2][2]]
+        "labels": [item[0] for item in prueba],
+        "data": [int(item[1]) for item in prueba]
     }
+
     return render_template(generalPage("resultado.html"), data=data)
 
 

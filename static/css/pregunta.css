@@ -66,14 +66,34 @@ body{
     background-color: transparent;
     border: none;
     cursor: pointer;
-    color: #007bff;
     transition: color 0.3s ease;
+    padding: 0px;
+    margin: 0px;
+    padding-bottom: 5px;
   }
-  
-  .magnify button:hover {
-    color: #0056b3;
+  .magnify{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
   }
-  
+
+  #flechas{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 75%;
+  }
+
+  .texto_boton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+  }
+  .text{
+    padding-right: 70px;
+  }
+
   button {
     background-color: #007bff;
     color: white;
@@ -90,7 +110,6 @@ body{
   }
   
   button:hover {
-    background-color: #0056b3;
     transform: translateY(-5px); 
   }
   

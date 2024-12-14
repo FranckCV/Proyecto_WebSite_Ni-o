@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
     <link rel="stylesheet" href="/static/css/pregunta.css" />
     {% block estilos %}
+
     {% endblock %}
   </head>
 
@@ -21,43 +22,42 @@
           <h2>{{ cualidad.1 }}</h2>
           <div class="icons">
             <form action="{{ url_for('seleccionar_positivo') }}" method="POST">
-              <input type="hidden" name="grupo" value="{{ id_grupo }}">
-              <input type="hidden" name="positive" value="{{ cualidad.0 }}">
+              <input type="hidden" name="grupo" value="{{ id_grupo }}" />
+              <input type="hidden" name="positive" value="{{ cualidad.0 }}" />
               <button type="submit" class="icon positive">+</button>
             </form>
 
             <form action="{{ url_for('seleccionar_negativo') }}" method="POST">
-              <input type="hidden" name="grupo" value="{{ id_grupo }}">
-              <input type="hidden" name="negative" value="{{ cualidad.0 }}">
+              <input type="hidden" name="grupo" value="{{ id_grupo }}" />
+              <input type="hidden" name="negative" value="{{ cualidad.0 }}" />
               <button type="submit" class="icon negative">-</button>
             </form>
           </div>
           <div class="magnify">
             <button type="button" onclick="verTexto(this)">🔍</button>
-            <p class="text" style="display: none;">{{cualidad.2}}</p>
+            <div class="texto_boton">
+              <p class="text" style="display: none;">{{ cualidad.2 }}</p>
+            </div>
           </div>
         </div>
       {% endfor %}
     </div>
-    {% if id_grupo != 1 %}
-    <form action="{{ url_for('pregunta_anterior') }}" method="POST">
-      <input type="hidden" name="grupo" value="{{ id_grupo }}">
-      <button class="flecha" type="submit">
-        <i class="fa-solid fa-arrow-left"></i>
-      </button>
-    </form>
-    {% endif %}
-    {% if id_grupo < 28 %}
-    <form action="{{ url_for('siguiente_pregunta') }}" method="POST">
-      <input type="hidden" name="grupo" value="{{ id_grupo }}">
-      <button class="flecha" type="submit">
-        <i class="fa-solid fa-arrow-right"></i>
-      </button>
-    </form>
-    {% endif %}
-    
-    <script src="/static/js/pregunta.js"></script>
+    <div id="flechas">
+      {% if id_grupo != 1 %}
+      <form action="{{ url_for('pregunta_anterior') }}" method="POST">
+          <input type="hidden" name="grupo" value="{{ id_grupo }}" />
+          <button class="flecha" type="submit"><i class="fa-solid fa-arrow-left"></i></button>
+      </form>
+  {% endif %}
+  {% if id_grupo < 28 and verificado %}
+      <form action="{{ url_for('siguiente_pregunta') }}" method="POST">
+          <input type="hidden" name="grupo" value="{{ id_grupo }}" />
+          <button class="flecha" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+  {% endif %}
+  
+    </div>
 
+    <script src="/static/js/pregunta.js"></script>
   </body>
 </html>
-

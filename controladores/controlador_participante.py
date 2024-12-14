@@ -36,13 +36,23 @@ def obtener_resultados():
     return result
    
     
-
-
-
-
-
-
-
-
+def insertar_participante(nombres, fecha_nacimiento, telefono, correo):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = """
+                INSERT INTO participante (nombres, fecha_nacimiento, telefono, correo, fecha_registro)
+                VALUES (%s, %s, %s, %s, NOW());
+            """
+            
+            cursor.execute(sql, (nombres, fecha_nacimiento, telefono, correo))
+            conexion.commit()
+            participante_id = cursor.lastrowid
+            
+        conexion.close()
+        return participante_id
+    except Exception as e:
+        conexion.close()
+        return f"Error al insertar participante: {str(e)}"
 
 
