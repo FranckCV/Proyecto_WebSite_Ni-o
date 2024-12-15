@@ -4,11 +4,14 @@ import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
+import jwt
 from datetime import datetime, date
 from clases.User import User
+from clases.auth import token_required
 import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
+app.secret_key = 'security_key'
 
 def generalPage(page):
     return "general_pages/"+page
@@ -43,19 +46,52 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template(adminPage("login.html"))
-
+    token = session.get('token')
+    if token:
+        try:
+            SECRET_KEY = "mi_super_secreto"
+            jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+            flash("Usted ya se encuentra registrado", "message")
+            return redirect(url_for('dashboard'))
+        except jwt.ExpiredSignatureError:
+            flash("Su sesión ha expirado, por favor inicie sesión nuevamente", "error")
+            session.pop('token', None)
+        except jwt.InvalidTokenError:
+            flash("Token inválido, por favor inicie sesión nuevamente", "error")
+            session.pop('token', None)
+    response = make_response(render_template(adminPage("login.html")))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 @app.route("/sign_in", methods=['POST'])
 def sign_in():
+    
     username = request.form['username']
     password = request.form['password']
-    
-    if not username or not password:
-        return jsonify({"error": "Faltan credenciales"}), 400
-
     response = controlador_user.login(username, password)
-    return jsonify(response)
+    if response["message"] == "success":
+        session['token'] = response["data"]["token"]
+        return redirect(url_for('dashboard'))
+    return render_template(adminPage("login.html"), error="Credenciales inválidas")
 
+@app.route("/api_register_user", methods=['POST'])
+def api_register_user():
+    fullname = request.json['nombres_completos']
+    username = request.json['usuario']
+    password = request.json['clave']
+    response = dict()
+    try:
+        controlador_user.register_user(fullname,username,password)
+        response['data']={}
+        response['message']="Registrado correctamente"
+        response['status'] = 1
+    except Exception as e:
+        response['data']={}
+        response['message']="Error al registrar: " + repr(e)
+        response['status'] = -1
+
+    return jsonify(response)
 
 @app.route("/sign_up")
 def sign_up():
@@ -168,6 +204,7 @@ def resultado():
 
 
 @app.route("/dashboard")
+@token_required
 def dashboard():
     resultados = controlador_participante.obtener_resultados()
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)

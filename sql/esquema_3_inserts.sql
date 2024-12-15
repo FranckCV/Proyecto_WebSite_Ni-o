@@ -279,7 +279,7 @@ INSERT INTO `participante` (`id`, `nombres`, apellidos,`fecha_nacimiento`, `tele
 
 
 -- Inserts de selección
-INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONCUALIDADid, AGRUPACIONCUALIDADid, estado)
+INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid, estado)
 VALUES
 -- Test de Carlos
 (1, 1, 21, 1),
