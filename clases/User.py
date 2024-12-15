@@ -15,8 +15,6 @@ class User:
 
     def check_password(self, raw_password):
         # Verifico si la contraseña ingresada coincide con la
-        print(self.clave)
-        print(check_password_hash(self.clave, raw_password)) 
         return check_password_hash(self.clave, raw_password)
 
     def to_dict(self):

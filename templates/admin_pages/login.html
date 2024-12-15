@@ -12,11 +12,15 @@ Inicio de Sesion
 <div class="container_form cont_form_1">
     <form class="login_form" action="{{url_for('sign_in')}}" method="POST">
         <h2>Inicia Sesión</h2>
-        {% if error %}
-        <div class="error-message">
-            <p>{{ error }}</p>
-        </div>
-        {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul style="list-style-type: none; padding: 0; margin: 0" class="error-message" >
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
         <div class="par form_username">
             <input type="text" placeholder="Nombre de Usuario" name="username" id="username"><br>
             <small></small>

@@ -21,13 +21,21 @@ def generalPage(page):
 def adminPage(page):
     return "admin_pages/"+page
 
-
-def encriptar(texto):
-    btexto = texto.encode('utf-8')
-    objHash = hashlib.sha256(btexto)
-    texto_encriptado = objHash.hexdigest()
-    return texto_encriptado
-
+def check_token(funcion):
+    token = session.get('token')
+    if token:
+        try:
+            SECRET_KEY = "mi_super_secreto"
+            jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+            flash("Usted ya se encuentra registrado", "message")
+            return redirect(url_for(f'{funcion}'))
+        except jwt.ExpiredSignatureError:
+            flash("Su sesión ha expirado, por favor inicie sesión nuevamente", "error")
+            session.pop('token', None)
+        except jwt.InvalidTokenError:
+            flash("Token inválido, por favor inicie sesión nuevamente", "error")
+            session.pop('token', None)
+        return None
 
 @app.route("/")
 def index():
@@ -47,24 +55,14 @@ def index():
 
 @app.route("/login")
 def login():
-    token = session.get('token')
-    if token:
-        try:
-            SECRET_KEY = "mi_super_secreto"
-            jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-            flash("Usted ya se encuentra registrado", "message")
-            return redirect(url_for('dashboard'))
-        except jwt.ExpiredSignatureError:
-            flash("Su sesión ha expirado, por favor inicie sesión nuevamente", "error")
-            session.pop('token', None)
-        except jwt.InvalidTokenError:
-            flash("Token inválido, por favor inicie sesión nuevamente", "error")
-            session.pop('token', None)
+    redirection = check_token(funcion='dashboard')
+    if redirection: return redirection
     response = make_response(render_template(adminPage("login.html")))
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '-1'
     return response
+
 @app.route("/sign_in", methods=['POST'])
 def sign_in():
     
@@ -74,7 +72,8 @@ def sign_in():
     if response["message"] == "success":
         session['token'] = response["data"]["token"]
         return redirect(url_for('dashboard'))
-    return render_template(adminPage("login.html"), error="Credenciales inválidas")
+    flash("Credenciales inválidas", "error")
+    return redirect(url_for('login'))
 
 @app.route("/api_register_user", methods=['POST'])
 def api_register_user():
@@ -208,6 +207,9 @@ def resultado():
 @app.route("/dashboard")
 @token_required
 def dashboard():
+    token = session.get('token')
+    user = controlador_user.get_user_by_token(token)
+    print(user)
     resultados = controlador_participante.obtener_resultados()
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
 
@@ -219,6 +221,10 @@ def buscarResultado():
     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
 
+@app.route("/error")
+def error_page():
+    message = request.args.get('message', 'Error desconocido')
+    return render_template(generalPage("error_page.html"), message=message)
 
 
 

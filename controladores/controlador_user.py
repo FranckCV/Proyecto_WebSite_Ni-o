@@ -3,6 +3,34 @@ from controladores.bd import obtener_conexion
 from clases.User import User
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash
+def get_user_by_token(token):
+    id = get_user_id_from_token(token)
+    if not id: return None
+    user = get_user_by_id(id)
+    if not user: return None
+
+    return user 
+
+def get_user_by_id(id):
+    conexion = obtener_conexion()
+    objUser = None
+    with conexion.cursor() as cursor:
+        query = "SELECT id, nombres_completos, usuario, clave FROM administrador where id = %s"
+        cursor.execute(query,(id,))
+        user = cursor.fetchone()
+    if user:
+        objUser = User(user[0],user[1],user[2],user[3])
+    return objUser
+
+def get_user_id_from_token(token):
+    SECRET_KEY = "mi_super_secreto"
+    try:
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        return decoded_token["user_id"]
+    except jwt.ExpiredSignatureError:
+        return None
+    except jwt.InvalidTokenError:
+        return None
 
 def get_user_by_username(username):
     conexion = obtener_conexion()
@@ -13,7 +41,6 @@ def get_user_by_username(username):
         user = cursor.fetchone()
     if user:
         objUser = User(user[0],user[1],user[2],user[3])
-    print(objUser)
     return objUser
 
 def register_user(nombres_completos, usuario, clave):
@@ -27,7 +54,6 @@ def register_user(nombres_completos, usuario, clave):
         cursor.execute(query, (nombres_completos, usuario, hashed_password))
     conexion.commit()
     conexion.close()
-    return {"message": "Usuario registrado exitosamente"}
 
 def generate_token(user):
     SECRET_KEY = "mi_super_secreto"
@@ -48,7 +74,8 @@ def login(username,password):
     if not user or not user.check_password(password) :
         return {
             "message":"error",
-            "data":{}
+            "data":{},
+            "status":1
         }
     
     token = generate_token(user)
@@ -57,6 +84,7 @@ def login(username,password):
         "data":{
             "token":token,
             "user": user.to_dict()
-        }
+        },
+        "status":1
     }
 
