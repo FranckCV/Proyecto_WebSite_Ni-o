@@ -80,16 +80,16 @@ def buscar_resultado_nombre(nombre):
 
 
 
-def insertar_participante(nombres, fecha_nacimiento, telefono, correo):
+def insertar_participante(nombres, apellidos, fecha_nacimiento, telefono, correo):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
             sql = """
-                INSERT INTO participante (nombres, fecha_nacimiento, telefono, correo, fecha_registro)
-                VALUES (%s, %s, %s, %s, NOW());
+                INSERT INTO participante (nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
+                VALUES (%s, %s, %s, %s, %s NOW());
             """
             
-            cursor.execute(sql, (nombres, fecha_nacimiento, telefono, correo))
+            cursor.execute(sql, (nombres, apellidos, fecha_nacimiento, telefono, correo))
             conexion.commit()
             participante_id = cursor.lastrowid
             
