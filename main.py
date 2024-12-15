@@ -4,11 +4,15 @@ import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
+import jwt
+# from flask_socketio import SocketIO, emit 
 from datetime import datetime, date
 from clases.User import User
+from clases.auth import token_required
 import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
+app.secret_key = 'security_key'
 
 def generalPage(page):
     return "general_pages/"+page
@@ -17,13 +21,21 @@ def generalPage(page):
 def adminPage(page):
     return "admin_pages/"+page
 
-
-def encriptar(texto):
-    btexto = texto.encode('utf-8')
-    objHash = hashlib.sha256(btexto)
-    texto_encriptado = objHash.hexdigest()
-    return texto_encriptado
-
+def check_token(funcion):
+    token = session.get('token')
+    if token:
+        try:
+            SECRET_KEY = "mi_super_secreto"
+            jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+            flash("Usted ya se encuentra registrado", "message")
+            return redirect(url_for(f'{funcion}'))
+        except jwt.ExpiredSignatureError:
+            flash("Su sesión ha expirado, por favor inicie sesión nuevamente", "error")
+            session.pop('token', None)
+        except jwt.InvalidTokenError:
+            flash("Token inválido, por favor inicie sesión nuevamente", "error")
+            session.pop('token', None)
+        return None
 
 @app.route("/")
 def index():
@@ -43,19 +55,43 @@ def index():
 
 @app.route("/login")
 def login():
-    return render_template(adminPage("login.html"))
+    redirection = check_token(funcion='dashboard')
+    if redirection: return redirection
+    response = make_response(render_template(adminPage("login.html")))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 @app.route("/sign_in", methods=['POST'])
 def sign_in():
+    
     username = request.form['username']
     password = request.form['password']
-    
-    if not username or not password:
-        return jsonify({"error": "Faltan credenciales"}), 400
-
     response = controlador_user.login(username, password)
-    return jsonify(response)
+    if response["message"] == "success":
+        session['token'] = response["data"]["token"]
+        return redirect(url_for('dashboard'))
+    flash("Credenciales inválidas", "error")
+    return redirect(url_for('login'))
 
+@app.route("/api_register_user", methods=['POST'])
+def api_register_user():
+    fullname = request.json['nombres_completos']
+    username = request.json['usuario']
+    password = request.json['clave']
+    response = dict()
+    try:
+        controlador_user.register_user(fullname,username,password)
+        response['data']={}
+        response['message']="Registrado correctamente"
+        response['status'] = 1
+    except Exception as e:
+        response['data']={}
+        response['message']="Error al registrar: " + repr(e)
+        response['status'] = -1
+
+    return jsonify(response)
 
 @app.route("/sign_up")
 def sign_up():
@@ -64,12 +100,14 @@ def sign_up():
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
     nombres = request.form["nombres"]
+    apellidos = request.form["nombres"]
     fecha_nacimiento = request.form["fecha_nacimiento"]
     telefono = request.form["telefono"]
     correo = request.form["correo"]
     
     id_participante = controlador_participante.insertar_participante(
         nombres=nombres,
+        apellidos= apellidos,
         fecha_nacimiento=fecha_nacimiento,
         telefono=telefono,
         correo=correo
@@ -149,13 +187,14 @@ def resultado():
     print(participante_id)
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
-    
+    nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
+    print(nombre_participante[1])
     data = {
         "labels": [item[0] for item in prueba],
         "data": [int(item[1]) for item in prueba]
     }
 
-    return render_template(generalPage("resultado.html"), data=data)
+    return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_participante[1]))
 
 
 
@@ -168,10 +207,26 @@ def resultado():
 
 
 @app.route("/dashboard")
+@token_required
 def dashboard():
+    token = session.get('token')
+    user = controlador_user.get_user_by_token(token)
+    print(user)
     resultados = controlador_participante.obtener_resultados()
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
 
+
+
+@app.route("/buscarResultado")
+def buscarResultado():
+    nombreBusqueda = request.args.get("buscarElemento")
+    resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
+    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
+
+@app.route("/error")
+def error_page():
+    message = request.args.get('message', 'Error desconocido')
+    return render_template(generalPage("error_page.html"), message=message)
 
 
 

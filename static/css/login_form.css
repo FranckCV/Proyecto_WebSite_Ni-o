@@ -97,3 +97,29 @@ a:hover {
     color: black;
     box-shadow: -5px 5px 5px var(--color4);
 }
+
+.par.success input {
+    border-color: #28a745;
+}
+
+.par.error input {
+    border-color: #dc3545;
+}
+
+.par small {
+    color: #dc3545;
+    font-size: 12px;
+    visibility: hidden;
+}
+
+.par.error small {
+    visibility: visible;
+}
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+

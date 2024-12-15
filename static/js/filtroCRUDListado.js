@@ -9,7 +9,7 @@ function cantResultadosFilas() {
       return window.getComputedStyle(row).display !== 'none';
     });
     numResult.innerHTML = `${visibleRows.length}`; 
-
+console.log("aaaa");
     const dispRows = visibleRows.filter(row => row.classList.contains('fila_disp_si'));
     numDispResult.innerHTML = `${dispRows.length}`;
 
@@ -77,42 +77,42 @@ if (document.getElementById('categorySelect')) {
 }
 
 
-if (document.getElementById('tiposImgNovedad')) {
-  filtroTableSelect('tiposImgNovedad','tipo-img','0');
-}
+// if (document.getElementById('tiposImgNovedad')) {
+//   filtroTableSelect('tiposImgNovedad','tipo-img','0');
+// }
 
-if (document.getElementById('subcategorySelect')) {
-  filtroTableSelect('subcategorySelect','subcategory','0');
-}
+// if (document.getElementById('subcategorySelect')) {
+//   filtroTableSelect('subcategorySelect','subcategory','0');
+// }
 
-if (document.getElementById('subcategorySelect')) {
-  filtroTableSelect('subcategorySelect','subcategory','0');
-}
+// if (document.getElementById('subcategorySelect')) {
+//   filtroTableSelect('subcategorySelect','subcategory','0');
+// }
 
-if (document.getElementById('brandSelect')) {
-  filtroTableSelect('brandSelect','brand','0');
-}
+// if (document.getElementById('brandSelect')) {
+//   filtroTableSelect('brandSelect','brand','0');
+// }
 
 
-if (document.getElementById('tipoSelect')) {
-  filtroTableSelect('tipoSelect','tipo','0');
-}
+// if (document.getElementById('tipoSelect')) {
+//   filtroTableSelect('tipoSelect','tipo','0');
+// }
 
-if (document.getElementById('motivoSelect')) {
-  filtroTableSelect('motivoSelect','motivo','0');
-}
+// if (document.getElementById('motivoSelect')) {
+//   filtroTableSelect('motivoSelect','motivo','0');
+// }
 
-if (document.getElementById('estadoComSelect')) {
-  filtroTableSelect('estadoComSelect','estado-comentario','-1');
-}
+// if (document.getElementById('estadoComSelect')) {
+//   filtroTableSelect('estadoComSelect','estado-comentario','-1');
+// }
 
-if (document.getElementById('estadoPedidoSelect')) {
-  filtroTableSelect('estadoPedidoSelect','estado-pedido','0');
-}
+// if (document.getElementById('estadoPedidoSelect')) {
+//   filtroTableSelect('estadoPedidoSelect','estado-pedido','0');
+// }
 
-if (document.getElementById('metodoPagoSelect')) {
-  filtroTableSelect('metodoPagoSelect','metodo-pago','0');
-}
+// if (document.getElementById('metodoPagoSelect')) {
+//   filtroTableSelect('metodoPagoSelect','metodo-pago','0');
+// }
 
 
 

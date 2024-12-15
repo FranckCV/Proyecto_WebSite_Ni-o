@@ -1,7 +1,4 @@
-INSERT INTO administrador (id, nombres_completos, usuario, clave)
-VALUES 
-    (1,'Alicia Lizet Niño Effio','alicia123','alicia123'),
-    (2,'César Eduardo Bravo Díaz','cesar456','cesar456');
+
 
 INSERT INTO elemento (id, nomElemento)
 VALUES (1, 'Fuego'),
@@ -279,7 +276,7 @@ INSERT INTO `participante` (`id`, `nombres`, apellidos,`fecha_nacimiento`, `tele
 
 
 -- Inserts de selección
-INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONCUALIDADid, AGRUPACIONCUALIDADid, estado)
+INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid, estado)
 VALUES
 -- Test de Carlos
 (1, 1, 21, 1),
