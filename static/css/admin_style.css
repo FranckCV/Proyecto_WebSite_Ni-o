@@ -1,14 +1,16 @@
 .general_body {
     display: grid;
+    min-height: 100vh;
     grid-template-columns: 22.5vw auto;
+    grid-template-rows: 15vh auto;
     grid-template-areas: "body_header body_header"
                          "body_aside body_section"
-                         "body_footer body_footer"
+                         /* "body_footer body_footer" */
     ;
     background-color: var(--color-background);
 }
 
-.general_element {
+.general_element:not(section) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,7 +22,8 @@ header {
     background-color: var(--color1);
     grid-area: body_header;
     width: 100%;
-    position: sticky; 
+    position: sticky;
+    height: 15vh;
     z-index: 9999;
     top: 0;
     gap: 5px;
@@ -72,11 +75,20 @@ aside {
 
 section.general_element {
     color: white;
-}
-
-section {
-    min-height: 90vh;
+    min-height: 100%;
     grid-area: body_section;
+    margin: 0px;
+    font-size: 0.9rem;
+    /* min-height: 100%; */
+    /* color: var(--font1); */
+    overflow-x: hidden;
+    position: relative;
+    row-gap: 20px;
+    display: flex;
+    flex-direction: column;
+    padding-block: 20px;
+    padding-inline: 30px;
+    /* flex-direction: column; */
 }
 
 

@@ -5,6 +5,7 @@ import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
 import jwt
+# from flask_socketio import SocketIO, emit 
 from datetime import datetime, date
 from clases.User import User
 from clases.auth import token_required
@@ -185,13 +186,14 @@ def resultado():
     print(participante_id)
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     print(prueba)
-    
+    nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
+    print(nombre_participante[1])
     data = {
         "labels": [item[0] for item in prueba],
         "data": [int(item[1]) for item in prueba]
     }
 
-    return render_template(generalPage("resultado.html"), data=data)
+    return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_participante[1]))
 
 
 
@@ -208,6 +210,14 @@ def resultado():
 def dashboard():
     resultados = controlador_participante.obtener_resultados()
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
+
+
+
+@app.route("/buscarResultado")
+def buscarResultado():
+    nombreBusqueda = request.args.get("buscarElemento")
+    resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
+    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
 
 
 
