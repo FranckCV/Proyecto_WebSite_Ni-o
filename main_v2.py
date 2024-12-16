@@ -4,12 +4,13 @@ import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
-# from flask_socketio import SocketIO, emit 
+from flask_socketio import SocketIO, emit 
 from datetime import datetime, date
 from clases.User import User
 import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
+socketio = SocketIO(app)
 
 def generalPage(page):
     return "general_pages/"+page
@@ -169,20 +170,76 @@ def resultado():
 
 
 
+# @app.route("/dashboard")
+# def dashboard():
+#     resultados = controlador_participante.obtener_resultados()
+#     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
+
+
+
+# @app.route("/buscarResultado")
+# def buscarResultado():
+#     nombreBusqueda = request.args.get("buscarElemento")
+#     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
+#     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
+
+
+
+
+
 @app.route("/dashboard")
 def dashboard():
+    # resultados = controlador_participante.obtener_resultados()
+    return render_template(adminPage("dashboard_reporte.html"))
+
+
+@socketio.on('connect')
+def handle_connect():
+    print('Cliente conectado')
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Cliente desconectado')
+
+
+@socketio.on('get_tabla')
+def handle_get_tabla():
     resultados = controlador_participante.obtener_resultados()
-    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
+    emit("update_tabla",  {"resultados": resultados} , broadcast=True) 
 
 
 
-@app.route("/buscarResultado")
-def buscarResultado():
-    nombreBusqueda = request.args.get("buscarElemento")
-    resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
-    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
+
+
+
+
+# @app.route("/pruebas")
+# def pruebas():
+#     # elementos = controlador_participante.obtener_elementos()
+#     return render_template("_no_borrar/_test.html")
+
+
+# @socketio.on('connect')
+# def handle_connect():
+#     print('Cliente conectado')
+
+
+# @socketio.on('disconnect')
+# def handle_disconnect():
+#     print('Cliente desconectado')
+
+
+# @socketio.on('get_tabla')
+# def handle_get_tabla():
+#     resultados = controlador_participante.obtener_elementos()
+#     emit("update_tabla",  {"resultados": resultados} , broadcast=True) 
+
+
+
+
 
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8000, debug=True)
