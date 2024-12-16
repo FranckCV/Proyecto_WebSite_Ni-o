@@ -1,8 +1,3 @@
-INSERT INTO administrador (id, nombres_completos, usuario, clave)
-VALUES 
-    (1,'Alicia Lizet Niño Effio','alicia123','alicia123'),
-    (2,'César Eduardo Bravo Díaz','cesar456','cesar456');
-
 INSERT INTO elemento (id, nomElemento)
 VALUES (1, 'Fuego'),
     (2, 'Agua'),

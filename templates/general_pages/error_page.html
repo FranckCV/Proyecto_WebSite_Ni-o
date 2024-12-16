@@ -1,0 +1,29 @@
+{% extends "maestra_form.html" %}
+
+{% block titulo %}
+  Error - Sesión expirada o inválida
+{% endblock %}
+
+{% block estilos %}
+  <style>
+    .error-message {
+      color: red;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+{% endblock %}
+
+{% block contenido %}
+  <div class="error-message">
+    <p>{{ message }}</p>
+    <p>Por favor, inicie sesión nuevamente.</p>
+    <a href="{{ url_for('login') }}">Ir a Login</a>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <!-- Aquí puedes agregar cualquier script necesario -->
+{% endblock %}

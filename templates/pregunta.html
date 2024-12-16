@@ -54,13 +54,13 @@
       {% if id_grupo != 1 %}
         <form action="{{ url_for('pregunta_anterior') }}" method="POST">
           <input type="hidden" name="grupo" value="{{ id_grupo }}" />
-          <button class="flecha" type="submit"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="flecha" type="submit" onclick="disminuirProgress()"><i class="fa-solid fa-arrow-left"></i></button>
         </form>
       {% endif %}
       {% if id_grupo < 28 and verificado %}
         <form action="{{ url_for('siguiente_pregunta') }}" method="POST">
           <input type="hidden" name="grupo" value="{{ id_grupo }}" />
-          <button class="flecha" type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+          <button class="flecha" type="submit" onclick="incrementProgress()"><i class="fa-solid fa-arrow-right"></i></button>
         </form>
       {% elif id_grupo==28 and verificado%}
       <form action="{{ url_for('resultado') }}">
@@ -68,6 +68,11 @@
       </form>
       {% endif %}
     </div>
+
+    <div class="progress-container">
+      <progress id="progressBar" value="{{ id_grupo }}" max="28"></progress>
+      <div id="progressText" class="progress-text">{{ id_grupo }} / 28</div>      
+  </div>
 
     <script src="/static/js/pregunta.js"></script>
   </body>

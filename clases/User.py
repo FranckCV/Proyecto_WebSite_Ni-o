@@ -6,12 +6,15 @@ class User:
         self.usuario = usuario
         self.clave = clave
 
+    def __str__(self):
+        return f"Usuario:{self.usuario}"
+
     def set_password(self, raw_password):
         # Genero un hash 
         self.clave = generate_password_hash(raw_password)
 
     def check_password(self, raw_password):
-        # Verifico si la contraseña ingresada coincide con la 
+        # Verifico si la contraseña ingresada coincide con la
         return check_password_hash(self.clave, raw_password)
 
     def to_dict(self):
