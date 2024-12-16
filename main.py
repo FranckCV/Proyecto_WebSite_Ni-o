@@ -113,6 +113,15 @@ def sign_up():
     response = check_back_option("sign_up.html","general")
     return response
 
+@app.route("/eliminar_cookies_despues_de_resultado")
+def eliminar_cookies_despues_de_resultado():
+    respuesta = redirect(url_for('sign_up'))
+    
+    respuesta.delete_cookie('id_participante_cookie')
+    respuesta.delete_cookie('id_grupo_cookie')
+    
+    return respuesta
+
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
     nombres = request.form["nombres"]
@@ -216,7 +225,7 @@ def colores():
 @app.route("/resultado")
 def resultado():
     participante_cookie = request.cookies.get('id_participante_cookie')
-    id_grupo_cookie = request.cookies.get('id_grupo_cookie')  # Obtener el último grupo visitado
+    id_grupo_cookie = request.cookies.get('id_grupo_cookie')
 
     if not participante_cookie:
         return "Error: No se encontró el ID del participante en la cookie.", 400
@@ -235,11 +244,11 @@ def resultado():
         return "Error: El ID del participante en la cookie no es válido.", 400
 
     cantidad_selecciones = controlador_seleccion.contar_selecciones_por_participante(participante_id)
-    if cantidad_selecciones != 56:
-        if id_grupo_cookie:
-            return redirect(url_for('pregunta', id_grupo=int(id_grupo_cookie)))
-        else:
-            return "Error: No se puede determinar el grupo al que redirigir.", 400
+    # if cantidad_selecciones != 56:
+    #     if id_grupo_cookie:
+    #         return redirect(url_for('pregunta', id_grupo=int(id_grupo_cookie)))
+    #     else:
+    #         return "Error: No se puede determinar el grupo al que redirigir.", 400
 
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
