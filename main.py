@@ -38,8 +38,11 @@ def check_token(funcion):
             session.pop('token', None)
         return None
     
-def check_back_option(template):
-    response = make_response(render_template(adminPage(f"{template}")))
+def check_back_option(template,tipo):
+    if tipo=="general":
+        response = make_response(render_template(generalPage(f"{template}")))
+    elif tipo == "admin":
+        response = make_response(render_template(adminPage(f"{template}")))  
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '-1'
@@ -65,7 +68,7 @@ def index():
 def login():
     redirection = check_token(funcion='dashboard')
     if redirection: return redirection
-    response = check_back_option("login.html")
+    response = check_back_option("login.html","admin")
     return response
 
 @app.route("/sign_in", methods=['POST'])
@@ -100,7 +103,14 @@ def api_register_user():
 
 @app.route("/sign_up")
 def sign_up():
-    return render_template(generalPage("sign_up.html"))
+    participante_cookie = request.cookies.get('id_participante_cookie')
+    id_grupo = request.cookies.get('id_grupo_cookie')
+    
+    if id_grupo and participante_cookie:
+        return redirect(url_for('pregunta', id_grupo=id_grupo))
+
+    response = check_back_option("sign_up.html","general")
+    return response
 
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
@@ -252,7 +262,7 @@ def resultado():
 @app.route("/dashboard")
 @token_required
 def dashboard():
-    response = check_back_option("dashboard_reporte.html")
+    response = check_back_option("dashboard_reporte.html","admin")
     resultados = controlador_participante.obtener_resultados()
     response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados=resultados))
     return response
