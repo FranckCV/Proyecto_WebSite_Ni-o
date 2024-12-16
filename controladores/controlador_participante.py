@@ -86,7 +86,7 @@ def insertar_participante(nombres, apellidos, fecha_nacimiento, telefono, correo
         with conexion.cursor() as cursor:
             sql = """
                 INSERT INTO participante (nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
-                VALUES (%s, %s, %s, %s, %s NOW());
+                VALUES (%s, %s, %s, %s, %s, NOW());
             """
             
             cursor.execute(sql, (nombres, apellidos, fecha_nacimiento, telefono, correo))
