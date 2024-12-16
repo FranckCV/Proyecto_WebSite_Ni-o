@@ -56,6 +56,7 @@ def index():
             response.delete_cookie("id_participante_cookie")
             return response
         else:
+            id_grupo = int(request.cookies.get('id_grupo_cookie'))
             return redirect(url_for('pregunta', id_grupo=id_grupo)) 
     else:   
         return render_template(generalPage("index.html"))
@@ -149,7 +150,7 @@ def guardar_participante():
 def pregunta(id_grupo):
     participante_cookie = request.cookies.get('id_participante_cookie')
     
-    if participante_cookie:
+    if participante_cookie and id_grupo:
         respuesta = make_response(render_template(
             "pregunta.html", 
             cualidades=controlador_agrupacion.obtener_cualidades(id_grupo),

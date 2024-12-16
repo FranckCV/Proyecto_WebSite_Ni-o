@@ -28,3 +28,4 @@ function incrementProgress() {
         progressText.textContent = `${progressBar.value} / 28`; 
     }
 }
+

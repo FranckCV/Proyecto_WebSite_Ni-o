@@ -18,19 +18,21 @@ body{
 
 
 
-  .card {
-    width: 45%; 
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease; 
-  }
-  
-  .card:hover {
-    transform: translateY(-10px); 
-  }
+.card {
+  width: 45%; 
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: box-shadow 0.3s ease-in-out; 
+}
+
+.card:hover {
+  box-shadow: 0 0 15px 5px rgba(187, 180, 180, 0.8), 
+              0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
   
   .card h2 {
     font-size: 1.5rem;
@@ -49,7 +51,6 @@ body{
     padding: 10px;
     border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
     height: 35px;
     width: 35px;
   }
@@ -76,7 +77,8 @@ body{
   .icon:hover {
     background-color: #d2a207;
     color: white;
-    transform: scale(1.1);
+    transform: none !important;
+    transition: none !important;
   }
   
   .magnify button {
