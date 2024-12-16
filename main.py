@@ -100,12 +100,14 @@ def sign_up():
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
     nombres = request.form["nombres"]
+    apellidos = request.form["nombres"]
     fecha_nacimiento = request.form["fecha_nacimiento"]
     telefono = request.form["telefono"]
     correo = request.form["correo"]
     
     id_participante = controlador_participante.insertar_participante(
         nombres=nombres,
+        apellidos= apellidos,
         fecha_nacimiento=fecha_nacimiento,
         telefono=telefono,
         correo=correo

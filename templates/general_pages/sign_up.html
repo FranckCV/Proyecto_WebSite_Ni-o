@@ -12,11 +12,12 @@ Registrate
     <form class="sign_up_form" action="{{ url_for('guardar_participante') }}" method="POST">
         <h2>Registrate</h2>
         <div class="form_element">
-            <input required type="text" id="" name="nombres" placeholder="Nombre Completo">
+            <input required type="text" id="" name="nombres" placeholder="Nombres">
+            <input required type="text" id="" name="apellidos" placeholder="Apellidos">
             <input required type="date" id="" name="fecha_nacimiento" placeholder="Fecha de Nacimiento">
         </div>
         <div class="form_element">
-            <input required type="text" id="" name="telefono" placeholder="Nro Telefono">
+            <input required type="number" id="" name="telefono" placeholder="Nro Telefono">
             <input required type="text" id="" name="correo" placeholder="Correo Electrónico">
         </div>
         <button type="submit">Registrarse</button>
