@@ -4,6 +4,7 @@ import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import hashlib
 import base64
+import clases.encriptar_cookie as encriptacion
 import jwt
 # from flask_socketio import SocketIO, emit 
 from datetime import datetime, date
@@ -104,39 +105,64 @@ def sign_up():
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
     nombres = request.form["nombres"]
-    apellidos = request.form["nombres"]
+    apellidos = request.form["apellidos"]
     fecha_nacimiento = request.form["fecha_nacimiento"]
     telefono = request.form["telefono"]
     correo = request.form["correo"]
     
     id_participante = controlador_participante.insertar_participante(
         nombres=nombres,
-        apellidos= apellidos,
+        apellidos=apellidos,
         fecha_nacimiento=fecha_nacimiento,
         telefono=telefono,
         correo=correo
     )
     
+    if not isinstance(id_participante, int):
+        return redirect(url_for('error_page', message='No se pudo guardar el participante. Por favor, intente nuevamente.'))
+    
+    hash_id = encriptacion.generar_hash(id_participante)
+    cookie_valor = f"{id_participante}:{hash_id}"
+    
     id_grupo_inicial = 1
     
     respuesta = redirect(url_for('pregunta', id_grupo=id_grupo_inicial))
-    respuesta.set_cookie('id_participante_cookie', str(id_participante))
+    respuesta.set_cookie('id_participante_cookie', cookie_valor)
     return respuesta
 
 ##############################################################################################################
 
+# @app.route("/pregunta=<int:id_grupo>")
+# def pregunta(id_grupo):
+#     participante_id = request.cookies.get('id_participante_cookie') 
+#     if participante_id:
+#         cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
+#         verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo) 
+#         seleccion_positiva = controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_id,id_grupo) 
+#         print(seleccion_positiva)
+#         seleccion_negativa = controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_id,id_grupo)
+#         return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado,seleccion_negativa=seleccion_negativa,seleccion_positiva=seleccion_positiva )
+#     else:
+#         return redirect("/sign_up") 
+
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
-    participante_id = request.cookies.get('id_participante_cookie') 
-    if participante_id:
-        cualidades = controlador_agrupacion.obtener_cualidades(id_grupo)
-        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo) 
-        seleccion_positiva = controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_id,id_grupo) 
-        print(seleccion_positiva)
-        seleccion_negativa = controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_id,id_grupo)
-        return render_template("pregunta.html", cualidades=cualidades, id_grupo=id_grupo , verificado=verificado,seleccion_negativa=seleccion_negativa,seleccion_positiva=seleccion_positiva )
+    participante_cookie = request.cookies.get('id_participante_cookie')
+    
+    if participante_cookie:
+        respuesta = make_response(render_template(
+            "pregunta.html", 
+            cualidades=controlador_agrupacion.obtener_cualidades(id_grupo),
+            id_grupo=id_grupo,
+            verificado=controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie, id_grupo),
+            seleccion_positiva=controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_cookie, id_grupo),
+            seleccion_negativa=controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_cookie, id_grupo)
+        ))
+        respuesta.set_cookie("id_grupo_cookie", str(id_grupo))
+        return respuesta
     else:
-        return redirect("/sign_up") 
+        return redirect("/sign_up")
+
 
 @app.route("/seleccionar_positivo", methods=["POST"])
 def seleccionar_positivo():
@@ -178,28 +204,41 @@ def colores():
 
 @app.route("/resultado")
 def resultado():
-    participante_id = request.cookies.get('id_participante_cookie')
+    participante_cookie = request.cookies.get('id_participante_cookie')
+    id_grupo_cookie = request.cookies.get('id_grupo_cookie')  # Obtener el último grupo visitado
 
-    if not participante_id:
+    if not participante_cookie:
         return "Error: No se encontró el ID del participante en la cookie.", 400
-    
+
+    try:
+        participante_id, hash_recibido = participante_cookie.split(":")
+    except ValueError:
+        return "Error: La cookie está mal formada.", 400
+
+    if not encriptacion.verificar_hash(participante_id, hash_recibido):
+        return "Error: La cookie no es válida.", 400
+
     try:
         participante_id = int(participante_id)
     except ValueError:
         return "Error: El ID del participante en la cookie no es válido.", 400
-    
-    print(participante_id)
+
+    cantidad_selecciones = controlador_seleccion.contar_selecciones_por_participante(participante_id)
+    if cantidad_selecciones != 56:
+        if id_grupo_cookie:
+            return redirect(url_for('pregunta', id_grupo=int(id_grupo_cookie)))
+        else:
+            return "Error: No se puede determinar el grupo al que redirigir.", 400
+
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
-    print(prueba)
     nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
-    print(nombre_participante[1])
+    nombre_completo = nombre_participante[1] + " " + nombre_participante[2]
     data = {
         "labels": [item[0] for item in prueba],
         "data": [int(item[1]) for item in prueba]
     }
 
-    return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_participante[1]))
-
+    return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_completo))
 
 
 # @app.route("/resultado_v2")
