@@ -1,5 +1,3 @@
-
-
 INSERT INTO elemento (id, nomElemento)
 VALUES (1, 'Fuego'),
     (2, 'Agua'),
