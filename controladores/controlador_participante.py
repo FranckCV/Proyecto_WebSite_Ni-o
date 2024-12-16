@@ -9,6 +9,45 @@ def obtener_resultados():
                 p.nombres,
                 p.apellidos,
                 COUNT(DISTINCT s.AGRUPACIONGRUPOid) AS grupos_seleccionados,
+                p.id,
+                p.telefono,
+                p.correo,
+                p.id,
+                p.id,
+                p.id,
+                p.id,
+                p.id                
+            FROM 
+                participante p
+            LEFT JOIN 
+                seleccion s ON s.PARTICIPANTEid = p.id
+            LEFT JOIN 
+                agrupacion a ON s.AGRUPACIONGRUPOid = a.GRUPOid AND s.AGRUPACIONCUALIDADid = a.CUALIDADid
+            LEFT JOIN 
+                cualidad c ON a.CUALIDADid = c.id
+            LEFT JOIN 
+                elemento e ON c.ELEMENTOid = e.id
+            GROUP BY 
+                p.id, p.nombres
+            ORDER BY 
+                p.fecha_registro , grupos_seleccionados ;
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchall()
+    conexion.close()
+    return result
+
+
+
+def obtener_resultados2():
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql= '''
+            SELECT 
+                p.id,
+                p.nombres,
+                p.apellidos,
+                COUNT(DISTINCT s.AGRUPACIONGRUPOid) AS grupos_seleccionados,
                 TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, CURDATE()) AS edad,
                 p.telefono,
                 p.correo,
@@ -36,8 +75,9 @@ def obtener_resultados():
         result = cursor.fetchall()
     conexion.close()
     return result
-   
     
+
+
 def buscar_resultado_nombre(nombre):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
@@ -76,8 +116,6 @@ def buscar_resultado_nombre(nombre):
         result = cursor.fetchall()
     conexion.close()
     return result
-   
-
 
 
 def insertar_participante(nombres, apellidos, fecha_nacimiento, telefono, correo):
@@ -99,6 +137,7 @@ def insertar_participante(nombres, apellidos, fecha_nacimiento, telefono, correo
         conexion.close()
         return f"Error al insertar participante: {str(e)}"
 
+
 def buscar_participante(id_participante):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
@@ -107,5 +146,20 @@ def buscar_participante(id_participante):
         '''
         cursor.execute(sql, (id_participante))
         result = cursor.fetchone()
+    conexion.close()
+    return result
+
+
+def obtener_elementos():
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql= '''
+            SELECT 
+                *
+            FROM 
+                participante par;
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchall()
     conexion.close()
     return result

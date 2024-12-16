@@ -291,6 +291,5 @@ def error_page():
     return render_template(generalPage("error_page.html"), message=message)
 
 
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
