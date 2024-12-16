@@ -3,25 +3,31 @@
 {% block titulo %}
 Registrate
 {% endblock %}
-
 {% block estilos %}
+<link rel="stylesheet" href="../../static/css/sign_up.css">
 {% endblock %}
 
 {% block contenido %}
 <div class="container_form cont_form_2">
     <form class="sign_up_form" action="{{ url_for('guardar_participante') }}" method="POST">
-        <h2>Registrate</h2>
-        <div class="form_element">
-            <input required type="text" id="" name="nombres" placeholder="Nombres">
+        <h2>Regístrate</h2>
+        <div class="form-field">
+            <input required type="text" id="nombres" name="nombres" placeholder="Nombres">
             <small></small>
-            <input required type="text" id="" name="apellidos" placeholder="Apellidos">
-            <small></small>
-            <input required type="date" id="" name="fecha_nacimiento" placeholder="Fecha de Nacimiento">
         </div>
-        <div class="form_element">
-            <input required type="number" id="" name="telefono" placeholder="Nro Telefono">
+        <div class="form-field">
+            <input required type="text" id="apellidos" name="apellidos" placeholder="Apellidos">
             <small></small>
-            <input required type="text" id="" name="correo" placeholder="Correo Electrónico">
+        </div>
+        <div class="form-field">
+            <input required type="date" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de Nacimiento">
+            <small></small>
+        </div>
+        <div class="form-field">
+            <input required type="number" id="telefono" name="telefono" placeholder="Nro Telefono">
+            <small></small>
+        </div>
+        <div class="form-field"><input required type="text" id="email" name="correo" placeholder="Correo Electrónico">
             <small></small>
         </div>
         <button type="submit">Registrarse</button>
@@ -34,4 +40,5 @@ Registrate
 {% endblock %}
 
 {% block scripts %}
+<script src="../../static/js/sign_up.js"></script>
 {% endblock %}
