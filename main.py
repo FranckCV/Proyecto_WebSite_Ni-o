@@ -36,6 +36,13 @@ def check_token(funcion):
             flash("Token inválido, por favor inicie sesión nuevamente", "error")
             session.pop('token', None)
         return None
+    
+def check_back_option(template):
+    response = make_response(render_template(adminPage(f"{template}")))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 @app.route("/")
 def index():
@@ -57,10 +64,7 @@ def index():
 def login():
     redirection = check_token(funcion='dashboard')
     if redirection: return redirection
-    response = make_response(render_template(adminPage("login.html")))
-    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '-1'
+    response = check_back_option("login.html")
     return response
 
 @app.route("/sign_in", methods=['POST'])
@@ -209,11 +213,10 @@ def resultado():
 @app.route("/dashboard")
 @token_required
 def dashboard():
-    token = session.get('token')
-    user = controlador_user.get_user_by_token(token)
-    print(user)
+    response = check_back_option("dashboard_reporte.html")
     resultados = controlador_participante.obtener_resultados()
-    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados)
+    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados=resultados))
+    return response
 
 
 
@@ -222,6 +225,16 @@ def buscarResultado():
     nombreBusqueda = request.args.get("buscarElemento")
     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
     return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
+
+@app.route("/logout")
+def logout():
+    token = session.get('token')
+    if token:
+        session.pop('token', None)
+        return redirect('/login')
+    flash("Sesión vencida", "error")
+    return redirect(url_for('login'))
+
 
 @app.route("/error")
 def error_page():
