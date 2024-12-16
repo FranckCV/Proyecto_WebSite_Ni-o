@@ -158,21 +158,32 @@ def guardar_participante():
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
-    participante_cookie = request.cookies.get('id_participante_cookie')
-    
-    if participante_cookie and id_grupo:
+    participante_id = request.cookies.get('id_participante_cookie')
+    desordenar = request.cookies.get('desordenar', 'false') == 'true' #Ta curioson pero a nada
+
+    if participante_id and id_grupo:
+        cualidades = list(controlador_agrupacion.obtener_cualidades(id_grupo)) 
+        #Convierto a listas pq el fetchall devuelve tuplas, y el random no puede desordenar las tuplas pues son inmutables
+        
+        if desordenar:
+            import random
+            random.shuffle(cualidades)
+        
         respuesta = make_response(render_template(
             "pregunta.html", 
-            cualidades=controlador_agrupacion.obtener_cualidades(id_grupo),
+            cualidades=cualidades,
             id_grupo=id_grupo,
-            verificado=controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie, id_grupo),
-            seleccion_positiva=controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_cookie, id_grupo),
-            seleccion_negativa=controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_cookie, id_grupo)
+            verificado=controlador_seleccion.verificar_cantidad_seleccionada(participante_id, id_grupo),
+            seleccion_positiva=controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_id, id_grupo),
+            seleccion_negativa=controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_id, id_grupo)
         ))
+
         respuesta.set_cookie("id_grupo_cookie", str(id_grupo))
+        respuesta.set_cookie("desordenar", 'false') 
         return respuesta
     else:
         return redirect("/sign_up")
+
 
 
 @app.route("/seleccionar_positivo", methods=["POST"])
@@ -182,7 +193,6 @@ def seleccionar_positivo():
     cualidad_id = request.form["positive"]
     estado = True
     mensaje = controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
-    print(mensaje)
     return redirect(request.referrer)
 
 @app.route("/seleccionar_negativo" , methods=["POST"] )
@@ -192,20 +202,24 @@ def seleccionar_negativo():
     cualidad_id = request.form["negative"]
     estado = False
     mensaje = controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
-    print(mensaje)
     return redirect(request.referrer)
 
 @app.route("/siguiente_pregunta", methods=["POST"])
 def siguiente_pregunta():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual + 1
-    return redirect(url_for("pregunta", id_grupo=id_grupo))
+    respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
+    respuesta.set_cookie("desordenar", 'true')  
+    return respuesta
 
 @app.route("/pregunta_anterior", methods=["POST"])
 def pregunta_anterior():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual - 1
-    return redirect(url_for("pregunta", id_grupo=id_grupo))
+    respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
+    respuesta.set_cookie("desordenar", 'true') 
+    return respuesta
+
 
 @app.route("/colores")
 def colores():

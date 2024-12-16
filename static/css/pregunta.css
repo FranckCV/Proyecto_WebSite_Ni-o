@@ -105,6 +105,11 @@ body{
   }
 .flecha{
   background-color: rgb(75, 75, 203);
+  transform: none !important;
+  transition: none !important;
+}
+.flecha:hover{
+  background-color: rgb(30, 30, 150);
 }
   .texto_boton{
     display: flex;
