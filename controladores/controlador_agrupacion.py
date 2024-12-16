@@ -46,3 +46,30 @@ def funcion_prueba_jpd():
         return pruebita
     except Exception as e:
         return e
+
+
+def obtener_grupo_incompleto(participante_id):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = """
+                SELECT g.id
+                FROM grupo g
+                LEFT JOIN (
+                    SELECT s.AGRUPACIONGRUPOid, COUNT(*) AS seleccionadas
+                    FROM seleccion s
+                    WHERE s.PARTICIPANTEid = %s
+                    GROUP BY s.AGRUPACIONGRUPOid
+                ) AS conteo
+                ON g.id = conteo.AGRUPACIONGRUPOid
+                WHERE IFNULL(conteo.seleccionadas, 0) < (SELECT COUNT(*) FROM agrupacion WHERE GRUPOid = g.id)
+                LIMIT 1;
+            """
+            cursor.execute(sql, (participante_id,))
+            resultado = cursor.fetchone()
+            return resultado[0] if resultado else None
+    except Exception as e:
+        print(f"Error al obtener el grupo incompleto: {str(e)}")
+        return None
+    finally:
+        conexion.close()

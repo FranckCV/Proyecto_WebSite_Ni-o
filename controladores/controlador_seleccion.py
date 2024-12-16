@@ -117,3 +117,22 @@ def obtener_ultima_seleccion(participante_id):
     except Exception as e:
         print(f"Error al verificar la cantidad seleccionada: {e}")
         return False  
+
+
+def contar_selecciones_por_participante(participante_id):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            sql = """
+                SELECT COUNT(*) 
+                FROM seleccion 
+                WHERE PARTICIPANTEid = %s;
+            """
+            cursor.execute(sql, (participante_id,))
+            resultado = cursor.fetchone()
+            cantidad = resultado[0] if resultado else 0
+        conexion.close()
+        return cantidad
+    except Exception as e:
+        conexion.close()
+        return f"Error al contar selecciones: {str(e)}"
