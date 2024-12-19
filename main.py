@@ -7,6 +7,8 @@ import base64
 import clases.encriptar_cookie as encriptacion
 import jwt
 from flask_socketio import SocketIO, emit 
+# from flask_socketio import SocketIO, emit 
+import random
 from datetime import datetime, date
 from clases.User import User
 from clases.auth import token_required
@@ -171,13 +173,12 @@ def guardar_participante():
 def pregunta(id_grupo):
     participante_id = request.cookies.get('id_participante_cookie')
     desordenar = request.cookies.get('desordenar', 'false') == 'true' #Ta curioson pero a nada
-
+    print(desordenar)
     if participante_id and id_grupo:
         cualidades = list(controlador_agrupacion.obtener_cualidades(id_grupo)) 
         #Convierto a listas pq el fetchall devuelve tuplas, y el random no puede desordenar las tuplas pues son inmutables
         
         if desordenar:
-            import random
             random.shuffle(cualidades)
         
         respuesta = make_response(render_template(
@@ -203,7 +204,7 @@ def seleccionar_positivo():
     grupo_id = request.form["grupo"]
     cualidad_id = request.form["positive"]
     estado = True
-    mensaje = controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
+    controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
     return redirect(request.referrer)
 
 @app.route("/seleccionar_negativo" , methods=["POST"] )
@@ -212,15 +213,16 @@ def seleccionar_negativo():
     grupo_id = request.form["grupo"]
     cualidad_id = request.form["negative"]
     estado = False
-    mensaje = controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
-    return redirect(request.referrer)
-
+    controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
+    respuesta = make_response(redirect(request.referrer))
+    respuesta.set_cookie("desordenar", 'false')  
+    return respuesta
 @app.route("/siguiente_pregunta", methods=["POST"])
 def siguiente_pregunta():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual + 1
     respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
-    respuesta.set_cookie("desordenar", 'true')  
+    respuesta.set_cookie("desordenar", 'false')  
     return respuesta
 
 @app.route("/pregunta_anterior", methods=["POST"])
@@ -248,7 +250,7 @@ def resultado():
     # Verificar que la cookie del participante exista
     if not participante_cookie:
         message = "Error: No se encontró el ID del participante en la cookie."
-        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False),400
 
     try:
         # Dividir la cookie en ID del participante y hash recibido

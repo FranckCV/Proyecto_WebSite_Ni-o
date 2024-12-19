@@ -18,6 +18,10 @@ body {
     text-align: center;
   }
   
+  p{
+    margin : 6px;
+  }
+
   .error-icon {
     font-size: 50px;
     color: #dc3545;
