@@ -108,16 +108,16 @@ Lista de Resultados
         <td>
           <div class="bloque_progreso">
             <span id="progressText">
-              <input disabled class="progreso_input"  id="progressInput" min="0" max="100" >
+              <input disabled class="progreso_input" id="progressInput" min="0" max="100">
               <p class="percent">%</p>
             </span>
             <div class="progress-bar-container">
               <div class="progress-bar" id="progressBar"></div>
             </div>
             <p class="progressNow">
-            <span id="cant_now_progreso">{{res.3}}</span>
-            /
-            <span id="cant_max_progreso">{{cant_max_progreso}}</span>
+              <span id="cant_now_progreso">{{res.3}}</span>
+              /
+              <span id="cant_max_progreso">{{cant_max_progreso}}</span>
             </p>
           </div>
         </td>
@@ -174,19 +174,32 @@ Lista de Resultados
 
 
 {% block scripts %}
-
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
+  integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
 <script>
   function confirmarEliminacion() {
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
   }
 
+  const socket = io();
+
+  socket.on("connect", function () {
+    console.log("Socket Activo.!");
+  });
+
+  socket.on("disconnect", function () {
+    console.log("Socket Desconectado.!");
+  });
+
+
+
   const bloques = document.querySelectorAll(".bloque_progreso");
   bloques.forEach(bloque => {
     const progressInput = bloque.querySelector("#progressInput");
-    const progressBar =   bloque.querySelector("#progressBar");
-    const progressNow =   bloque.querySelector("#cant_now_progreso");
-    const progressMax =   bloque.querySelector("#cant_max_progreso");
-    
+    const progressBar = bloque.querySelector("#progressBar");
+    const progressNow = bloque.querySelector("#cant_now_progreso");
+    const progressMax = bloque.querySelector("#cant_max_progreso");
+
     progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
 
     const calculateColor = (percentage) => {
@@ -213,6 +226,6 @@ Lista de Resultados
 
   });
 </script>
-<script src="/static/js/filtroCRUDListado.js"></script>
+<!-- <script src="/static/js/filtroCRUDListado.js"></script> -->
 
 {% endblock %}

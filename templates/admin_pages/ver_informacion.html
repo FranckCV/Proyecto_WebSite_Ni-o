@@ -194,6 +194,8 @@ Datos de {{resultado.1}} {{resultado.2}}
   </div>
 
   <div class="row">
+    <input type="hidden" id="id_participante" disabled="disabled" value="{{resultado.0 }}">
+    <input type="hidden" id="nombre_participante" disabled="disabled" value="{{resultado.1 }} {{resultado.2 }}">
     <a class="" href="{{ url_for('dashboard') }}">
       <button type="button" class="button_volver">Volver al Listado General</button>
     </a>
@@ -203,8 +205,50 @@ Datos de {{resultado.1}} {{resultado.2}}
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
+  integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
+
+  const socket = io();
+
+  socket.on("connect", function () {
+    console.log("Socket Activo.!");
+  });
+
+  socket.on("disconnect", function () {
+    console.log("Socket Desconectado.!");
+  });
+
+
+  function putValueInput(input, valor) {
+    const inputAux = document.querySelector(input);
+    inputAux.value = valor;
+    inputAux.dispatchEvent(new Event('input'));
+  }
+
+  function actualizarInputs(dato) {
+    const campoProgressTotal = document.querySelector("#cant_now_progreso");
+    campoProgressTotal.innerHTML = dato[1];
+    putValueInput("#posFuego", dato[2]);
+    putValueInput("#negFuego", dato[3] * -1);
+    putValueInput("#posAire", dato[4]);
+    putValueInput("#negAire", dato[5] * -1);
+    putValueInput("#posAgua", dato[6]);
+    putValueInput("#negAgua", dato[7] * -1);
+    putValueInput("#posTierra", dato[8]);
+    putValueInput("#negTierra", dato[9] * -1);
+  }
+
+  const participanteID = document.querySelector("#id_participante").value;
+
+
+  setInterval(() => {
+    socket.emit("get_valores_participante", participanteID);
+  }, 1500);
+
+
 
   function operationInput(input1, input2, inputDiff) {
     const inputE1 = document.querySelector(input1);
@@ -213,15 +257,19 @@ Datos de {{resultado.1}} {{resultado.2}}
     inputResta.value = parseFloat(inputE1.value) + parseFloat(inputE2.value);
   }
 
-  operationInput('#posFuego', '#negFuego', '#data_1');
-  operationInput('#posAire', '#negAire', '#data_2');
-  operationInput('#posAgua', '#negAgua', '#data_3');
-  operationInput('#posTierra', '#negTierra', '#data_4');
+  function operateAllInput() {
+    operationInput('#posFuego', '#negFuego', '#data_1');
+    operationInput('#posAire', '#negAire', '#data_2');
+    operationInput('#posAgua', '#negAgua', '#data_3');
+    operationInput('#posTierra', '#negTierra', '#data_4');
+  }
+
+  operateAllInput();
 
   let chart = null;
 
   function generarChart() {
-    const nombre_participante = "nombre xd";
+    const nombre_participante = document.querySelector("#nombre_participante").value;
 
     const labels = [
       "Fuego",
@@ -305,12 +353,11 @@ Datos de {{resultado.1}} {{resultado.2}}
           legend: {
             labels: {
               generateLabels: (chart) => {
-                // Personalización del cuadro de la leyenda
                 let originalLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
                 originalLabels.forEach((label) => {
-                  label.fillStyle = maxColor;    // Color según el elemento combinado predominante
-                  label.strokeStyle = secondColor; // Borde según el segundo más fuerte
-                  label.lineWidth = 3;          // Ancho del borde
+                  label.fillStyle = maxColor;
+                  label.strokeStyle = secondColor;
+                  label.lineWidth = 3;
                 });
                 return originalLabels;
               }
@@ -318,6 +365,9 @@ Datos de {{resultado.1}} {{resultado.2}}
           }
         },
         responsive: true,
+        animation: {
+          duration: 0, 
+        },
         scales: {
           x: {
             barPercentage: 0.5,
@@ -338,47 +388,62 @@ Datos de {{resultado.1}} {{resultado.2}}
 
   generarChart();
 
-  document.querySelectorAll('table input').forEach(input => {
+  function mostrarProgreso() {
+    const bloques = document.querySelectorAll(".bloque_progreso");
+    bloques.forEach(bloque => {
+      const progressInput = bloque.querySelector("#progressInput");
+      const progressNow = bloque.querySelector("#cant_now_progreso");
+      const progressMax = bloque.querySelector("#cant_max_progreso");
+      const progressBar = bloque.querySelector("#progressBar");
+
+      progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
+      progressInput.dispatchEvent(new Event('input'));
+
+      const calculateColor = (percentage) => {
+        const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));
+        const green = Math.min(255, Math.floor((percentage / 100) * 255));
+        return `rgb(${red}, ${green}, 0)`;
+      };
+
+      function calcularValor() {
+        var percentage = parseFloat(progressInput.value);
+        progressBar.style.width = `${percentage}%`;
+        progressBar.style.backgroundColor = calculateColor(percentage);
+
+        if (!isNaN(percentage)) {
+          progressInput.value = percentage.toFixed(2);
+        }
+      }
+
+      calcularValor();
+
+      progressInput.addEventListener("input", () => {
+        calcularValor();
+      });
+
+    });
+
+  }
+
+  mostrarProgreso();
+
+  socket.on("update_valores_participante", (data) => {
+    if (data.valores) {
+      console.log(data.valores);
+      actualizarInputs(data.valores);
+      mostrarProgreso();
+    } else {
+      data.valores = new Array;
+    }
+  });
+
+  document.querySelectorAll('table tbody input').forEach(input => {
     input.addEventListener('input', () => {
+      operateAllInput();
       chart.destroy();
       generarChart();
     });
   });
-
-  const bloques = document.querySelectorAll(".bloque_progreso");
-  bloques.forEach(bloque => {
-    const progressInput = bloque.querySelector("#progressInput");
-    const progressNow = bloque.querySelector("#cant_now_progreso");
-    const progressMax = bloque.querySelector("#cant_max_progreso");
-    const progressBar = bloque.querySelector("#progressBar");
-
-    progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
-
-    const calculateColor = (percentage) => {
-      const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));
-      const green = Math.min(255, Math.floor((percentage / 100) * 255));
-      return `rgb(${red}, ${green}, 0)`;
-    };
-
-    function calcularValor() {
-      var percentage = parseFloat(progressInput.value);
-      progressBar.style.width = `${percentage}%`;
-      progressBar.style.backgroundColor = calculateColor(percentage);
-
-      if (!isNaN(percentage)) {
-        progressInput.value = percentage.toFixed(2);
-      }
-    }
-
-    calcularValor();
-
-    progressInput.addEventListener("input", () => {
-      calcularValor();
-    });
-
-  });
-
-
 
 </script>
 {% endblock %}
