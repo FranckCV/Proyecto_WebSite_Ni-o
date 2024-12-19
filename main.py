@@ -246,7 +246,7 @@ def resultado():
     # Verificar que la cookie del participante exista
     if not participante_cookie:
         message = "Error: No se encontró el ID del participante en la cookie."
-        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False),400
 
     try:
         # Dividir la cookie en ID del participante y hash recibido
