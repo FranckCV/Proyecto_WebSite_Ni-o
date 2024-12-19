@@ -13,8 +13,14 @@
     <div class="error-icon">⚠️</div>
     <div class="error-message">
       <p>{{ message }}</p>
+      {% if redirigir %}
       <p>Por favor, inicie sesión nuevamente.</p>
       <a class="login-link" href="{{ url_for('login') }}">Ir a Login</a>
+      {% else %}
+      <p>Por favor, regístrese primero.</p>
+      <a class="login-link" href="{{ url_for('sign_up') }}">Ir al sign up</a>
+      {% endif %}
+      
     </div>
   </div>
 {% endblock %}

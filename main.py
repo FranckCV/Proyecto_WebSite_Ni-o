@@ -140,7 +140,7 @@ def guardar_participante():
     )
     
     if not isinstance(id_participante, int):
-        return redirect(url_for('error_page', message='No se pudo guardar el participante. Por favor, intente nuevamente.'))
+        return redirect(url_for('error_page', message='No se pudo guardar el participante. Por favor, intente nuevamente.', redirigir = False))
     
     hash_id = encriptacion.generar_hash(id_participante)
     cookie_valor = f"{id_participante}:{hash_id}"
@@ -237,26 +237,35 @@ def colores():
 
 ###############################################################################################################
 
+
 @app.route("/resultado")
 def resultado():
+    # Obtener las cookies necesarias
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo_cookie = request.cookies.get('id_grupo_cookie')
 
+    # Verificar que la cookie del participante exista
     if not participante_cookie:
-        return "Error: No se encontró el ID del participante en la cookie.", 400
+        message = "Error: No se encontró el ID del participante en la cookie."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
     try:
+        # Dividir la cookie en ID del participante y hash recibido
         participante_id, hash_recibido = participante_cookie.split(":")
     except ValueError:
-        return "Error: La cookie está mal formada.", 400
+        message = "Error: La cookie está mal formada."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
+    # Verificar que el hash sea válido
     if not encriptacion.verificar_hash(participante_id, hash_recibido):
-        return "Error: La cookie no es válida.", 400
+        message = "Error: La cookie no es válida."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
     try:
         participante_id = int(participante_id)
     except ValueError:
-        return "Error: El ID del participante en la cookie no es válido.", 400
+        message = "Error: El ID del participante en la cookie no es válido."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
     cantidad_selecciones = controlador_seleccion.contar_selecciones_por_participante(participante_id)
     # if cantidad_selecciones != 56:
@@ -274,6 +283,8 @@ def resultado():
     }
 
     return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_completo))
+
+
 
 
 # @app.route("/resultado_v2")
@@ -342,7 +353,7 @@ def logout():
 @app.route("/error")
 def error_page():
     message = request.args.get('message', 'Error desconocido')
-    return render_template(generalPage("error_page.html"), message=message)
+    return render_template(generalPage("error_page.html"), message=message , redirigir=True)
 
 
 if __name__ == "__main__":
