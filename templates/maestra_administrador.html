@@ -1,39 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/common_styles/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/all.min.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/fontawesome.min.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/fonts.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/common_style.css"/>
+    <link rel="stylesheet" href="/static/css/common_styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/all.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/fontawesome.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/fonts.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
     <link rel="stylesheet" href="/static/css/admin_style.css">
     {% block estilos %}
     {% endblock %}
     <title>
         {% block titulo %}
-        {% endblock %} | Test de Temperamento
+        {% endblock %} | Resultados del Test de Temperamento
     </title>
 </head>
+
 <body class="general_body">
     <header class="general_element">
         <div class="header_item subheader">
-            <a class="subheader_item" href="{{url_for('index')}}">INICIO</a>
+            <p class="fw-bolder">
+                {% block header %}
+                {% endblock %}
+            </p>
         </div>
-        <div class="header_item subheader">
-            <a class="subheader_item" href="{{url_for('logout')}}">CERRAR SESIÓN</a>
-        </div>
-        <!-- <nav class="general_element header_item">
-            <a class="nav_item" href="{{url_for('sign_up')}}">Sign Up</a>
-            <a class="nav_item" href="{{url_for('login')}}">Login</a>
-            <a class="nav_item" href="{{url_for('colores')}}">Colores</a>
-            <a class="nav_item" href="{{url_for('resultado')}}">Resultado</a>
-        </nav> -->
+        <nav class="header_item general_element">
+            <p class="">
+                {% block nav %}
+                {% endblock %}
+            </p>
+        </nav>
     </header>
 
     <aside class="general_element">
-
+        <div class="aside_info">
+            <div class="aside_item">
+                {{user_info_1}}
+            </div>
+            <div class="aside_item">
+                <b>{{user_info_2}}</b>
+            </div>
+        </div>
+        <hr>
+        <div class="aside_options">
+            <a class="aside_item" href="{{url_for('dashboard')}}">Dashboard</a>
+            <a class="aside_item" href="{{url_for('logout')}}">CERRAR SESIÓN</a>
+        </div>
     </aside>
 
     <section class="general_element">
@@ -52,4 +66,5 @@
     {% endblock %}
 
 </body>
+
 </html>

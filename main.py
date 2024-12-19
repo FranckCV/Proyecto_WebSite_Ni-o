@@ -84,11 +84,12 @@ def sign_in():
     flash("Credenciales inválidas", "error")
     return redirect(url_for('login'))
 
+
 @app.route("/api_register_user", methods=['POST'])
 def api_register_user():
     fullname = request.json['nombres_completos']
     username = request.json['usuario']
-    password = request.json['clave']
+    password = request.json['clave']    
     response = dict()
     try:
         controlador_user.register_user(fullname,username,password)
@@ -297,18 +298,47 @@ def resultado():
 @app.route("/dashboard")
 @token_required
 def dashboard():
+    # response = check_back_option("dashboard_reporte.html")
     response = check_back_option("dashboard_reporte.html","admin")
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados=resultados))
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
+    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2))
     return response
 
 
-
 @app.route("/buscarResultado")
+# @token_required
 def buscarResultado():
     nombreBusqueda = request.args.get("buscarElemento")
+    user_info = controlador_user.get_user_by_token(session.get('token')).to_dict()
     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
-    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
+
+    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info = user_info)
+
+
+
+@app.route("/eliminar_cliente", methods=["POST"])
+def eliminar_info_participante():
+    par_id = request.form["par_id"]
+    controlador_seleccion.eliminar_seleccion_idpar(par_id)
+    controlador_participante.eliminar_participante_id(par_id)
+    return redirect("/dashboard")
+
+
+
+@app.route("/ver_informacion=<int:id>")
+# @token_required
+def ver_informacion(id):
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
+    resultado = controlador_participante.obtener_resultado_id(id)
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
+    return render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso )
+
+
 
 @app.route("/logout")
 def logout():

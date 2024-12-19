@@ -9,7 +9,6 @@ function cantResultadosFilas() {
       return window.getComputedStyle(row).display !== 'none';
     });
     numResult.innerHTML = `${visibleRows.length}`; 
-console.log("aaaa");
     const dispRows = visibleRows.filter(row => row.classList.contains('fila_disp_si'));
     numDispResult.innerHTML = `${dispRows.length}`;
 
@@ -41,40 +40,6 @@ function filtroTableSelect(nombreSelect , atributo , valor) {
   });
 }
 
-
-if (document.getElementById('categorySelect')) {
-  document.getElementById('categorySelect').addEventListener('change', function() {
-    const selectedCategory = this.value;
-    const rows = document.querySelectorAll('#productTableBody tr');
-  
-    const options = document.querySelectorAll('#subcategorySelect option');
-  
-    options.forEach(option => {
-      const optionCategory = option ? option.getAttribute('data-category') : null;
-  
-      if (selectedCategory === "0" || optionCategory === selectedCategory) {
-        option.style.display = '';
-      } else {
-        option.style.display = 'none';
-      }
-    });
-  
-    rows.forEach(row => {
-      const categoryDiv = row.querySelector('[data-category]');
-      const productCategory = categoryDiv ? categoryDiv.getAttribute('data-category') : null;
-  
-      if (selectedCategory === "0" || productCategory === selectedCategory) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-  
-    cantResultadosFilas();
-  
-  });
-  
-}
 
 
 // if (document.getElementById('tiposImgNovedad')) {
