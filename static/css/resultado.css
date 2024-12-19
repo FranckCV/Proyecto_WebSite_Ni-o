@@ -1,14 +1,14 @@
 
-body {
+/* body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #f4f4f4;
-}
+} */
 
-.chart-container {
+/* .chart-container {
     width: 50rem; 
     height: 35rem; 
     background-color: #fff;
@@ -19,4 +19,112 @@ body {
     justify-content: center;
     align-items: center;
     padding: 5rem;
+} */
+
+/* General styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
 }
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Contenedor del botón */
+form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Estilo del botón */
+.btn-try-again {
+    display: inline-block;
+    background-color: #007BFF; /* Azul por defecto */
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* margin-right: 19rem; */
+}
+
+.btn-try-again:hover {
+    background-color: #0056b3; /* Azul más oscuro en hover */
+}
+
+.btn-try-again:active {
+    background-color: #003f7f; /* Azul más intenso en clic */
+    transform: scale(0.98); /* Efecto de clic */
+}
+
+/* Responsividad */
+@media screen and (max-width: 768px) {
+    .btn-try-again {
+        font-size: 14px; /* Reducir tamaño del texto */
+        padding: 8px 16px; /* Reducir el tamaño del botón */
+        width: 100%;
+        margin-right: 0rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    form {
+        justify-content: center; /* Centrar el botón en pantallas muy pequeñas */
+    }
+
+    .btn-try-again {
+        width: 100%; /* Botón ocupa todo el ancho */
+        font-size: 14px;
+        padding: 10px; /* Asegurar buena usabilidad en pantallas táctiles */
+        margin-right: 0rem;
+    }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .chart-container {
+        padding: 15px;
+    }
+
+    body {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .chart-container {
+        padding: 10px;
+        width: 95%;
+    }
+
+    body {
+        font-size: 12px;
+    }
+}
+
+
