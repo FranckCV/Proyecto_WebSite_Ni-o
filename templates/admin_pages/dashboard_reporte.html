@@ -1,20 +1,33 @@
 {% extends 'maestra_administrador.html' %}
+
+
 {% block titulo %}
 Dashboard
 {% endblock %}
+
+
 
 {% block estilos %}
 <link rel="stylesheet" href="/static/css/dashboard.css" />
 {% endblock %}
 
+
+{% block header %}
+Dashboard de Resultados de Participantes
+{% endblock %}
+
+
+
+{% block nav %}
+Lista de Resultados
+{% endblock %}
+
+
+
 {% block contenido %}
 
+{% if nombreBusqueda %}
 <div class="row">
-  <div class="col">
-    <h2 class="fw-bolder">Resultados de Participantes</h2>
-  </div>
-
-  {% if nombreBusqueda %}
   <div class="col-3">
     <div class="input-group">
       <a class="" href="{{ url_for('dashboard') }}">
@@ -22,9 +35,8 @@ Dashboard
       </a>
     </div>
   </div>
-  {% endif %}
-
 </div>
+{% endif %}
 
 <div class="row">
 
@@ -73,6 +85,7 @@ Dashboard
         <th>Nombre Completo</th>
         <th>Fecha y Hora Registro</th>
         <th>Progreso</th>
+        <!-- <th>{{cant_max_progreso}}</th> -->
         <th class="nro_fuego">Resultado Fuego</th>
         <th class="nro_aire">Resultado Aire</th>
         <th class="nro_agua">Resultado Agua</th>
@@ -83,7 +96,7 @@ Dashboard
     <tbody id="productTableBody">
       {% for res in resultados %}
       <tr class="
-            {% if res.3 == 28 %}
+            {% if res.3 == cant_max_progreso %}
               fila_disp_si
             {% else %}
               fila_disp_no
@@ -95,37 +108,54 @@ Dashboard
         <td>
           <div class="bloque_progreso">
             <span id="progressText">
-              <input disabled class="progreso_input" type="number" id="progressInput" min="0" max="100"
-                value="{{ (res.3 * 100 / 28) | round(2) }}">
+              <input disabled class="progreso_input"  id="progressInput" min="0" max="100" >
               <p class="percent">%</p>
             </span>
             <div class="progress-bar-container">
               <div class="progress-bar" id="progressBar"></div>
             </div>
+            <p class="progressNow">
+            <span id="cant_now_progreso">{{res.3}}</span>
+            /
+            <span id="cant_max_progreso">{{cant_max_progreso}}</span>
+            </p>
           </div>
         </td>
-        <td><div class="celda_numero nro_fuego"><p>{{ res.8 }} </p></div></td>
-        <td><div class="celda_numero nro_aire"><p>{{ res.9 }} </p></div></td>
-        <td><div class="celda_numero nro_agua"><p>{{ res.10 }}</p></div></td>
-        <td><div class="celda_numero nro_tierra"><p>{{ res.11 }}</p></div></td>
+        <td>
+          <div class="celda_numero nro_fuego">
+            <p>{{ res.8*(1) + res.9*(-1) }} </p>
+          </div>
+        </td>
+        <td>
+          <div class="celda_numero nro_aire">
+            <p>{{ res.10*(1) + res.11*(-1) }} </p>
+          </div>
+        </td>
+        <td>
+          <div class="celda_numero nro_agua">
+            <p>{{ res.12*(1) + res.13*(-1) }}</p>
+          </div>
+        </td>
+        <td>
+          <div class="celda_numero nro_tierra">
+            <p>{{ res.14*(1) + res.15*(-1) }}</p>
+          </div>
+        </td>
         <td class="opciones_column">
           <div class="acciones">
-            <!-- cambiar -->
-            <a class="opciones_fila" href="{{url_for('index', id=res[0])}}">
+            <!-- <a class="opciones_fila" href="{{url_for('index', id=res[0])}}">
               <button type="submit">
                 <i class="fa-solid fa-chart-column"></i>
               </button>
-            </a>
-            <!-- cambiar -->
-            <a class="opciones_fila" href="{{url_for('index', id=res[0])}}">
+            </a> -->
+            <a class="opciones_fila" href="{{url_for('ver_informacion', id=res[0])}}">
               <button type="submit">
                 <i class="fa-solid fa-circle-info"></i>
               </button>
             </a>
-            <!-- cambiar -->
-            <form class="opciones_fila" action="{{ url_for('index') }}" method="POST"
+            <form class="opciones_fila" action="{{ url_for('eliminar_info_participante') }}" method="POST"
               onsubmit="return confirmarEliminacion()" id="deleteF">
-              <input type="hidden" name="id" value="{{ res.0 }}" />
+              <input type="hidden" name="par_id" id="par_id" value="{{ res.0 }}" />
               <button type="submit">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
@@ -139,8 +169,9 @@ Dashboard
   </table>
 </div>
 
-
 {% endblock %}
+
+
 
 {% block scripts %}
 
@@ -149,14 +180,14 @@ Dashboard
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
   }
 
-
-
-
   const bloques = document.querySelectorAll(".bloque_progreso");
   bloques.forEach(bloque => {
-
     const progressInput = bloque.querySelector("#progressInput");
-    const progressBar = bloque.querySelector("#progressBar");
+    const progressBar =   bloque.querySelector("#progressBar");
+    const progressNow =   bloque.querySelector("#cant_now_progreso");
+    const progressMax =   bloque.querySelector("#cant_max_progreso");
+    
+    progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
 
     const calculateColor = (percentage) => {
       const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));

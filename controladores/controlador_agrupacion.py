@@ -73,3 +73,21 @@ def obtener_grupo_incompleto(participante_id):
         return None
     finally:
         conexion.close()
+
+
+def obtener_cantidad_maxima_progreso():
+    conexion = obtener_conexion()
+    # try:
+    with conexion.cursor() as cursor:
+        sql= "select count(*) from grupo"
+        cursor.execute(sql)
+        grupos = cursor.fetchone()
+        numero = grupos[0] * 2
+    conexion.close()
+    return numero
+    # except Exception as e:
+    #     return e
+    
+
+
+

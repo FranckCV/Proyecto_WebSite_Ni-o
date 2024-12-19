@@ -59,6 +59,7 @@ def index():
             response.delete_cookie("id_participante_cookie")
             return response
         else:
+            id_grupo = int(request.cookies.get('id_grupo_cookie'))
             return redirect(url_for('pregunta', id_grupo=id_grupo)) 
     else:   
         return render_template(generalPage("index.html"))
@@ -83,11 +84,12 @@ def sign_in():
     flash("Credenciales inválidas", "error")
     return redirect(url_for('login'))
 
+
 @app.route("/api_register_user", methods=['POST'])
 def api_register_user():
     fullname = request.json['nombres_completos']
     username = request.json['usuario']
-    password = request.json['clave']
+    password = request.json['clave']    
     response = dict()
     try:
         controlador_user.register_user(fullname,username,password)
@@ -112,6 +114,15 @@ def sign_up():
     response = check_back_option("sign_up.html","general")
     return response
 
+@app.route("/eliminar_cookies_despues_de_resultado")
+def eliminar_cookies_despues_de_resultado():
+    respuesta = redirect(url_for('sign_up'))
+    
+    respuesta.delete_cookie('id_participante_cookie')
+    respuesta.delete_cookie('id_grupo_cookie')
+    
+    return respuesta
+
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
     nombres = request.form["nombres"]
@@ -129,7 +140,7 @@ def guardar_participante():
     )
     
     if not isinstance(id_participante, int):
-        return redirect(url_for('error_page', message='No se pudo guardar el participante. Por favor, intente nuevamente.'))
+        return redirect(url_for('error_page', message='No se pudo guardar el participante. Por favor, intente nuevamente.', redirigir = False))
     
     hash_id = encriptacion.generar_hash(id_participante)
     cookie_valor = f"{id_participante}:{hash_id}"
@@ -157,21 +168,32 @@ def guardar_participante():
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
-    participante_cookie = request.cookies.get('id_participante_cookie')
-    
-    if participante_cookie:
+    participante_id = request.cookies.get('id_participante_cookie')
+    desordenar = request.cookies.get('desordenar', 'false') == 'true' #Ta curioson pero a nada
+
+    if participante_id and id_grupo:
+        cualidades = list(controlador_agrupacion.obtener_cualidades(id_grupo)) 
+        #Convierto a listas pq el fetchall devuelve tuplas, y el random no puede desordenar las tuplas pues son inmutables
+        
+        if desordenar:
+            import random
+            random.shuffle(cualidades)
+        
         respuesta = make_response(render_template(
             "pregunta.html", 
-            cualidades=controlador_agrupacion.obtener_cualidades(id_grupo),
+            cualidades=cualidades,
             id_grupo=id_grupo,
-            verificado=controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie, id_grupo),
-            seleccion_positiva=controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_cookie, id_grupo),
-            seleccion_negativa=controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_cookie, id_grupo)
+            verificado=controlador_seleccion.verificar_cantidad_seleccionada(participante_id, id_grupo),
+            seleccion_positiva=controlador_seleccion.obtener_id_cualidad_positiva_seleccionada(participante_id, id_grupo),
+            seleccion_negativa=controlador_seleccion.obtener_id_cualidad_negativa_seleccionada(participante_id, id_grupo)
         ))
+
         respuesta.set_cookie("id_grupo_cookie", str(id_grupo))
+        respuesta.set_cookie("desordenar", 'false') 
         return respuesta
     else:
         return redirect("/sign_up")
+
 
 
 @app.route("/seleccionar_positivo", methods=["POST"])
@@ -181,7 +203,6 @@ def seleccionar_positivo():
     cualidad_id = request.form["positive"]
     estado = True
     mensaje = controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
-    print(mensaje)
     return redirect(request.referrer)
 
 @app.route("/seleccionar_negativo" , methods=["POST"] )
@@ -191,20 +212,24 @@ def seleccionar_negativo():
     cualidad_id = request.form["negative"]
     estado = False
     mensaje = controlador_seleccion.insertar_seleccion(participante_id,grupo_id,cualidad_id,estado)
-    print(mensaje)
     return redirect(request.referrer)
 
 @app.route("/siguiente_pregunta", methods=["POST"])
 def siguiente_pregunta():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual + 1
-    return redirect(url_for("pregunta", id_grupo=id_grupo))
+    respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
+    respuesta.set_cookie("desordenar", 'true')  
+    return respuesta
 
 @app.route("/pregunta_anterior", methods=["POST"])
 def pregunta_anterior():
     id_grupo_actual = int(request.form["grupo"])
     id_grupo = id_grupo_actual - 1
-    return redirect(url_for("pregunta", id_grupo=id_grupo))
+    respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
+    respuesta.set_cookie("desordenar", 'true') 
+    return respuesta
+
 
 @app.route("/colores")
 def colores():
@@ -212,33 +237,42 @@ def colores():
 
 ###############################################################################################################
 
+
 @app.route("/resultado")
 def resultado():
+    # Obtener las cookies necesarias
     participante_cookie = request.cookies.get('id_participante_cookie')
-    id_grupo_cookie = request.cookies.get('id_grupo_cookie')  # Obtener el último grupo visitado
+    id_grupo_cookie = request.cookies.get('id_grupo_cookie')
 
+    # Verificar que la cookie del participante exista
     if not participante_cookie:
-        return "Error: No se encontró el ID del participante en la cookie.", 400
+        message = "Error: No se encontró el ID del participante en la cookie."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False),400
 
     try:
+        # Dividir la cookie en ID del participante y hash recibido
         participante_id, hash_recibido = participante_cookie.split(":")
     except ValueError:
-        return "Error: La cookie está mal formada.", 400
+        message = "Error: La cookie está mal formada."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
+    # Verificar que el hash sea válido
     if not encriptacion.verificar_hash(participante_id, hash_recibido):
-        return "Error: La cookie no es válida.", 400
+        message = "Error: La cookie no es válida."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
     try:
         participante_id = int(participante_id)
     except ValueError:
-        return "Error: El ID del participante en la cookie no es válido.", 400
+        message = "Error: El ID del participante en la cookie no es válido."
+        return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
     cantidad_selecciones = controlador_seleccion.contar_selecciones_por_participante(participante_id)
-    if cantidad_selecciones != 56:
-        if id_grupo_cookie:
-            return redirect(url_for('pregunta', id_grupo=int(id_grupo_cookie)))
-        else:
-            return "Error: No se puede determinar el grupo al que redirigir.", 400
+    # if cantidad_selecciones != 56:
+    #     if id_grupo_cookie:
+    #         return redirect(url_for('pregunta', id_grupo=int(id_grupo_cookie)))
+    #     else:
+    #         return "Error: No se puede determinar el grupo al que redirigir.", 400
 
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
@@ -249,6 +283,8 @@ def resultado():
     }
 
     return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_completo))
+
+
 
 
 # @app.route("/resultado_v2")
@@ -262,18 +298,47 @@ def resultado():
 @app.route("/dashboard")
 @token_required
 def dashboard():
+    # response = check_back_option("dashboard_reporte.html")
     response = check_back_option("dashboard_reporte.html","admin")
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados=resultados))
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
+    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2))
     return response
 
 
-
 @app.route("/buscarResultado")
+# @token_required
 def buscarResultado():
     nombreBusqueda = request.args.get("buscarElemento")
+    user_info = controlador_user.get_user_by_token(session.get('token')).to_dict()
     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
-    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda)
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
+
+    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info = user_info)
+
+
+
+@app.route("/eliminar_cliente", methods=["POST"])
+def eliminar_info_participante():
+    par_id = request.form["par_id"]
+    controlador_seleccion.eliminar_seleccion_idpar(par_id)
+    controlador_participante.eliminar_participante_id(par_id)
+    return redirect("/dashboard")
+
+
+
+@app.route("/ver_informacion=<int:id>")
+# @token_required
+def ver_informacion(id):
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
+    resultado = controlador_participante.obtener_resultado_id(id)
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
+    return render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso )
+
+
 
 @app.route("/logout")
 def logout():
@@ -288,7 +353,7 @@ def logout():
 @app.route("/error")
 def error_page():
     message = request.args.get('message', 'Error desconocido')
-    return render_template(generalPage("error_page.html"), message=message)
+    return render_template(generalPage("error_page.html"), message=message , redirigir=True)
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
-h2 {
+/* h2 {
     font-weight: bold;
     color: var(--color1);
     margin: 0;
-}
+} */
 
 table {
     background-color: white;
@@ -98,8 +98,8 @@ button {
     box-shadow: 0 4px 8px #0000006c;
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 60vh;
-    width: 72vw;
+    max-height: 65vh;
+    width: 75vw;
     position: relative;
 }
 
@@ -194,6 +194,7 @@ button {
 .table_listado th.opciones_column {
     background-color: #111057;
     z-index: 3;
+    padding-inline: 5px;
 }
 
 .table_listado td.opciones_column {
@@ -209,7 +210,7 @@ button {
 
 .table_listado .opciones_fila {
     display: flex;
-    width: 100%;
+    width: fit-content;
     justify-content: center;
     align-items: center;
     gap: 4px;
@@ -242,11 +243,9 @@ button {
 
 .acciones {
     display: flex;
-    /* flex-wrap: wrap; */
-    gap: 5px;
-    /* justify-content: space-between; */
+    gap: 10px;
     align-items: center;
-    /* flex-direction: column; */
+    justify-content: center;
 }
 
 .acciones * {
@@ -276,6 +275,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 0px;
+    color: black;
 }
 
 .progress-bar-container {
@@ -312,12 +312,13 @@ button {
     text-align: right;
     padding: 0px;
     color: black;
+    width: 5vw;
 }
 
-.percent {
+/* .percent {
     position: relative;
     right: 10px;
-}
+} */
 
 
 .celda_numero {
@@ -360,18 +361,22 @@ button {
 
 
 th.nro_fuego {
+    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-fuego)  40%);
 }
 
 th.nro_aire {
+    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-aire)   40%);
 }
 
 th.nro_agua {
+    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-agua)   40%);
 }
 
 th.nro_tierra {
+    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-tierra) 40%);
 }
 

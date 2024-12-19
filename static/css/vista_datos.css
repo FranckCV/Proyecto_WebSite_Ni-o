@@ -1,0 +1,53 @@
+.container-fluid {
+  padding: 0;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+table,
+th,
+tr,
+td,
+label {
+  color: black;
+}
+
+/* h3 {
+  color: var(--color1);
+} */
+
+th,
+td {
+  border: 1px solid black;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* .row>* {
+  padding: 0;
+} */
+
+.col {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+table input {
+  background-color: transparent;
+  border: 0;
+  width: 20px;
+  text-align: center;
+  color: black;
+}
+
+
+
+
+

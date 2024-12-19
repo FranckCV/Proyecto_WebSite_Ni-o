@@ -1,0 +1,384 @@
+{% extends 'maestra_administrador.html' %}
+
+
+{% block titulo %}
+Datos del Participante
+{% endblock %}
+
+
+
+{% block estilos %}
+<link rel="stylesheet" href="/static/css/dashboard.css" />
+<link rel="stylesheet" href="/static/css/vista_datos.css" />
+{% endblock %}
+
+
+
+{% block header %}
+Información del Participante
+{% endblock %}
+
+
+
+{% block nav %}
+<!-- ID: {{resultado.0}} - {{resultado.1}} {{resultado.2}}  -->
+Datos de {{resultado.1}} {{resultado.2}}
+{% endblock %}
+
+
+
+{% block contenido %}
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col">
+
+      <div class="row">
+        <div class="col">
+          <label for="">ID:</label>
+          <input type="text" disabled="disabled" value="{{resultado.0 }}">
+        </div>
+        <div class="col">
+          <label for="">Fecha y Hora de Registro:</label>
+          <input type="text" disabled="disabled" value="{{resultado.7 }}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="">Nombres:</label>
+          <input type="text" disabled="disabled" value="{{resultado.1 }}">
+        </div>
+        <div class="col">
+          <label for="">Apellidos:</label>
+          <input type="text" disabled="disabled" value="{{resultado.2 }}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="">Edad Actual:</label>
+          <input type="text" disabled="disabled" value="{{resultado.4 }}">
+        </div>
+        <div class="col">
+          <label for="">Fecha nacimiento:</label>
+          <input type="text" disabled="disabled" value="{{resultado.16 }}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="">Número Telefono:</label>
+          <input type="text" disabled="disabled" value="{{resultado.5 }}">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="">Correo Electronico:</label>
+          <input type="text" disabled="disabled" value="{{resultado.6 }}">
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="bloque_progreso">
+            <span id="progressText">
+              <input disabled class="progreso_input" id="progressInput" min="0" max="100">
+              <p class="percent">%</p>
+            </span>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p class="progressNow">
+              <span id="cant_now_progreso">{{resultado.3}}</span>
+              /
+              <span id="cant_max_progreso">{{cant_max_progreso}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th colspan="4">Elemento</th>
+            </tr>
+            <tr>
+              <th>Valores</th>
+              <th>Fuego</th>
+              <th>Aire</th>
+              <th>Agua</th>
+              <th>Tierra</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Positivos
+              </td>
+              <td>
+                <input disabled id="posFuego" value="{{resultado.8}}">
+              </td>
+              <td>
+                <input disabled id="posAire" value="{{resultado.10}}">
+              </td>
+              <td>
+                <input disabled id="posAgua" value="{{resultado.12}}">
+              </td>
+              <td>
+                <input disabled id="posTierra" value="{{resultado.14}}">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Negativos
+              </td>
+              <td>
+                <input disabled id="negFuego" value="{{resultado.9 *-1}}">
+              </td>
+              <td>
+                <input disabled id="negAire" value="{{resultado.11 *-1}}">
+              </td>
+              <td>
+                <input disabled id="negAgua" value="{{resultado.13 *-1}}">
+              </td>
+              <td>
+                <input disabled id="negTierra" value="{{resultado.15 *-1}}">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Resultado
+              </td>
+              <td>
+                <input disabled id="data_1" value="">
+              </td>
+              <td>
+                <input disabled id="data_2" value="">
+              </td>
+              <td>
+                <input disabled id="data_3" value="">
+              </td>
+              <td>
+                <input disabled id="data_4" value="">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+
+        <!-- <div class="col">
+          a
+        </div> -->
+
+        <div class="col">
+          <div class="chart-container">
+            <canvas id="grafica_resultado"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <a class="" href="{{ url_for('dashboard') }}">
+      <button type="button" class="button_volver">Volver al Listado General</button>
+    </a>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  function operationInput(input1, input2, inputDiff) {
+    const inputE1 = document.querySelector(input1);
+    const inputE2 = document.querySelector(input2);
+    const inputResta = document.querySelector(inputDiff);
+    inputResta.value = parseFloat(inputE1.value) + parseFloat(inputE2.value);
+  }
+
+  operationInput('#posFuego', '#negFuego', '#data_1');
+  operationInput('#posAire', '#negAire', '#data_2');
+  operationInput('#posAgua', '#negAgua', '#data_3');
+  operationInput('#posTierra', '#negTierra', '#data_4');
+
+  let chart = null;
+
+  function generarChart() {
+    const nombre_participante = "nombre xd";
+
+    const labels = [
+      "Fuego",
+      "Aire",
+      "Agua",
+      "Tierra"
+    ];
+
+    const root = document.documentElement;
+
+    var dataValues = [
+      parseFloat(document.getElementById("data_1").value),
+      parseFloat(document.getElementById("data_2").value),
+      parseFloat(document.getElementById("data_3").value),
+      parseFloat(document.getElementById("data_4").value)
+    ];
+
+    const color_fuego = getComputedStyle(root).getPropertyValue('--color-fuego').trim();
+    const color_aire = getComputedStyle(root).getPropertyValue('--color-aire').trim();
+    const color_agua = getComputedStyle(root).getPropertyValue('--color-agua').trim();
+    const color_tierra = getComputedStyle(root).getPropertyValue('--color-tierra').trim();
+
+    const colors = {
+      fuego: color_fuego,
+      aire: color_aire,
+      agua: color_agua,
+      tierra: color_tierra
+    };
+
+    const fuegoVsAgua = dataValues[0] - dataValues[2]; // Fuego - Agua
+    const tierraVsAire = dataValues[3] - dataValues[1]; // Tierra - Aire
+
+    let maxElement = "";
+    if (Math.abs(fuegoVsAgua) >= Math.abs(tierraVsAire)) {
+      maxElement = fuegoVsAgua >= 0 ? "fuego" : "agua";
+    } else {
+      maxElement = tierraVsAire >= 0 ? "tierra" : "aire";
+    }
+
+    let secondElement = "";
+    if (maxElement === "fuego" || maxElement === "agua") {
+      // Comparar entre tierra y aire
+      if (Math.abs(dataValues[3]) === Math.abs(dataValues[1])) {
+        // Empate, el borde será el mismo color que el predominante
+        secondElement = maxElement;
+      } else {
+        secondElement = dataValues[3] >= dataValues[1] ? "tierra" : "aire";
+      }
+    } else {
+      if (Math.abs(dataValues[0]) === Math.abs(dataValues[2])) {
+        // Empate, el borde será el mismo color que el predominante
+        secondElement = maxElement;
+      } else {
+        secondElement = dataValues[0] >= dataValues[2] ? "fuego" : "agua";
+      }
+    }
+
+    const maxColor = colors[maxElement];
+    const secondColor = colors[secondElement];
+
+    let miCanvas = document.getElementById("grafica_resultado").getContext("2d");
+
+    chart = new Chart(miCanvas, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Resultado de " + nombre_participante,
+          backgroundColor: [
+            colors.fuego, colors.aire, colors.agua, colors.tierra // Colores de las barras
+          ],
+          borderColor: [
+            colors.fuego, colors.aire, colors.agua, colors.tierra // Bordes de las barras
+          ],
+          borderWidth: 1,
+          data: dataValues
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              generateLabels: (chart) => {
+                // Personalización del cuadro de la leyenda
+                let originalLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                originalLabels.forEach((label) => {
+                  label.fillStyle = maxColor;    // Color según el elemento combinado predominante
+                  label.strokeStyle = secondColor; // Borde según el segundo más fuerte
+                  label.lineWidth = 3;          // Ancho del borde
+                });
+                return originalLabels;
+              }
+            }
+          }
+        },
+        responsive: true,
+        scales: {
+          x: {
+            barPercentage: 0.5,
+            categoryPercentage: 0.9
+          },
+          y: {
+            beginAtZero: true,
+            min: -30,
+            max: 30,
+            ticks: {
+              stepSize: 10
+            }
+          }
+        }
+      }
+    });
+  }
+
+  generarChart();
+
+  document.querySelectorAll('table input').forEach(input => {
+    input.addEventListener('input', () => {
+      chart.destroy();
+      generarChart();
+    });
+  });
+
+  const bloques = document.querySelectorAll(".bloque_progreso");
+  bloques.forEach(bloque => {
+    const progressInput = bloque.querySelector("#progressInput");
+    const progressNow = bloque.querySelector("#cant_now_progreso");
+    const progressMax = bloque.querySelector("#cant_max_progreso");
+    const progressBar = bloque.querySelector("#progressBar");
+
+    progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
+
+    const calculateColor = (percentage) => {
+      const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));
+      const green = Math.min(255, Math.floor((percentage / 100) * 255));
+      return `rgb(${red}, ${green}, 0)`;
+    };
+
+    function calcularValor() {
+      var percentage = parseFloat(progressInput.value);
+      progressBar.style.width = `${percentage}%`;
+      progressBar.style.backgroundColor = calculateColor(percentage);
+
+      if (!isNaN(percentage)) {
+        progressInput.value = percentage.toFixed(2);
+      }
+    }
+
+    calcularValor();
+
+    progressInput.addEventListener("input", () => {
+      calcularValor();
+    });
+
+  });
+
+
+
+</script>
+{% endblock %}

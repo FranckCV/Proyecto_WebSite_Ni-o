@@ -8,14 +8,6 @@
     --size-bubble-cart-tab: 3.5vw;
     --size-bubble-cart-pc: 2.1vw;
 
-    --border-article: 50px;
-    --border-title: 70px;
-    --border-item: 25px;
-    --border-product: 10px;
-    --border-tag: 25px;
-    --border-menu: 10px;
-    --border-radius-element: 5px;
-
     --font-icon-cel: 20px;
     --font-icon-tab: 2.5vw;
     --font-icon-pc: 1.55vw; */
@@ -39,7 +31,8 @@
 
     --color-base: #012f91; 
     --color1: color-mix(in srgb, var(--color-base) 100%, #e6e6e6 0%); 
-    --color2: color-mix(in srgb, var(--color-base) 100%, #e6e6e6 50%); 
+    --color2: color-mix(in srgb, var(--color-base) 100%, #ffffff 30%); 
+    /* --color2: var(--color-base);  */
     --color3: color-mix(in srgb, var(--color1) 100%, black 30%);
     --color4: color-mix(in srgb, var(--color1) 50%, black 90%);
     --color5: color-mix(in srgb, var(--color1) 70%, var(--color2) 30%);
