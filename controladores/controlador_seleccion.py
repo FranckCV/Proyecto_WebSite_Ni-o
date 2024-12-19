@@ -65,7 +65,8 @@ def llenar_grafico_barras(participante_id):
         return resultado
     except Exception as e:
         return e
-    
+
+
 def verificar_cantidad_seleccionada(participante_id, grupo_id):
     conexion = obtener_conexion()
     try:
@@ -79,6 +80,7 @@ def verificar_cantidad_seleccionada(participante_id, grupo_id):
         print(f"Error al verificar la cantidad seleccionada: {e}")
         return False  
 
+
 def obtener_id_cualidad_positiva_seleccionada(participante_id, grupo_id):
     conexion = obtener_conexion()
     try:
@@ -91,7 +93,8 @@ def obtener_id_cualidad_positiva_seleccionada(participante_id, grupo_id):
     except Exception as e:
         print(f"Error al verificar la cantidad seleccionada: {e}")
         return False  
-    
+
+
 def obtener_id_cualidad_negativa_seleccionada(participante_id, grupo_id):
     conexion = obtener_conexion()
     try:
@@ -104,6 +107,7 @@ def obtener_id_cualidad_negativa_seleccionada(participante_id, grupo_id):
     except Exception as e:
         print(f"Error al verificar la cantidad seleccionada: {e}")
         return False  
+
 
 def obtener_ultima_seleccion(participante_id):
     conexion = obtener_conexion()
@@ -136,3 +140,14 @@ def contar_selecciones_por_participante(participante_id):
     except Exception as e:
         conexion.close()
         return f"Error al contar selecciones: {str(e)}"
+
+
+def eliminar_seleccion_idpar(participante_id):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql = ''' delete from seleccion where PARTICIPANTEid = '''+str(participante_id)+''' ; '''
+        cursor.execute(sql)
+    conexion.commit()
+    conexion.close()
+
+

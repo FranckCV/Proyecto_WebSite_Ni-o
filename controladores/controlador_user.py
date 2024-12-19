@@ -88,3 +88,14 @@ def login(username,password):
         "status":1
     }
 
+
+
+def get_admin_by_token(token):
+    conexion = obtener_conexion()
+    usuario_id = get_user_id_from_token(token)
+    with conexion.cursor() as cursor:
+        query = "SELECT id, nombres_completos, usuario FROM administrador where id = "+str(usuario_id)
+        cursor.execute(query)
+        usuario = cursor.fetchone()
+    conexion.close()
+    return usuario

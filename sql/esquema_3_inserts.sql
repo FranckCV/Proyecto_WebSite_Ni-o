@@ -1,3 +1,8 @@
+INSERT INTO administrador (id, nombres_completos, usuario, clave) VALUES
+(1, 'Alicia Lizet Niño Effio', 'alicia123', 'scrypt:32768:8:1$Cn13ETmyASux9eWo$b2f07f0a76e824d8420ff4e205461abd68a3ea1bc09a16277ed2c69f2924f4d108e5219689e25648c562c2845d666073a051fff3f254e31a44c2a5cb57344a1e'),
+(2, 'César Eduardo Bravo Díaz', 'cesar456', 'scrypt:32768:8:1$YMbht1iYZSg22yqV$33dec0d612d0ab5a58a654c0c99b2b02ab82b6c488309a9deac29cb011354b3e7986e71fe44b26b01f1c1df9fb11ba4faa230a76a0afd5e778c361d47781d863');
+
+
 INSERT INTO elemento (id, nomElemento)
 VALUES (1, 'Fuego'),
     (2, 'Agua'),
