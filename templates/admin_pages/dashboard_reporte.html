@@ -95,7 +95,7 @@ Lista de Resultados
     </thead>
     <tbody id="productTableBody">
       {% for res in resultados %}
-      <tr class="
+      <tr data-person-id="{{ res.0 }}" class="
             {% if res.3 == cant_max_progreso %}
               fila_disp_si
             {% else %}
@@ -106,7 +106,7 @@ Lista de Resultados
         <td>{{ res.1 }} {{ res.2 }}</td>
         <td>{{ res.7 }}</td>
         <td>
-          <div class="bloque_progreso">
+          <div class="bloque_progreso" data-person-id="{{ res.0 }}">
             <span id="progressText">
               <input disabled class="progreso_input" id="progressInput" min="0" max="100">
               <p class="percent">%</p>
@@ -122,22 +122,22 @@ Lista de Resultados
           </div>
         </td>
         <td>
-          <div class="celda_numero nro_fuego">
+          <div class="celda_numero nro_fuego" data-person-id="{{ res.0 }}">
             <p>{{ res.8*(1) + res.9*(-1) }} </p>
           </div>
         </td>
         <td>
-          <div class="celda_numero nro_aire">
+          <div class="celda_numero nro_aire" data-person-id="{{ res.0 }}">
             <p>{{ res.10*(1) + res.11*(-1) }} </p>
           </div>
         </td>
         <td>
-          <div class="celda_numero nro_agua">
+          <div class="celda_numero nro_agua" data-person-id="{{ res.0 }}">
             <p>{{ res.12*(1) + res.13*(-1) }}</p>
           </div>
         </td>
         <td>
-          <div class="celda_numero nro_tierra">
+          <div class="celda_numero nro_tierra" data-person-id="{{ res.0 }}">
             <p>{{ res.14*(1) + res.15*(-1) }}</p>
           </div>
         </td>
@@ -191,41 +191,82 @@ Lista de Resultados
     console.log("Socket Desconectado.!");
   });
 
-
-
-  const bloques = document.querySelectorAll(".bloque_progreso");
-  bloques.forEach(bloque => {
-    const progressInput = bloque.querySelector("#progressInput");
-    const progressBar = bloque.querySelector("#progressBar");
-    const progressNow = bloque.querySelector("#cant_now_progreso");
-    const progressMax = bloque.querySelector("#cant_max_progreso");
-
-    progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
-
-    const calculateColor = (percentage) => {
-      const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));
-      const green = Math.min(255, Math.floor((percentage / 100) * 255));
-      return `rgb(${red}, ${green}, 0)`;
-    };
-
-    function calcularValor() {
-      var percentage = parseFloat(progressInput.value);
-      progressBar.style.width = `${percentage}%`;
-      progressBar.style.backgroundColor = calculateColor(percentage);
-
-      if (!isNaN(percentage)) {
-        progressInput.value = percentage.toFixed(2);
+  function putValueCellNumber(id, elemento, valor) {
+    const rows = document.querySelectorAll("#productTableBody tr");
+    for (const row of rows) {
+      const personId = row.getAttribute('data-person-id');
+      if (parseInt(personId) === parseInt(id)) {
+        var filaAux = row.querySelector(elemento);
+        filaAux.innerHTML = valor;
       }
+      row.querySelector("#progressInput").dispatchEvent(new Event('input'));
     }
+  }
 
-    calcularValor();
+  function actualizarFilas(datos) {
+    datos.forEach(res => {
+      putValueCellNumber(res[0], "#cant_now_progreso", (res[1]));
+      putValueCellNumber(res[0], ".nro_fuego  p", (res[2] - res[3]));
+      putValueCellNumber(res[0], ".nro_aire   p", (res[4] - res[5]));
+      putValueCellNumber(res[0], ".nro_agua   p", (res[6] - res[7]));
+      putValueCellNumber(res[0], ".nro_tierra p", (res[8] - res[9]));
+    });
+  }
 
-    progressInput.addEventListener("input", () => {
+  socket.on("update_valores", (data) => {
+    // console.log(data.resultados);
+    actualizarFilas(data.resultados);
+    mostrarProgreso();
+  });
+
+  // socket.emit("get_tabla");
+
+  setInterval(() => {
+    // progresoResultado();
+    socket.emit("get_valores");
+  }, 1500);
+
+
+  function mostrarProgreso() {
+    const bloques = document.querySelectorAll(".bloque_progreso");
+    bloques.forEach(bloque => {
+      const progressInput = bloque.querySelector("#progressInput");
+      const progressBar = bloque.querySelector("#progressBar");
+      const progressNow = bloque.querySelector("#cant_now_progreso");
+      const progressMax = bloque.querySelector("#cant_max_progreso");
+
+      progressInput.value = parseFloat(parseFloat(progressNow.textContent) * 100 / parseFloat(progressMax.textContent));
+      progressInput.dispatchEvent(new Event('input'));
+
+      const calculateColor = (percentage) => {
+        const red = Math.max(0, 255 - Math.floor((percentage / 100) * 255));
+        const green = Math.min(255, Math.floor((percentage / 100) * 255));
+        return `rgb(${red}, ${green}, 70)`;
+      };
+
+      function calcularValor() {
+        var percentage = parseFloat(progressInput.value);
+        progressBar.style.width = `${percentage}%`;
+        progressBar.style.backgroundColor = calculateColor(percentage);
+
+        if (!isNaN(percentage)) {
+          progressInput.value = percentage.toFixed(2);
+        }
+      }
+
       calcularValor();
+
+      progressInput.addEventListener("input", () => {
+        calcularValor();
+      });
+
     });
 
-  });
+  }
+  mostrarProgreso();
+
+
 </script>
-<!-- <script src="/static/js/filtroCRUDListado.js"></script> -->
+<script src="/static/js/filtroCRUDListado.js"></script>
 
 {% endblock %}

@@ -7,7 +7,6 @@ import base64
 import clases.encriptar_cookie as encriptacion
 import jwt
 from flask_socketio import SocketIO, emit 
-# from flask_socketio import SocketIO, emit 
 import random
 from datetime import datetime, date
 from clases.User import User
