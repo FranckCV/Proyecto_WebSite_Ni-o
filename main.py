@@ -6,7 +6,7 @@ import hashlib
 import base64
 import clases.encriptar_cookie as encriptacion
 import jwt
-# from flask_socketio import SocketIO, emit 
+from flask_socketio import SocketIO, emit 
 import random
 from datetime import datetime, date
 from clases.User import User
@@ -15,6 +15,7 @@ import controladores.controlador_user as controlador_user
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'security_key'
+socketio = SocketIO(app)
 
 def generalPage(page):
     return "general_pages/"+page
@@ -335,6 +336,29 @@ def ver_informacion(id):
     return render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso )
 
 
+@socketio.on('connect')
+def handle_connect():
+    print('Cliente conectado')
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Cliente desconectado')
+
+
+@socketio.on('get_valores_participante')
+def handle_get_valores_participante(id):
+    valores = controlador_participante.obtener_valores_id(id)
+    emit("update_valores_participante",  {"valores": valores} , broadcast=True) 
+
+
+@socketio.on('get_valores')
+def handle_get_valores():
+    resultados = controlador_participante.obtener_valores()
+    emit("update_valores",  {"resultados": resultados} , broadcast=True) 
+
+
+
 
 @app.route("/logout")
 def logout():
@@ -353,4 +377,5 @@ def error_page():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8000, debug=True)
+    # app.run(host='0.0.0.0', port=8000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8000, debug=True)

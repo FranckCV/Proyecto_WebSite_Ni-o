@@ -91,10 +91,10 @@ def obtener_resultados():
                 p.fecha_registro,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
-                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
-                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 0 THEN 1 END) AS aire_estado_0,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
                 COUNT(CASE WHEN e.id = 4 AND s.estado = 1 THEN 1 END) AS tierra_estado_1,
                 COUNT(CASE WHEN e.id = 4 AND s.estado = 0 THEN 1 END) AS tierra_estado_0
             FROM 
@@ -117,6 +117,43 @@ def obtener_resultados():
     conexion.close()
     return result
 
+
+def obtener_valores():
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql= '''
+            SELECT 
+                p.id,
+                COUNT( s.AGRUPACIONCUALIDADid) AS grupos_seleccionados,
+                COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
+                COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
+                COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
+                COUNT(CASE WHEN e.id = 3 AND s.estado = 0 THEN 1 END) AS aire_estado_0,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
+                COUNT(CASE WHEN e.id = 4 AND s.estado = 1 THEN 1 END) AS tierra_estado_1,
+                COUNT(CASE WHEN e.id = 4 AND s.estado = 0 THEN 1 END) AS tierra_estado_0
+            FROM 
+                participante p
+            LEFT JOIN 
+                seleccion s ON s.PARTICIPANTEid = p.id
+            LEFT JOIN 
+                agrupacion a ON s.AGRUPACIONGRUPOid = a.GRUPOid AND s.AGRUPACIONCUALIDADid = a.CUALIDADid
+            LEFT JOIN 
+                cualidad c ON a.CUALIDADid = c.id
+            LEFT JOIN 
+                elemento e ON c.ELEMENTOid = e.id
+            GROUP BY 
+                p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
+            ORDER BY 
+                grupos_seleccionados , p.fecha_registro
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchall()
+    conexion.close()
+    return result
+
+
 def obtener_resultado_id(par_id):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
@@ -132,10 +169,10 @@ def obtener_resultado_id(par_id):
                 p.fecha_registro,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
-                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
-                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 0 THEN 1 END) AS aire_estado_0,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
                 COUNT(CASE WHEN e.id = 4 AND s.estado = 1 THEN 1 END) AS tierra_estado_1,
                 COUNT(CASE WHEN e.id = 4 AND s.estado = 0 THEN 1 END) AS tierra_estado_0,
                 p.fecha_nacimiento
@@ -162,6 +199,42 @@ def obtener_resultado_id(par_id):
     return result
 
 
+def obtener_valores_id(par_id):
+    conexion = obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql= '''
+            SELECT 
+                p.id,
+                COUNT( s.AGRUPACIONCUALIDADid) AS grupos_seleccionados,
+                COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
+                COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
+                COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
+                COUNT(CASE WHEN e.id = 3 AND s.estado = 0 THEN 1 END) AS aire_estado_0,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
+                COUNT(CASE WHEN e.id = 4 AND s.estado = 1 THEN 1 END) AS tierra_estado_1,
+                COUNT(CASE WHEN e.id = 4 AND s.estado = 0 THEN 1 END) AS tierra_estado_0
+            FROM 
+                participante p
+            left join 
+                seleccion s ON s.PARTICIPANTEid = p.id
+            left join 
+                agrupacion a ON s.AGRUPACIONGRUPOid = a.GRUPOid AND s.AGRUPACIONCUALIDADid = a.CUALIDADid
+            left join 
+                cualidad c ON a.CUALIDADid = c.id
+            left join 
+                elemento e ON c.ELEMENTOid = e.id
+            WHERE 
+                p.id = '''+str(par_id)+'''
+            GROUP BY 
+                p.id
+            
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchone()
+    conexion.close()
+    return result
+
 
 def buscar_resultado_nombre(nombre):
     conexion = obtener_conexion()
@@ -178,10 +251,10 @@ def buscar_resultado_nombre(nombre):
                 p.fecha_registro,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
-                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
-                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 0 THEN 1 END) AS aire_estado_0,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 1 THEN 1 END) AS agua_estado_1,
+                COUNT(CASE WHEN e.id = 2 AND s.estado = 0 THEN 1 END) AS agua_estado_0,
                 COUNT(CASE WHEN e.id = 4 AND s.estado = 1 THEN 1 END) AS tierra_estado_1,
                 COUNT(CASE WHEN e.id = 4 AND s.estado = 0 THEN 1 END) AS tierra_estado_0
             FROM 
