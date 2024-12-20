@@ -375,6 +375,10 @@ def error_page():
     message = request.args.get('message', 'Error desconocido')
     return render_template(generalPage("error_page.html"), message=message , redirigir=True)
 
+@app.route("/espera")
+def espera():
+    return render_template(generalPage("pagina_espera.html"))
+
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=8000, debug=True)
