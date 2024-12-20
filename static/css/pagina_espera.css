@@ -20,28 +20,28 @@ body{
 .ring{
     width: 200px;
     height: 200px;
-    border: 4px solid rgb(255, 255, 255);
+    border: 4px solid rgb(0, 0, 0);
     border-radius: 50%;
     position: absolute;
 }
 .ring:nth-child(1){
     border-bottom: 8px;
-    border-color: rgb(177, 47, 27);
+    border-color: rgb(175, 64, 34);
     animation: rotate1 2s linear infinite;
 }
 .ring:nth-child(2){
     border-right-width:8px ;
-    border-color: rgb(25, 168, 173);
+    border-color: rgb(158, 154, 158);
     animation: rotate2 2s linear infinite;   
 }
 .ring:nth-child(3){
     border-right-width:8px ;
-    border-color: rgb(7, 135, 14);
+    border-color: rgb(193, 121, 114);
     animation: rotate3 2s linear infinite; 
 }
 .ring:nth-child(4){
     border-right-width:8px ;
-    border-color: rgb(198, 228, 49);
+    border-color: rgb(16, 76, 119);
     animation: rotate4 2s linear infinite; 
 }
 .loading{
@@ -61,16 +61,16 @@ body{
       transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
     }
     100% {
-      transform: rotateX(50deg) rotateY(-10deg) rotateZ(360deg);
+      transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
     }
   }
   
   @keyframes rotate3 {
     0% {
-      transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+      transform: rotateX(55deg) rotateY(180deg) rotateZ(0deg);
     }
     100% {
-      transform: rotateX(35deg) rotateY(-55deg) rotateZ(360deg);
+      transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     }
   }
   

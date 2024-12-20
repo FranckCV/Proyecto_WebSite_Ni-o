@@ -102,7 +102,7 @@ body {
 }
 
 #particles-background {
-  background: linear-gradient(45deg, #3f3251 70%, #002025 30%); /* Ajuste de mezcla de colores */
+  background: linear-gradient(to right, #3f3251 , #250024); 
 }
 
 /* Animaciones */
