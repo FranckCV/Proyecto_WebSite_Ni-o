@@ -24,6 +24,7 @@ def generalPage(page):
 def adminPage(page):
     return "admin_pages/"+page
 
+
 def check_token(funcion):
     token = session.get('token')
     if token:
@@ -39,7 +40,8 @@ def check_token(funcion):
             flash("Token inválido, por favor inicie sesión nuevamente", "error")
             session.pop('token', None)
         return None
-    
+
+
 def check_back_option(template,tipo):
     if tipo=="general":
         response = make_response(render_template(generalPage(f"{template}")))
@@ -50,23 +52,23 @@ def check_back_option(template,tipo):
     response.headers['Expires'] = '-1'
     return response
 
-@app.route("/")
-def index():
-    participante_id = request.cookies.get('id_participante_cookie')
-    if participante_id:
-        id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_id)
-        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo)
-        if id_grupo==28 and verificado:
-            response = make_response(render_template(generalPage("index.html")))
-            response.delete_cookie("id_participante_cookie")
-            return response
-        elif id_grupo is not None:
-            return redirect(url_for('pregunta', id_grupo=id_grupo)) 
-        else:
-            return redirect(url_for('pregunta', id_grupo=1))
 
-    else:   
-        return render_template(generalPage("index.html"))
+# def index():
+#     participante_id = request.cookies.get('id_participante_cookie')
+#     if participante_id:
+#         id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_id)
+#         verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_id,id_grupo)
+#         if id_grupo==28 and verificado:
+#             response = make_response(render_template(generalPage("index.html")))
+#             response.delete_cookie("id_participante_cookie")
+#             return response
+#         elif id_grupo is not None:
+#             return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+#         else:
+#             return redirect(url_for('pregunta', id_grupo=1))
+
+#     else:   
+#         return render_template(generalPage("index.html"))
 
 
 @app.route("/login")
@@ -76,9 +78,9 @@ def login():
     response = check_back_option("login.html","admin")
     return response
 
+
 @app.route("/sign_in", methods=['POST'])
 def sign_in():
-    
     username = request.form['username']
     password = request.form['password']
     response = controlador_user.login(username, password)
@@ -107,6 +109,7 @@ def api_register_user():
 
     return jsonify(response)
 
+@app.route("/")
 @app.route("/sign_up")
 def sign_up():
     participante_cookie = request.cookies.get('id_participante_cookie')
@@ -118,6 +121,7 @@ def sign_up():
     response = check_back_option("sign_up.html","general")
     return response
 
+
 @app.route("/eliminar_cookies_despues_de_resultado")
 def eliminar_cookies_despues_de_resultado():
     respuesta = redirect(url_for('sign_up'))
@@ -126,6 +130,7 @@ def eliminar_cookies_despues_de_resultado():
     respuesta.delete_cookie('id_grupo_cookie')
     
     return respuesta
+
 
 @app.route("/guardar_participante", methods=["POST"])
 def guardar_participante():
