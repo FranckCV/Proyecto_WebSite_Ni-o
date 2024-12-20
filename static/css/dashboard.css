@@ -1,8 +1,6 @@
-/* h2 {
-    font-weight: bold;
-    color: var(--color1);
-    margin: 0;
-} */
+:root {
+    --width-element-column: 5vw;
+}
 
 table {
     background-color: white;
@@ -155,7 +153,7 @@ button {
     background-color: var(--color4);
     padding-block: 10px;
     padding-inline: 30px;
-    border-radius: 10px;
+    border-radius: 15px;
     position: sticky;
     top: 0;
     z-index: 2;
@@ -198,7 +196,7 @@ button {
 }
 
 .table_listado td.opciones_column {
-    background: linear-gradient(270deg, #bdbdbd4b 50%, #ffffff4b 70%);
+    background: linear-gradient(270deg, #bdbdbd00 30%, #ffffff4b 70%);
     border-bottom: 1px solid #c2c2c2;
 }
 
@@ -359,24 +357,27 @@ button {
     color: white;
 }
 
+th.nro_tierra,
+th.nro_aire,
+th.nro_agua,
+th.nro_fuego {
+    width: 8vw;
+    padding-inline: 15px;
+}
 
 th.nro_fuego {
-    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-fuego)  40%);
 }
 
 th.nro_aire {
-    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-aire)   40%);
 }
 
 th.nro_agua {
-    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-agua)   40%);
 }
 
 th.nro_tierra {
-    padding-inline: 7px;
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-tierra) 40%);
 }
 

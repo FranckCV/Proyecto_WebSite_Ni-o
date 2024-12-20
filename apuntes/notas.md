@@ -31,3 +31,29 @@
 
 
 ------
+
+
+
+
+### pagina de activación
+- **todo**
+  - diseño
+  - funcion python
+  - pagina
+  - funcionalidad basica
+  - estructura
+  - validaciones
+
+
+### dashboard
+-  diseño
+-  filtro fecha
+-  filtro estado
+-  
+
+### ver participante
+-  diseño
+   -  colores
+   -  forma
+   -  estructura
+-  
