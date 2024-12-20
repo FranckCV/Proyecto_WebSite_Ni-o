@@ -113,10 +113,18 @@ def api_register_user():
 @app.route("/sign_up")
 def sign_up():
     participante_cookie = request.cookies.get('id_participante_cookie')
-    id_grupo = request.cookies.get('id_grupo_cookie')
     
-    if id_grupo and participante_cookie:
-        return redirect(url_for('pregunta', id_grupo=id_grupo))
+    if participante_cookie:
+        id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie,id_grupo)
+        if id_grupo==28 and verificado:
+            response = make_response(render_template(generalPage("index.html")))
+            response.delete_cookie("id_participante_cookie")
+            return response
+        elif id_grupo is not None:
+            return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+        else:
+            return redirect(url_for('pregunta', id_grupo=1))
 
     response = check_back_option("sign_up.html","general")
     return response
@@ -271,7 +279,9 @@ def resultado():
 
     cantidad_selecciones = controlador_seleccion.contar_selecciones_por_participante(participante_id)
     if cantidad_selecciones != 56:
-        if id_grupo:
+        if id_grupo is None:
+            return redirect(url_for('pregunta', id_grupo=1))
+        elif id_grupo:
             return redirect(url_for('pregunta', id_grupo=int(id_grupo)))
         else:
             return redirect(url_for('error_page', message='No se pudo determinar el grupo para redirigir', redirigir = False))
@@ -380,6 +390,13 @@ def error_page():
     message = request.args.get('message', 'Error desconocido')
     return render_template(generalPage("error_page.html"), message=message , redirigir=True)
 
+@app.route("/espera")
+def espera():
+    return render_template(generalPage("pagina_espera.html"))
+
+@app.route("/espera_dos")
+def espera_dos():
+    return render_template(generalPage("espera.html"))
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=8000, debug=True)
