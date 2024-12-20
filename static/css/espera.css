@@ -43,6 +43,14 @@ body {
   }
 }
 
+.loading {
+    color: white;
+    transform: translate(0%, -50%); /* Ajusta para centrar completamente */
+    font-size: 15px; /* Tamaño del texto */
+    font-weight: bold; /* Resalta el texto */
+}
+
+
 /* Estilos globales */
 * {
   transition: all .3s;
