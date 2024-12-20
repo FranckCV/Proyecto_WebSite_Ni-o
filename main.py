@@ -24,6 +24,7 @@ def generalPage(page):
 def adminPage(page):
     return "admin_pages/"+page
 
+
 def check_token(funcion):
     token = session.get('token')
     if token:
@@ -39,7 +40,8 @@ def check_token(funcion):
             flash("Token inválido, por favor inicie sesión nuevamente", "error")
             session.pop('token', None)
         return None
-    
+
+
 def check_back_option(template,tipo):
     if tipo=="general":
         response = make_response(render_template(generalPage(f"{template}")))
@@ -79,7 +81,6 @@ def login():
 
 @app.route("/sign_in", methods=['POST'])
 def sign_in():
-    
     username = request.form['username']
     password = request.form['password']
     response = controlador_user.login(username, password)

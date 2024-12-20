@@ -110,7 +110,7 @@ def obtener_resultados():
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro
+                grupos_seleccionados , p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -146,7 +146,7 @@ def obtener_valores():
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro
+                grupos_seleccionados , p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -272,7 +272,7 @@ def buscar_resultado_nombre(nombre):
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro
+                grupos_seleccionados , p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
