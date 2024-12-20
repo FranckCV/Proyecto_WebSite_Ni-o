@@ -84,8 +84,9 @@ Lista de Resultados
         <th>ID</th>
         <th>Nombre Completo</th>
         <th>Fecha y Hora Registro</th>
+        <!-- <th>Fecha Registro</th> -->
+        <!-- <th>Hora Registro</th> -->
         <th>Progreso</th>
-        <!-- <th>{{cant_max_progreso}}</th> -->
         <th class="nro_fuego">Resultado Fuego</th>
         <th class="nro_aire">Resultado Aire</th>
         <th class="nro_agua">Resultado Agua</th>
@@ -103,8 +104,18 @@ Lista de Resultados
             {% endif %}
             ">
         <td class="celda_id">{{ res.0 }}</td>
-        <td>{{ res.1 }} {{ res.2 }}</td>
-        <td>{{ res.7 }}</td>
+        <td>
+          <p>
+            {{ res.1 }}
+          </p>
+          <p>
+            {{ res.2 }}
+          </p>
+        </td>
+        <td>
+          <p>{{ res.6.strftime('%d/%m/%Y') }}</p>
+          <p>{{ res.7 }}</p>
+        </td>
         <td>
           <div class="bloque_progreso" data-person-id="{{ res.0 }}">
             <span id="progressText">
@@ -143,7 +154,7 @@ Lista de Resultados
         </td>
         <td class="opciones_column">
           <div class="acciones">
-            
+
             <a class="opciones_fila" href="{{url_for('ver_informacion', id=res[0])}}">
               <button type="submit">
                 <i class="fa-solid fa-circle-info"></i>
@@ -163,6 +174,9 @@ Lista de Resultados
       {% endfor %}
     </tbody>
   </table>
+
+  <input type="hidden" id="cantidad_maxima_progreso" value="{{cant_max_progreso}}">
+
 </div>
 
 {% endblock %}
@@ -172,6 +186,8 @@ Lista de Resultados
 {% block scripts %}
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
   integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+<script src="/static/js/filtroCRUDListado.js"></script>
+
 <script>
   function confirmarEliminacion() {
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
@@ -187,6 +203,20 @@ Lista de Resultados
     console.log("Socket Desconectado.!");
   });
 
+  function pintarFila(fila) {
+    const valor = fila.querySelector("#cant_now_progreso").textContent;
+    const MAX = fila.querySelector("#cant_max_progreso").textContent;
+
+    if (parseFloat(valor) === parseFloat(MAX)) {
+      fila.classList.add('fila_disp_si');
+      fila.classList.remove('fila_disp_no');
+    } else {
+      fila.classList.remove('fila_disp_si');
+      fila.classList.add('fila_disp_no');
+    }
+    fila.dispatchEvent(new Event('change'));
+  }
+
   function putValueCellNumber(id, elemento, valor) {
     const rows = document.querySelectorAll("#productTableBody tr");
     for (const row of rows) {
@@ -196,6 +226,7 @@ Lista de Resultados
         filaAux.innerHTML = valor;
       }
       row.querySelector("#progressInput").dispatchEvent(new Event('input'));
+      pintarFila(row);
     }
   }
 
@@ -263,6 +294,5 @@ Lista de Resultados
 
 
 </script>
-<script src="/static/js/filtroCRUDListado.js"></script>
 
 {% endblock %}
