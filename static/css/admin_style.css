@@ -1,7 +1,12 @@
+
+:root {
+    --width-aside: 20vw;
+}
+
 .general_body {
     display: grid;
     min-height: 100vh;
-    grid-template-columns: 20vw auto;
+    grid-template-columns: var(--width-aside) auto;
     grid-template-rows: auto auto;
     grid-template-areas:
         "body_aside body_header"
@@ -59,7 +64,16 @@ aside {
     flex-direction: column;
     /* width: 15vw; */
     color: white;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
+    position: fixed;
+    height: 100%;
+    overflow-y: scroll;
+    z-index: 50;
+    width: var(--width-aside);
+}
+
+aside::-webkit-scrollbar {
+    display: none;
 }
 
 aside div {

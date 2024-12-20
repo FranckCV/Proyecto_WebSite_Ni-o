@@ -46,7 +46,7 @@
         <hr>
         <div class="aside_options">
             <a class="aside_item" href="{{url_for('dashboard')}}">Dashboard</a>
-            <a class="aside_item" href="{{url_for('logout')}}">CERRAR SESIÓN</a>
+            <a class="aside_item" href="{{url_for('logout')}}" onclick="return confirmarLogOut()">CERRAR SESIÓN</a>
         </div>
     </aside>
 
@@ -57,10 +57,15 @@
 
     <!-- <footer class="general_element">
     </footer> -->
-
+    <script>
+        function confirmarLogOut() {
+            return confirm('¿Estás seguro que deseas cerra sesión?')
+        }
+    </script>
     <script src="/static/js/common_scripts/bootstrap.bundle.min.js"></script>
     <script src="/static/js/common_scripts/bootstrap.min.js"></script>
     <script src="/static/js/common_scripts/common_script.js"></script>
+
     <!-- <script src="/static/js/general_script.js"></script> -->
     {% block scripts %}
     {% endblock %}
