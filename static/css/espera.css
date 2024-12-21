@@ -19,7 +19,7 @@ body {
   font-family: "proxima-nova-soft", sans-serif;
   -webkit-user-select: none;
   overflow: hidden;
-  background: linear-gradient(45deg, #3f3251 70%, #002025 30%); /* Ajuste de mezcla de colores */
+  background: linear-gradient(45deg, #040305 70%, #002025 30%); /* Ajuste de mezcla de colores */
 
   .vertical-centered-box {
     position: absolute;
@@ -110,7 +110,7 @@ body {
 }
 
 #particles-background {
-  background: linear-gradient(to right, #3f3251 , #250024); 
+  background: linear-gradient(to right, #000000 , #000000); 
 }
 
 /* Animaciones */

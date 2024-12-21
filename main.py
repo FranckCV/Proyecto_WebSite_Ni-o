@@ -118,7 +118,7 @@ def sign_up():
         id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
         verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie,id_grupo)
         if id_grupo==28 and verificado:
-            response = make_response(render_template(generalPage("index.html")))
+            response = make_response(render_template(generalPage("sign_up.html")))
             response.delete_cookie("id_participante_cookie")
             return response
         elif id_grupo is not None:
@@ -396,6 +396,10 @@ def espera():
 @app.route("/espera_dos")
 def espera_dos():
     return render_template(generalPage("espera.html"))
+
+@app.route("/espera_tres")
+def espera_tres():
+    return render_template(generalPage("espera_dos.html"))
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=8000, debug=True)
