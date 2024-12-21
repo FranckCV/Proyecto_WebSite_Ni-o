@@ -1,0 +1,130 @@
+/* Variables de color */
+@blue: #26bbf0;
+@green: #c2d5a0;
+@red: #cf6a6d;
+@yellow: #ffbc0d;
+
+@black: #343536;
+@black-2: #424950;
+@grey: #89949b;
+@grey-2: #9aa8b1;
+@light-grey: #c4c9cd;
+@light-grey-2: #dbdfe1;
+@white: #f3f4f5;
+
+/* Estilos para el body */
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: "proxima-nova-soft", sans-serif;
+  -webkit-user-select: none;
+  overflow: hidden;
+  background: linear-gradient(45deg, #040305 70%, #002025 30%); /* Ajuste de mezcla de colores */
+
+  .vertical-centered-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    &:after {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      margin-right: -0.25em;
+    }
+    .content {
+      box-sizing: border-box;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: left;
+      font-size: 0;
+    }
+  }
+}
+
+.loading {
+    color: white;
+    transform: translate(0%, -50%); /* Ajusta para centrar completamente */
+    font-size: 15px; /* Tamaño del texto */
+    font-weight: bold; /* Resalta el texto */
+}
+
+
+/* Estilos globales */
+* {
+  transition: all .3s;
+}
+
+/* Logo de Prism */
+#prism-logo path {
+  /* Si planeas usar estos estilos, descomenta y ajústalos */
+  /* fill: #20293b; */
+  /* stroke: rgba(255,255,255,1); */
+  /* stroke-width: 1px; */
+}
+
+/* Estilos de la carga circular */
+.loader-circle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1);
+  margin-left: -60px;
+  margin-top: -60px;
+  /* .animation(fade 1.2s infinite ease-in-out); Si se quiere añadir animación, descomentar esta línea */
+}
+
+/* Estilos de la máscara de la carga */
+.loader-line-mask {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60px;
+  height: 120px;
+  margin-left: -60px;
+  margin-top: -60px;
+  overflow: hidden;
+  transform-origin: 60px 60px;
+  -webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0));
+  animation: rotate 1.2s infinite linear;
+}
+
+.loader-line {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
+}
+
+/* Fondo de partículas */
+#particles-background, #particles-foreground {
+  left: -51%;
+  top: -51%;
+  width: 202%;
+  height: 202%;
+  transform: scale3d(.5, .5, 1);
+}
+
+#particles-background {
+  background: linear-gradient(to right, #000000 , #000000); 
+}
+
+/* Animaciones */
+@keyframes rotate {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+@keyframes fade {
+  0% { opacity: 1;}
+  50% { opacity: 0.25;}
+}
+
+@keyframes fade-in {
+  0% { opacity: 0;}
+  100% { opacity: 1;}
+}

@@ -85,10 +85,10 @@ def obtener_resultados():
                 p.nombres,
                 p.apellidos,
                 COUNT( s.AGRUPACIONCUALIDADid) AS grupos_seleccionados,
-                TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, CURDATE()) AS edad,
                 p.telefono,
                 p.correo,
-                p.fecha_registro,
+                DATE(p.fecha_registro) AS fecha_registro, 
+                TIME(p.fecha_registro) AS hora_registro,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
@@ -110,7 +110,7 @@ def obtener_resultados():
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro
+                grupos_seleccionados , p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -146,7 +146,7 @@ def obtener_valores():
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro
+                grupos_seleccionados , p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -163,10 +163,10 @@ def obtener_resultado_id(par_id):
                 p.nombres,
                 p.apellidos,
                 COUNT( s.AGRUPACIONCUALIDADid) AS grupos_seleccionados,
-                TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, CURDATE()) AS edad,
+                DATE(p.fecha_registro) AS fecha_registro, 
                 p.telefono,
                 p.correo,
-                p.fecha_registro,
+                TIME(p.fecha_registro) AS hora_registro,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
@@ -245,10 +245,10 @@ def buscar_resultado_nombre(nombre):
                 p.nombres,
                 p.apellidos,
                 COUNT( s.AGRUPACIONCUALIDADid) AS grupos_seleccionados,
-                TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, CURDATE()) AS edad,
                 p.telefono,
                 p.correo,
-                p.fecha_registro,
+                DATE(p.fecha_registro) AS fecha_registro, 
+                TIME(p.fecha_registro) AS hora_registro,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 1 THEN 1 END) AS fuego_estado_1,
                 COUNT(CASE WHEN e.id = 1 AND s.estado = 0 THEN 1 END) AS fuego_estado_0,
                 COUNT(CASE WHEN e.id = 3 AND s.estado = 1 THEN 1 END) AS aire_estado_1,
@@ -272,7 +272,7 @@ def buscar_resultado_nombre(nombre):
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro
+                grupos_seleccionados , p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()

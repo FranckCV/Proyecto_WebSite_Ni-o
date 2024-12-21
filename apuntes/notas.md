@@ -31,3 +31,38 @@
 
 
 ------
+
+
+
+
+
+### aside admin
+- dashboard
+- activacion
+- modelo de mensaje por correo
+<!-- - gestion elementos -->
+- Temas del Sitio
+- cambiar contraseña
+- cerrar sesion
+
+
+### dashboard
+-  
+-  
+
+
+### ver participante
+-  
+-  
+
+
+### pagina de activación
+- **todo**
+  - diseño
+  - funcion python
+  - pagina
+  - funcionalidad basica
+  - estructura
+  - validaciones
+
+
