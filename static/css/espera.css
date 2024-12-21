@@ -43,6 +43,14 @@ body {
   }
 }
 
+.loading {
+    color: white;
+    transform: translate(0%, -50%); /* Ajusta para centrar completamente */
+    font-size: 15px; /* Tamaño del texto */
+    font-weight: bold; /* Resalta el texto */
+}
+
+
 /* Estilos globales */
 * {
   transition: all .3s;
@@ -102,7 +110,7 @@ body {
 }
 
 #particles-background {
-  background: linear-gradient(45deg, #3f3251 70%, #002025 30%); /* Ajuste de mezcla de colores */
+  background: linear-gradient(to right, #3f3251 , #250024); 
 }
 
 /* Animaciones */

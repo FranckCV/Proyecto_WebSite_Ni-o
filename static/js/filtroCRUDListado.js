@@ -19,6 +19,12 @@ function cantResultadosFilas() {
 
 cantResultadosFilas();
 
+document.querySelectorAll('#productTableBody tr').forEach(fila => {
+  fila.addEventListener('change',()=> {
+    cantResultadosFilas();
+  });
+});
+
 function filtroTableSelect(nombreSelect , atributo , valor) {
   document.getElementById(nombreSelect).addEventListener('change', function() {
     const elementSelect = this.value;
