@@ -26,12 +26,19 @@ Colores
     <button onclick="saveCSS()">Guardar</button> -->
 
     <div class="container">
-        <input type="color" name="" id="">
-        <h2>Editor de CSS</h2>
-        <textarea id="css-editor" rows="20" style="width: 100%;"></textarea>
-        <button onclick="saveCSS()">Guardar Cambios</button>
+        <div class="row">
+            <div class="col">
+                <input type="color" name="" id="">
+                <h2>Editor de CSS</h2>
+                <textarea id="css-editor" rows="20" style="width: 100%;"></textarea>
+                <button onclick="saveCSS()">Guardar Cambios</button>
+            </div>
+            <div class="col">
+                <iframe style="width: 100%; height: 100%;" src="{{url_for('colores')}}" frameborder="0"></iframe>
+            </div>
+        </div>
     </div>
-    
+
     <script>
         // Cargar el contenido inicial del archivo CSS
         async function loadCSS() {
@@ -43,28 +50,28 @@ Colores
                 alert('Error al cargar el CSS');
             }
         }
-    
+
         // Guardar los cambios del archivo CSS
         async function saveCSS() {
             const cssContent = document.getElementById('css-editor').value;
-    
+
             const response = await fetch('/save-css', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ css: cssContent })
             });
-    
+
             if (response.ok) {
                 alert('CSS guardado exitosamente');
             } else {
                 alert('Error al guardar el CSS');
             }
         }
-    
+
         // Cargar el CSS al cargar la página
         window.onload = loadCSS;
     </script>
-    
+
 </div>
 {% endblock %}
 
@@ -87,4 +94,3 @@ Colores
 
 </script> -->
 {% endblock %}
-

@@ -242,10 +242,6 @@ def pregunta_anterior():
     session['desordenar'] = 'true'  
     return respuesta
 
-@app.route("/colores")
-def colores():
-    return render_template(generalPage("colores.html"))
-
 ###############################################################################################################
 
 
@@ -313,6 +309,10 @@ def temas():
     user_info_0 , user_info_1 , user_info_2  = user_info
     response.set_data(render_template(adminPage("temas.html"), user_info_1 = user_info_1 , user_info_2 = user_info_2))
     return response
+
+@app.route("/colores")
+def colores():
+    return render_template(generalPage("colores.html"))
 
 CSS_FILE_PATH = 'static/css/common_styles/colores.css'
 
