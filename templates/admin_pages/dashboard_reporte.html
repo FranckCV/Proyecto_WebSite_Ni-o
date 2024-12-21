@@ -35,9 +35,9 @@ Lista de Resultados
       <form enctype="multipart/form-data" method="GET" action="{{ url_for('buscarResultado') }}">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Buscar por nombres y apellidos"
-            aria-label="Recipient's username" aria-describedby="button-addon2" id="buscarElemento" name="buscarElemento"
-            maxlength="45" {% if nombreBusqueda %} value="{{nombreBusqueda}}" {% endif %} />
-          <button class="btn btn-outline-secondary searchi" type="submit" id="button-addon2">
+             id="buscarElemento" name="buscarElemento"
+            maxlength="85" {% if nombreBusqueda %} value="{{nombreBusqueda}}" {% endif %} />
+          <button class="btn btn-outline-secondary searchi" type="submit" id="">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>

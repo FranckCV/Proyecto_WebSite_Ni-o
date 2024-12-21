@@ -299,46 +299,6 @@ def resultado():
 #     return render_template(generalPage("resultado_v2.html"))
 
 
-
-@app.route("/temas")
-@token_required
-def temas():
-    # response = check_back_option("dashboard_reporte.html")
-    response = check_back_option("dashboard_reporte.html","admin")
-    user_info = controlador_user.get_admin_by_token(session.get('token'))
-    user_info_0 , user_info_1 , user_info_2  = user_info
-    response.set_data(render_template(adminPage("temas.html"), user_info_1 = user_info_1 , user_info_2 = user_info_2))
-    return response
-
-@app.route("/colores")
-def colores():
-    return render_template(generalPage("colores.html"))
-
-CSS_FILE_PATH = 'static/css/common_styles/colores.css'
-
-@app.route('/load-css', methods=['GET'])
-def load_css():
-    try:
-        with open(CSS_FILE_PATH, 'r') as css_file:
-            css_content = css_file.read()
-        return css_content, 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/save-css', methods=['POST'])
-def save_css():
-    try:
-        data = request.json
-        css_content = data.get('css')
-
-        with open(CSS_FILE_PATH, 'w') as css_file:
-            css_file.write(css_content)
-
-        return jsonify({'status': 'success'}), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-
 @app.route("/dashboard")
 @token_required
 def dashboard():
@@ -440,6 +400,80 @@ def espera_dos():
 @app.route("/espera_tres")
 def espera_tres():
     return render_template(generalPage("espera_dos.html"))
+
+
+
+
+
+
+
+
+@app.route("/temas")
+@token_required
+def temas():
+    # response = check_back_option("dashboard_reporte.html")
+    response = check_back_option("dashboard_reporte.html","admin")
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
+    response.set_data(render_template(adminPage("temas.html"), user_info_1 = user_info_1 , user_info_2 = user_info_2))
+    return response
+
+@app.route("/colores")
+def colores():
+    return render_template(generalPage("colores.html"))
+
+CSS_FILE_PATH = 'static/css/common_styles/colores.css'
+
+@app.route('/load-css', methods=['GET'])
+def load_css():
+    try:
+        with open(CSS_FILE_PATH, 'r') as css_file:
+            css_content = css_file.read()
+        return css_content, 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/save-css', methods=['POST'])
+def save_css():
+    try:
+        data = request.json
+        css_content = data.get('css')
+
+        with open(CSS_FILE_PATH, 'w') as css_file:
+            css_file.write(css_content)
+
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/save-colors', methods=['POST'])
+def save_colors():
+    try:
+        colors = request.json
+        css_content = ":root {\n"
+
+        # Generar las variables CSS a partir de los datos recibidos
+        for var, value in colors.items():
+            css_content += f"    --{var}: {value};\n"
+
+        css_content += "}"
+
+        # Guardar el archivo
+        with open(CSS_FILE_PATH, 'w') as css_file:
+            css_file.write(css_content)
+
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=8000, debug=True)

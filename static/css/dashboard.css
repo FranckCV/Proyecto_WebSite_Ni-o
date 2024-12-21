@@ -50,11 +50,12 @@ button {
     align-items: center;
     justify-content: center;
     gap: 10px;
+    padding: 0;
 }
 
-p {
+/* p {
     margin: 0;
-}
+} */
 
 .button_volver {
     background-color: #7200a7;
@@ -230,7 +231,7 @@ p {
 }
 
 .table_listado th.opciones_column {
-    background-color: #111057;
+    background-color: var(--color4);
     z-index: 3;
     padding-inline: 5px;
 }

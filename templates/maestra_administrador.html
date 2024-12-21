@@ -37,24 +37,46 @@
     <aside class="general_element">
         <div class="aside_info">
             <div class="aside_item">
-                {{user_info_1}}
-            </div>
-            <div class="aside_item">
                 <i class="fa-solid fa-user"></i> <b>{{user_info_2}}</b>
             </div>
+            <div class="aside_item">
+                {{user_info_1}}
+            </div>
         </div>
         <hr>
         <div class="aside_options">
-            <a class="aside_item" href="{{url_for('dashboard')}}">Dashboard</a>
-            <button class="aside_item" onclick="openModal()">Activar Test</button>
-            <a class="aside_item falta" href="{{url_for('dashboard')}}">Modelo de Mensaje por Correo</a>
-            <a class="aside_item falta" href="{{url_for('temas')}}">Temas del Sitio</a>
+            <a class="" href="{{url_for('dashboard')}}">
+                <button class="aside_item">
+                    <i class="fa-solid fa-list"></i>
+                    <p>Dashboard</p>
+                </button>
+            </a>
+            <button class="aside_item" onclick="openModal()">
+                <i class="fa-solid fa-power-off"></i>
+                <p>Activar Test</p>
+            </button>
+            <a href="{{url_for('dashboard')}}">
+                <button class="aside_item falta">
+                    <i class="fa-solid fa-envelope"></i>
+                    <p>Modelo de Mensaje por Correo</p>
+                </button>
+            </a>
+            <a class="aside_item falta" href="{{url_for('temas')}}">
+                <i class="fa-solid fa-brush"></i>
+                <p>Temas del Sitio</p>
+            </a>
         </div>
         <hr>
         <div class="aside_options">
-            <a class="aside_item falta" href="{{url_for('dashboard')}}">Cambiar de Contraseña</a>
+            <a class="aside_item falta" href="{{url_for('dashboard')}}">
+                <i class="fa-solid fa-key"></i>
+                <p>Cambiar de Contraseña</p>
+            </a>
             <a class="" class="" href="{{url_for('logout')}}" onclick="return confirmarLogOut()">
-                <button class="button_borrar">Cerrar Sesión</button>
+                <button class="button_borrar">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <p>Cerrar Sesión</p>
+                </button>
             </a>
         </div>
     </aside>

@@ -1,4 +1,5 @@
 @import url("/static/css/common_styles/colores.css");
+@import url("/static/css/common_styles/colores_sec.css");
 
 :root {
     --height-header: 20vh;
