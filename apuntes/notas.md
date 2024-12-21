@@ -47,9 +47,7 @@
 
 ### dashboard
 -  diseño
--  filtro fecha
--  filtro estado
--  
+
 
 ### ver participante
 -  diseño
