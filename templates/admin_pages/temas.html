@@ -1,0 +1,90 @@
+{% extends 'maestra_administrador.html' %}
+
+
+{% block titulo %}
+{% endblock %}
+
+
+{% block estilos %}
+<link rel="stylesheet" href="/static/css/dashboard.css" />
+{% endblock %}
+
+
+{% block header %}
+Temas
+{% endblock %}
+
+
+{% block nav %}
+Colores
+{% endblock %}
+
+
+{% block contenido %}
+<div class="container-fluid">
+    <!-- <textarea id="css-editor"></textarea>
+    <button onclick="saveCSS()">Guardar</button> -->
+
+    <div class="container">
+        <input type="color" name="" id="">
+        <h2>Editor de CSS</h2>
+        <textarea id="css-editor" rows="20" style="width: 100%;"></textarea>
+        <button onclick="saveCSS()">Guardar Cambios</button>
+    </div>
+    
+    <script>
+        // Cargar el contenido inicial del archivo CSS
+        async function loadCSS() {
+            const response = await fetch('/load-css'); // Ruta en el backend
+            if (response.ok) {
+                const cssContent = await response.text();
+                document.getElementById('css-editor').value = cssContent;
+            } else {
+                alert('Error al cargar el CSS');
+            }
+        }
+    
+        // Guardar los cambios del archivo CSS
+        async function saveCSS() {
+            const cssContent = document.getElementById('css-editor').value;
+    
+            const response = await fetch('/save-css', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ css: cssContent })
+            });
+    
+            if (response.ok) {
+                alert('CSS guardado exitosamente');
+            } else {
+                alert('Error al guardar el CSS');
+            }
+        }
+    
+        // Cargar el CSS al cargar la página
+        window.onload = loadCSS;
+    </script>
+    
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<!-- <script>
+    function saveCSS() {
+    const cssContent = document.getElementById('css-editor').value;
+
+    fetch('/update-css', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ css: cssContent })
+    })
+    .then(response => {
+        if (response.ok) alert('CSS actualizado');
+        else alert('Error al actualizar el CSS');
+    });
+}
+
+</script> -->
+{% endblock %}
+

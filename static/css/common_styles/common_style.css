@@ -1,53 +1,10 @@
-:root {    
-    /* --height-header1: 8vh; */
-    /* --height-header2: 10vh; */
-    /* --height-nav: 10vh; */
-    /* --height-main-header: calc( var(--height-header1) + var(--height-header2) + var(--height-nav)); */
-    
-    /* --size-bubble-cart: 5vw;
-    --size-bubble-cart-tab: 3.5vw;
-    --size-bubble-cart-pc: 2.1vw;
+@import url("/static/css/common_styles/colores.css");
 
-    --font-icon-cel: 20px;
-    --font-icon-tab: 2.5vw;
-    --font-icon-pc: 1.55vw; */
-
+:root {
     --height-header: 20vh;
     --height-footer: 50vh;
     --height-aside: 90vh;
     --height-section: 1vh;
-    
-    /* --color-base: #b84503; 
-    --color1: #1a0000;
-    --color2: #960000;
-    --color3: #6b2200;
-    --color4: #2b0700;
-    --color5: #d69d00;
-    --color6: #ffffff;
-    --color7: #ffffff;
-    --color8: #ffffff;
-    --color9: #ffffff;
-    --color10: #ffffff; */
-
-    --color-base: #012f91; 
-    --color1: color-mix(in srgb, var(--color-base) 100%, #e6e6e6 0%); 
-    --color2: color-mix(in srgb, var(--color-base) 100%, #ffffff 30%); 
-    /* --color2: var(--color-base);  */
-    --color3: color-mix(in srgb, var(--color1) 100%, black 30%);
-    --color4: color-mix(in srgb, var(--color1) 50%, black 90%);
-    --color5: color-mix(in srgb, var(--color1) 70%, var(--color2) 30%);
-    --color6: color-mix(in srgb, var(--color1) 70%, var(--color3) 90%);
-    --color7: color-mix(in srgb, var(--color1) 70%, var(--color3) 0%);
-    --color8: color-mix(in srgb, var(--color1) 70%, black 50%);
-    --color9: color-mix(in srgb, var(--color1) 40%, white 50%);
-    --color10: color-mix(in srgb, var(--color1) 100%, #cecece 100%);
-
-    --color-background: color-mix(in srgb, #ffffff 30%, white 10%);
-
-    --color-fuego: #FF0000;
-    --color-aire: #ffff00;
-    --color-agua: #2e65a8;
-    --color-tierra: #000;
 }
 
 body {

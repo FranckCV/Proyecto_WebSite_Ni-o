@@ -81,18 +81,32 @@ Datos de {{resultado.1}} {{resultado.2}}
 
   <div class="campo_progreso">
     <div class="bloque_progreso">
-      <p class="progressNow">
-        <span id="cant_now_progreso">{{resultado.3}}</span>
-        /
-        <span id="cant_max_progreso">{{cant_max_progreso}}</span>
-      </p>
-      <span id="progressText">
-        <input disabled class="progreso_input" id="progressInput" min="0" max="100">
-        <p class="percent">%</p>
-      </span>
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="progressBar"></div>
+
+      <div class="row">
+        <div class="col-3">
+          <p class="progressNow">
+            <span id="cant_now_progreso">{{resultado.3}}</span>
+            /
+            <span id="cant_max_progreso">{{cant_max_progreso}}</span>
+          </p>
+        </div>
+        <div class="col-3">
+          <span id="progressText">
+            <input disabled class="progreso_input" id="progressInput" min="0" max="100">
+            <p class="percent">%</p>
+          </span>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar">
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -180,9 +194,28 @@ Datos de {{resultado.1}} {{resultado.2}}
   <div class="campo_adicional">
     <input type="hidden" id="id_participante" disabled="disabled" value="{{resultado.0 }}">
     <input type="hidden" id="nombre_participante" disabled="disabled" value="{{resultado.1 }} {{resultado.2 }}">
-    <a class="" href="{{ url_for('dashboard') }}">
-      <button type="button" class="button_volver">Volver al Listado General</button>
-    </a>
+    <div class="row">
+      <div class="col">
+        <a class="" href="{{ url_for('dashboard') }}">
+          <button type="button" class="button_volver">
+            <i class="fa-solid fa-left-long"></i>
+            <p>Volver al Listado General</p>
+          </button>
+        </a>
+      </div>
+
+      <div class="col-4">
+        <form class="" action="{{ url_for('eliminar_info_participante') }}" method="POST"
+          onsubmit="return confirmarEliminacion()" id="deleteF">
+          <input type="hidden" name="par_id" id="par_id" value="{{ resultado.0 }}" />
+          <button type="submit" class="button_borrar">
+            <i class="fa-solid fa-trash-can"></i>
+            <p>Eliminar Información del Participante</p>
+          </button>
+        </form>
+      </div>
+
+    </div>
   </div>
 
 </div>
@@ -195,15 +228,17 @@ Datos de {{resultado.1}} {{resultado.2}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-
+  function confirmarEliminacion() {
+    return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
+  }
   const socket = io();
 
   socket.on("connect", function () {
-    console.log("Socket Activo.!");
+    // console.log("Socket Activo.!");
   });
 
   socket.on("disconnect", function () {
-    console.log("Socket Desconectado.!");
+    // console.log("Socket Desconectado.!");
   });
 
 
@@ -414,7 +449,7 @@ Datos de {{resultado.1}} {{resultado.2}}
 
   socket.on("update_valores_participante", (data) => {
     if (data.valores) {
-      console.log(data.valores);
+      // console.log(data.valores);
       actualizarInputs(data.valores);
       mostrarProgreso();
     } else {

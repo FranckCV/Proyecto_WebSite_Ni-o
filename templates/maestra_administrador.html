@@ -40,13 +40,23 @@
                 {{user_info_1}}
             </div>
             <div class="aside_item">
-                <b>{{user_info_2}}</b>
+                <i class="fa-solid fa-user"></i> <b>{{user_info_2}}</b>
             </div>
         </div>
         <hr>
         <div class="aside_options">
             <a class="aside_item" href="{{url_for('dashboard')}}">Dashboard</a>
-            <a class="aside_item" href="{{url_for('logout')}}" onclick="return confirmarLogOut()">CERRAR SESIÓN</a>
+            <a class="aside_item" href="{{url_for('dashboard')}}">Activacion del Test</a>
+            <a class="aside_item" href="{{url_for('dashboard')}}">Modelo de Mensaje por Correo</a>
+            <!-- <a class="aside_item" href="{{url_for('dashboard')}}">Gestión de Elementos</a> -->
+            <a class="aside_item" href="{{url_for('temas')}}">Temas del Sitio</a>
+        </div>
+        <hr>
+        <div class="aside_options">
+            <a class="aside_item" href="{{url_for('dashboard')}}">Cambiar de Contraseña</a>
+            <a class="" class="" href="{{url_for('logout')}}" onclick="return confirmarLogOut()">
+                <button class="button_borrar">Cerrar Sesión</button>
+            </a>
         </div>
     </aside>
 

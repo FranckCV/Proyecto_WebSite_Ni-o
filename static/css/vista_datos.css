@@ -9,7 +9,7 @@ label {
 .row {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 5px;
 }
 
 .col {
@@ -28,6 +28,7 @@ table input {
 
 .grid-info {
   display: grid;
+  grid-template-columns: 50% 50%;
   /* grid-template-areas: 
                       "c_info c_tabla"
                       "c_info c_grafico"
@@ -38,7 +39,8 @@ table input {
     "c_info c_info"
     "c_progreso c_grafico"
     "c_tabla c_grafico"
-    "c_adicional c_grafico"
+    "c_tabla c_grafico"
+    "c_adicional c_adicional"
   ;
 }
 
@@ -63,7 +65,7 @@ table input {
 }
 
 .campo_info input {
-  border: 1px solid #b9b9b9;
+  border: 1px solid #eaeaea;
   background-color: white;
   color: #000;
   border-radius: 5px;

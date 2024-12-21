@@ -46,6 +46,14 @@ button {
     border: none;
     background: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+p {
+    margin: 0;
 }
 
 .button_volver {
@@ -59,7 +67,7 @@ button {
     background-color: #a70013;
     color: white;
     padding-inline: 10px;
-    padding-block: 5px;
+    padding-block: 8px;
 }
 
 .campo_tiempo {
@@ -158,6 +166,7 @@ button {
     font-size: 12px;
     background-color: transparent;
     border-radius: 20px;
+    width: 100%;
 }
 
 .table_listado thead {

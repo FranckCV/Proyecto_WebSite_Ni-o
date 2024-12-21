@@ -48,7 +48,12 @@ Lista de Resultados
     <div class="col-3">
       <div class="input-group">
         <a class="" href="{{ url_for('dashboard') }}">
-          <button type="button" class="button_volver">Volver al Listado General</button>
+          <button type="button" class="button_volver">
+            <i class="fa-solid fa-left-long"></i>
+            <p>
+              Volver al Listado General
+            </p>
+          </button>
         </a>
       </div>
     </div>
@@ -97,7 +102,7 @@ Lista de Resultados
           <input type="date" class="" name="" id="dateInicio">
           <input type="time" class="" name="" id="hourInicio">
         </div>
-        
+
         <div class="col campo_tiempo">
           <input type="date" class="" name="" id="dateFinal">
           <input type="time" class="" name="" id="hourFinal">
@@ -112,8 +117,6 @@ Lista de Resultados
     </div>
 
   </div>
-
-
 
   <div class="table-container">
     <table cellspacing="0" class="table_listado">
@@ -240,11 +243,11 @@ Lista de Resultados
   const socket = io();
 
   socket.on("connect", function () {
-    console.log("Socket Activo.!");
+    // console.log("Socket Activo.!");
   });
 
   socket.on("disconnect", function () {
-    console.log("Socket Desconectado.!");
+    // console.log("Socket Desconectado.!");
   });
 
   function pintarFila(fila) {
