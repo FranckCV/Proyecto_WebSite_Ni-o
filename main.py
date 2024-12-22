@@ -247,21 +247,17 @@ def pregunta_anterior():
 
 @app.route("/resultado")
 def resultado():
-    # Obtener las cookies necesarias
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
-    # Verificar que la cookie del participante exista
     if not participante_cookie:
         return render_template(generalPage("sign_up.html"))
 
     try:
-        # Dividir la cookie en ID del participante y hash recibido
         participante_id, hash_recibido = participante_cookie.split(":")
     except ValueError:
         message = "Error: La cookie está mal formada."
         return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
-    # Verificar que el hash sea válido
     if not encriptacion.verificar_hash(participante_id, hash_recibido):
         message = "Error: La cookie no es válida."
         return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
