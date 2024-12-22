@@ -19,7 +19,7 @@ body {
   font-family: "proxima-nova-soft", sans-serif;
   -webkit-user-select: none;
   overflow: hidden;
-  background: linear-gradient(45deg, #3f3251 70%, #002025 30%); /* Ajuste de mezcla de colores */
+  background: linear-gradient(45deg, #040305 70%, #002025 30%); /* Ajuste de mezcla de colores */
 
   .vertical-centered-box {
     position: absolute;
@@ -93,12 +93,7 @@ body {
   animation: rotate 1.2s infinite linear;
 }
 
-.loader-line {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
-}
+
 
 /* Fondo de partículas */
 #particles-background, #particles-foreground {
@@ -110,7 +105,7 @@ body {
 }
 
 #particles-background {
-  background: linear-gradient(to right, #3f3251 , #250024); 
+  background: linear-gradient(to right, #000000 , #000000); 
 }
 
 /* Animaciones */

@@ -26,22 +26,23 @@ body{
 }
 .ring:nth-child(1){
     border-bottom: 8px;
-    border-color: rgb(175, 64, 34);
+    border-color: rgb(223, 18, 18);
     animation: rotate1 2s linear infinite;
 }
 .ring:nth-child(2){
     border-right-width:8px ;
-    border-color: rgb(158, 154, 158);
+    border-color:rgb(50, 182, 35);
+    
     animation: rotate2 2s linear infinite;
 }
 .ring:nth-child(3){
     border-right-width:8px ;
-    border-color: rgb(193, 121, 114);
+    border-color: rgb(5, 13, 152);
     animation: rotate3 2s linear infinite;
 }
 .ring:nth-child(4){
     border-right-width:8px ;
-    border-color: rgb(16, 76, 119);
+    border-color: rgb(251, 255, 24);
     animation: rotate4 2s linear infinite;
 }
 

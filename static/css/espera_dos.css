@@ -1,0 +1,171 @@
+body{
+    background-color: black;
+}
+body > .container {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    margin-left: -103px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform: rotateX(80deg) rotateY(20deg);
+    transform-style: preserve-3d;
+    transform: rotateX(80deg) rotateY(20deg);
+}
+
+#container-uno:after {
+    content: "";
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background: #fff;
+    border-radius: 50%;
+    -webkit-transform: rotateX(-80deg) rotateY(0);
+    transform: rotateX(-80deg) rotateY(0);
+    box-shadow: 0 0 25px #fff;
+    -webkit-animation: nucleus_ 2s infinite linear;
+    animation: nucleus_ 2s infinite linear;
+    left: 50%;
+    top: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
+}
+
+#container-dos {
+    -webkit-transform: rotateX(-80deg) rotateY(20deg);
+    transform: rotateX(-80deg) rotateY(20deg);
+}
+
+#container-tres {
+    -webkit-transform: rotateX(-70deg) rotateY(60deg);
+    transform: rotateX(-70deg) rotateY(60deg);
+}
+
+#container-cuatro {
+    -webkit-transform: rotateX(70deg) rotateY(60deg);
+    transform: rotateX(70deg) rotateY(60deg);
+}
+
+.box {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    -webkit-animation: trail_ 2s infinite linear;
+    transform-style: preserve-3d;
+    animation: trail_ 2s infinite linear;
+}
+
+.box:after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    box-shadow: 0 0 12px #fff;
+    left: 50%;
+    margin-left: -5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #fff;
+    -webkit-animation: particle_ 2s infinite linear;
+    animation: particle_ 2s infinite linear;
+}
+
+#uno:after {
+    background-color: #a70c0c !important;
+}
+
+#dos:after {
+    background-color: #42c322 !important;
+}
+
+#tres:after {
+    background-color: #031491 !important;
+}
+
+#cuatro:after {
+    background-color: #e7fc02 !important;
+}
+
+#container-dos > .box,
+#container-dos > .box:after {
+    -webkit-animation-delay: -.5s;
+    animation-delay: -.5s;
+}
+
+#container-tres > .box,
+#container-tres > .box:after {
+    -webkit-animation-delay: -1s;
+    animation-delay: -1s;
+}
+
+#container-cuatro > .box,
+#container-cuatro > .box:after {
+    -webkit-animation-delay: -1.5s;
+    animation-delay: -1.5s;
+}
+
+@-webkit-keyframes trail_ {
+    from {
+        -webkit-transform: rotateZ(0deg);
+    }
+    to {
+        -webkit-transform: rotateZ(360deg);
+    }
+}
+
+@keyframes trail_ {
+    from {
+        transform: rotateZ(0deg);
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
+}
+
+@-webkit-keyframes particle_ {
+    from {
+        -webkit-transform: rotateX(90deg) rotateY(0deg);
+        transform: rotateX(90deg) rotateY(0deg);
+    }
+    to {
+        -webkit-transform: rotateX(90deg) rotateY(-360deg);
+        transform: rotateX(90deg) rotateY(-360deg);
+    }
+}
+
+@keyframes particle_ {
+    from {
+        transform: rotateX(90deg) rotateY(0deg);
+    }
+    to {
+        transform: rotateX(90deg) rotateY(-360deg);
+    }
+}
+
+@keyframes nucleus_ {
+    0% {
+        box-shadow: 0 0 0 transparent;
+    }
+    50% {
+        box-shadow: 0 0 25px #fff;
+    }
+    100% {
+        box-shadow: 0 0 0 transparent;
+    }
+}
+
+@-webkit-keyframes nucleus_ {
+    0% {
+        box-shadow: 0 0 0 transparent;
+    }
+    50% {
+        box-shadow: 0 0 25px #fff;
+    }
+    100% {
+        box-shadow: 0 0 0 transparent;
+    }
+}
