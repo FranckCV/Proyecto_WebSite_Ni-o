@@ -177,11 +177,13 @@ def pregunta(id_grupo):
         return redirect("/sign_up")
 
     ultima_seleccion = controlador_seleccion.obtener_ultima_seleccion(participante_id)
+    cantidad_seleccionada = controlador_seleccion.contar_selecciones_por_participante(participante_id)
 
     if ultima_seleccion is None:
         id_grupo = 1  
     elif id_grupo > ultima_seleccion and ultima_seleccion <28:
-        id_grupo = ultima_seleccion+1  
+        id_grupo = ultima_seleccion+1
+
 
 
     if request.path != f"/pregunta={id_grupo}":
@@ -284,6 +286,7 @@ def resultado():
             return redirect(url_for('pregunta', id_grupo=int(id_grupo)))
         else:
             return redirect(url_for('error_page', message='No se pudo determinar el grupo para redirigir', redirigir = False))
+    
 
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
