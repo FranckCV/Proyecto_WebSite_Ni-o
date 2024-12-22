@@ -242,30 +242,22 @@ def pregunta_anterior():
     session['desordenar'] = 'true'  
     return respuesta
 
-@app.route("/colores")
-def colores():
-    return render_template(generalPage("colores.html"))
-
 ###############################################################################################################
 
 
 @app.route("/resultado")
 def resultado():
-    # Obtener las cookies necesarias
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
-    # Verificar que la cookie del participante exista
     if not participante_cookie:
         return render_template(generalPage("sign_up.html"))
 
     try:
-        # Dividir la cookie en ID del participante y hash recibido
         participante_id, hash_recibido = participante_cookie.split(":")
     except ValueError:
         message = "Error: La cookie está mal formada."
         return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
 
-    # Verificar que el hash sea válido
     if not encriptacion.verificar_hash(participante_id, hash_recibido):
         message = "Error: La cookie no es válida."
         return render_template(generalPage("error_page.html"), message=message, redirigir = False), 400
@@ -303,9 +295,6 @@ def resultado():
 #     return render_template(generalPage("resultado_v2.html"))
 
 
-
-
-
 @app.route("/dashboard")
 @token_required
 def dashboard():
@@ -320,18 +309,20 @@ def dashboard():
 
 
 @app.route("/buscarResultado")
-# @token_required
+@token_required
 def buscarResultado():
+    response = check_back_option("dashboard_reporte.html","admin")
     nombreBusqueda = request.args.get("buscarElemento")
-    user_info = controlador_user.get_user_by_token(session.get('token')).to_dict()
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
-
-    return render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info = user_info)
-
+    response.set_data(render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2))
+    return response
 
 
 @app.route("/eliminar_cliente", methods=["POST"])
+@token_required
 def eliminar_info_participante():
     par_id = request.form["par_id"]
     controlador_seleccion.eliminar_seleccion_idpar(par_id)
@@ -341,32 +332,37 @@ def eliminar_info_participante():
 
 
 @app.route("/ver_informacion=<int:id>")
-# @token_required
+@token_required
 def ver_informacion(id):
+    response = check_back_option("dashboard_reporte.html","admin")
     user_info = controlador_user.get_admin_by_token(session.get('token'))
     user_info_0 , user_info_1 , user_info_2  = user_info
     resultado = controlador_participante.obtener_resultado_id(id)
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
-    return render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso )
-
+    response.set_data(render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso ))
+    return response
 
 @socketio.on('connect')
+@token_required
 def handle_connect():
     print('Cliente conectado')
 
 
 @socketio.on('disconnect')
+@token_required
 def handle_disconnect():
     print('Cliente desconectado')
 
 
 @socketio.on('get_valores_participante')
+@token_required
 def handle_get_valores_participante(id):
     valores = controlador_participante.obtener_valores_id(id)
     emit("update_valores_participante",  {"valores": valores} , broadcast=True) 
 
 
 @socketio.on('get_valores')
+@token_required
 def handle_get_valores():
     resultados = controlador_participante.obtener_valores()
     emit("update_valores",  {"resultados": resultados} , broadcast=True) 
@@ -400,6 +396,80 @@ def espera_dos():
 @app.route("/espera_tres")
 def espera_tres():
     return render_template(generalPage("espera_dos.html"))
+
+
+
+
+
+
+
+
+@app.route("/temas")
+@token_required
+def temas():
+    # response = check_back_option("dashboard_reporte.html")
+    response = check_back_option("dashboard_reporte.html","admin")
+    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    user_info_0 , user_info_1 , user_info_2  = user_info
+    response.set_data(render_template(adminPage("temas.html"), user_info_1 = user_info_1 , user_info_2 = user_info_2))
+    return response
+
+@app.route("/colores")
+def colores():
+    return render_template(generalPage("colores.html"))
+
+CSS_FILE_PATH = 'static/css/common_styles/colores.css'
+
+@app.route('/load-css', methods=['GET'])
+def load_css():
+    try:
+        with open(CSS_FILE_PATH, 'r') as css_file:
+            css_content = css_file.read()
+        return css_content, 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/save-css', methods=['POST'])
+def save_css():
+    try:
+        data = request.json
+        css_content = data.get('css')
+
+        with open(CSS_FILE_PATH, 'w') as css_file:
+            css_file.write(css_content)
+
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/save-colors', methods=['POST'])
+def save_colors():
+    try:
+        colors = request.json
+        css_content = ":root {\n"
+
+        # Generar las variables CSS a partir de los datos recibidos
+        for var, value in colors.items():
+            css_content += f"    --{var}: {value};\n"
+
+        css_content += "}"
+
+        # Guardar el archivo
+        with open(CSS_FILE_PATH, 'w') as css_file:
+            css_file.write(css_content)
+
+        return jsonify({'status': 'success'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=8000, debug=True)

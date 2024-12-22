@@ -35,6 +35,27 @@
 
 
 
+
+### aside admin
+- dashboard
+- activacion
+- modelo de mensaje por correo
+<!-- - gestion elementos -->
+- Temas del Sitio
+- cambiar contraseña
+- cerrar sesion
+
+
+### dashboard
+-  
+-  
+
+
+### ver participante
+-  
+-  
+
+
 ### pagina de activación
 - **todo**
   - diseño
@@ -45,15 +66,3 @@
   - validaciones
 
 
-### dashboard
--  diseño
--  filtro fecha
--  filtro estado
--  
-
-### ver participante
--  diseño
-   -  colores
-   -  forma
-   -  estructura
--  

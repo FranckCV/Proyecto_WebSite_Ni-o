@@ -1,0 +1,427 @@
+{% extends 'maestra_administrador.html' %}
+
+
+{% block titulo %}
+{% endblock %}
+
+
+{% block estilos %}
+<link rel="stylesheet" href="/static/css/dashboard.css" />
+<style>
+    #color-form {
+        display: flex;
+        /* flex-direction: column; */
+        flex-wrap: wrap;
+        /* gap: 20px; */
+        justify-items: center;
+    }
+
+    .cuadro_color {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        height: 70px;
+    }
+
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .color {
+        border: 3px solid #000000;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--color-base);
+        color: color-contrast(var(--color-base) vs black, white);
+        /* text-decoration-color: #fff; */
+    }
+
+    button {
+        border: 1px solid black;
+    }
+</style>
+{% endblock %}
+
+
+{% block header %}
+Temas
+{% endblock %}
+
+
+{% block nav %}
+Colores
+{% endblock %}
+
+
+{% block contenido %}
+<div class="container-fluid">
+    <!-- <textarea id="css-editor"></textarea>
+    <button onclick="saveCSS()">Guardar</button> -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="color-editor">
+                    <form id="color-form" >
+                        <div class="cuadro_color">
+                            <label for="color-fuego">Color Fuego:</label>
+                            <input type="color" id="color-fuego" name="color-fuego" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color-aire">Color Aire:</label>
+                            <input type="color" id="color-aire" name="color-aire" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color-agua">Color Agua:</label>
+                            <input type="color" id="color-agua" name="color-agua" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color-tierra">Color Tierra:</label>
+                            <input type="color" id="color-tierra" name="color-tierra" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color-background">Color Background:</label>
+                            <input type="color" id="color-background" name="color-background" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color-base">Color Base:</label>
+                            <input type="color" id="color-base" name="color-base" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color1">Color1:</label>
+                            <input type="color" id="color1" name="color1" value="">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color2">Color2:</label>
+                            <input type="color" name="color2" id="color2">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color3:</label>
+                            <input type="color" name="color3" id="color3">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color4:</label>
+                            <input type="color" name="color4" id="color4">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color5:</label>
+                            <input type="color" name="color5" id="color5">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color6:</label>
+                            <input type="color" name="color6" id="color6">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color7:</label>
+                            <input type="color" name="color7" id="color7">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color8:</label>
+                            <input type="color" name="color8" id="color8">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color9:</label>
+                            <input type="color" name="color9" id="color9">
+                        </div>
+                        <div class="cuadro_color">
+                            <label for="color3">Color10:</label>
+                            <input type="color" name="color10" id="color10">
+                        </div>
+                        <!-- <button type="button" onclick="updateColors()">Actualizar Colores</button> -->
+                        <button type="button" onclick="saveColors()">Guardar Cambios</button>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col">
+                <!-- <iframe style="width: 100%; height: 100%;" src="{{url_for('colores')}}" frameborder="0"></iframe> -->
+                <div class="content">
+                    <div style="background-color: var(--color-fuego);" class="color">color-fuego</div>
+                    <div style="background-color: var(--color-aire);" class="color">color-aire</div>
+                    <div style="background-color: var(--color-agua);" class="color">color-agua</div>
+                    <div style="background-color: var(--color-tierra);" class="color">color-tierra</div>
+                    <div style="background-color: var(--color-background);" class="color">color-background</div>
+                    <div style="background-color: var(--color-base);" class="color">color-base</div>
+                    <div style="background-color: var(--color1);" class="color">color1</div>
+                    <div style="background-color: var(--color2);" class="color">color2</div>
+                    <div style="background-color: var(--color3);" class="color">color3</div>
+                    <div style="background-color: var(--color4);" class="color">color4</div>
+                    <div style="background-color: var(--color5);" class="color">color5</div>
+                    <div style="background-color: var(--color6);" class="color">color6</div>
+                    <div style="background-color: var(--color7);" class="color">color7</div>
+                    <div style="background-color: var(--color8);" class="color">color8</div>
+                    <div style="background-color: var(--color9);" class="color">color9</div>
+                    <div style="background-color: var(--color10);" class="color">color10</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+
+    // function resolveCSSVariable(varName) {
+    //     const rootStyles = getComputedStyle(document.documentElement);
+    //     let value = rootStyles.getPropertyValue(varName).trim();
+
+    //     // Resolver dependencias recursivamente
+    //     if (value.startsWith("var")) {
+    //         const dependency = value.match(/var\((--[a-z-]+)\)/)[1];
+    //         value = resolveCSSVariable(dependency);
+    //     }
+
+    //     return value;
+    // }
+
+    // function parseColorMix(colorMix) {
+    //     const regex = /color-mix\(in srgb, (var\(--[a-z-]+\)|#[0-9a-f]{6}|[a-z]+) (\d+%)?, (var\(--[a-z-]+\)|#[0-9a-f]{6}|[a-z]+) (\d+%)?\)/i;
+    //     const match = colorMix.match(regex);
+
+    //     if (!match) {
+    //         throw new Error("Formato de color-mix inválido.");
+    //     }
+
+    //     // Extraer colores y porcentajes
+    //     let color1 = match[1];
+    //     let percentage1 = parseInt(match[2] || "50"); // Por defecto 50% si no se especifica
+    //     let color2 = match[3];
+    //     let percentage2 = parseInt(match[4] || "50");
+
+    //     if (color1.startsWith("var")) {
+    //         color1 = resolveCSSVariable(color1.match(/--[a-z-]+/)[0]);
+    //     }
+    //     if (color2.startsWith("var")) {
+    //         color2 = resolveCSSVariable(color2.match(/--[a-z-]+/)[0]);
+    //     }
+
+    //     if (!isValidColor(color1) || !isValidColor(color2)) {
+    //         throw new Error(`Colores inválidos en color-mix: ${color1}, ${color2}`);
+    //     }
+
+    //     const rgb1 = hexOrNameToRgb(color1);
+    //     const rgb2 = hexOrNameToRgb(color2);
+
+    //     const r = Math.round((rgb1.r * (percentage1 / 100)) + (rgb2.r * (percentage2 / 100)));
+    //     const g = Math.round((rgb1.g * (percentage1 / 100)) + (rgb2.g * (percentage2 / 100)));
+    //     const b = Math.round((rgb1.b * (percentage1 / 100)) + (rgb2.b * (percentage2 / 100)));
+
+    //     return rgbToHex(r, g, b);
+    // }
+
+    // function hexOrNameToRgb(color) {
+    //     const ctx = document.createElement("canvas").getContext("2d");
+    //     ctx.fillStyle = color;
+    //     const rgb = ctx.fillStyle.match(/\d+/g);
+    //     return { r: parseInt(rgb[0]), g: parseInt(rgb[1]), b: parseInt(rgb[2]) };
+    // }
+
+    // function rgbToHex(r, g, b) {
+    //     return `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
+    // }
+
+    // function isValidColor(color) {
+    //     const ctx = document.createElement("canvas").getContext("2d");
+    //     try {
+    //         ctx.fillStyle = color;
+    //         return ctx.fillStyle !== "";
+    //     } catch {
+    //         return false;
+    //     }
+    // }
+
+    // function rgbToHex(rgb) {
+    //     const rgbValues = rgb.match(/\d+/g); // Extrae los números de la cadena
+    //     if (!rgbValues || rgbValues.length < 3) {
+    //         throw new Error(`Formato de color inválido en rgbToHex: ${rgb}`);
+    //     }
+    //     const [r, g, b] = rgbValues.map(Number);
+    //     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+    // }
+
+    // function rgbToHex(r, g, b) {
+    //     // Verifica que todos los valores sean números válidos
+    //     if (isNaN(r) || isNaN(g) || isNaN(b)) {
+    //         throw new Error(`Formato de color inválido en rgbToHex: rgb(${r}, ${g}, ${b})`);
+    //     }
+    //     return `#${[r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("")}`;
+    // }
+    // function convertColorToHex(color) {
+    //     let rgbMatch = color.match(/rgb\((\d+), (\d+), (\d+)\)/); // Para `rgb(...)`
+    //     if (!rgbMatch) {
+    //         rgbMatch = color.match(/color\(srgb (\d+(\.\d+)?) (\d+(\.\d+)?) (\d+(\.\d+)?)\)/); // Para `color(srgb ...)`
+    //     }
+
+    //     if (rgbMatch) {
+    //         // Si el formato es `rgb(...)`
+    //         if (rgbMatch[1] && rgbMatch[2] && rgbMatch[3]) {
+    //             const r = parseInt(rgbMatch[1]);
+    //             const g = parseInt(rgbMatch[2]);
+    //             const b = parseInt(rgbMatch[3]);
+    //             return rgbToHex(r, g, b);
+    //         }
+
+    //         // Si el formato es `color(srgb ...)`
+    //         if (rgbMatch[1] && rgbMatch[3] && rgbMatch[5]) {
+    //             const r = Math.round(parseFloat(rgbMatch[1]) * 255);
+    //             const g = Math.round(parseFloat(rgbMatch[3]) * 255);
+    //             const b = Math.round(parseFloat(rgbMatch[5]) * 255);
+
+    //             // Asegúrate de que los valores estén dentro del rango 0-255
+    //             return rgbToHex(
+    //                 Math.min(Math.max(r, 0), 255),
+    //                 Math.min(Math.max(g, 0), 255),
+    //                 Math.min(Math.max(b, 0), 255)
+    //             );
+    //         }
+    //     }
+
+    //     throw new Error(`Formato de color no reconocido: ${color}`);
+    // }
+    // const root = document.documentElement;
+    // const inputs = document.querySelectorAll("#color-form input[type='color']");
+    // const divs = document.querySelectorAll(".color");
+
+    // inputs.forEach(input => {
+    //     divs.forEach(div => {
+    //         const nameDiv = div.textContent.trim().toLowerCase();
+    //         const nameInput = input.name.trim().toLowerCase();
+
+    //         if (nameInput === nameDiv) {
+    //             console.log("name:", nameInput);
+    //             const valor = getComputedStyle(div).backgroundColor.trim();
+    //             console.log("color:", valor);
+
+    //             try {
+    //                 if (valor.startsWith("color(srgb")) {
+    //                     input.value = convertColorToHex(valor);
+    //                 } else {
+    //                     const rgbMatch = valor.match(/rgb\((\d+), (\d+), (\d+)\)/);
+    //                     if (rgbMatch) {
+    //                         const r = parseInt(rgbMatch[1]);
+    //                         const g = parseInt(rgbMatch[2]);
+    //                         const b = parseInt(rgbMatch[3]);
+    //                         input.value = rgbToHex(r, g, b);
+    //                     } else {
+    //                         throw new Error(`Formato de color no reconocido: ${valor}`);
+    //                     }
+    //                 }
+    //                 console.log("valor:", input.value);
+    //             } catch (error) {
+    //                 console.error("Error al procesar el color:", error.message);
+    //             }
+    //             console.log("----------");
+    //         }
+    //     });
+    // });
+
+
+
+
+
+
+    function rgbToHex(r, g, b) {
+        // Asegurarse de que r, g y b son números válidos entre 0 y 255
+        if (isNaN(r) || isNaN(g) || isNaN(b)) {
+            throw new Error(`Formato de color inválido en rgbToHex: rgb(${r}, ${g}, ${b})`);
+        }
+        return `#${[r, g, b].map((x) => Math.min(255, Math.max(0, Math.round(x))).toString(16).padStart(2, "0")).join("")}`;
+    }
+
+    function convertColorToHex(color) {
+        // Intentar coincidir con `rgb(...)`
+        let rgbMatch = color.match(/rgb\((\d+), (\d+), (\d+)\)/);
+        if (!rgbMatch) {
+            // Intentar coincidir con `color(srgb ...)` (con o sin alfa)
+            rgbMatch = color.match(/color\(srgb (\d+(\.\d+)?) (\d+(\.\d+)?) (\d+(\.\d+)?)(?: \/ (\d+(\.\d+)?))?\)/);
+        }
+
+        if (rgbMatch) {
+            if (rgbMatch[1] && rgbMatch[3] && rgbMatch[5]) {
+                // Para `color(srgb r g b / a)` o `color(srgb r g b)`
+                const r = parseFloat(rgbMatch[1]) * 255;
+                const g = parseFloat(rgbMatch[3]) * 255;
+                const b = parseFloat(rgbMatch[5]) * 255;
+
+                return rgbToHex(r, g, b);
+            }
+
+            if (rgbMatch[1] && rgbMatch[2] && rgbMatch[3]) {
+                // Para `rgb(...)`
+                const r = parseInt(rgbMatch[1]);
+                const g = parseInt(rgbMatch[2]);
+                const b = parseInt(rgbMatch[3]);
+                return rgbToHex(r, g, b);
+            }
+        }
+
+        throw new Error(`Formato de color no reconocido: ${color}`);
+    }
+
+    const root = document.documentElement;
+    const inputs = document.querySelectorAll("#color-form input[type='color']");
+    const divs = document.querySelectorAll(".color");
+
+    inputs.forEach(input => {
+        divs.forEach(div => {
+            const nameDiv = div.textContent.trim().toLowerCase();
+            const nameInput = input.name.trim().toLowerCase();
+
+            if (nameInput === nameDiv) {
+                console.log("name:", nameInput);
+                const valor = getComputedStyle(div).backgroundColor.trim();
+                console.log("color:", valor);
+
+                try {
+                    if (valor.startsWith("color(srgb")) {
+                        input.value = convertColorToHex(valor);
+                    } else {
+                        const rgbMatch = valor.match(/rgb\((\d+), (\d+), (\d+)\)/);
+                        if (rgbMatch) {
+                            const r = parseInt(rgbMatch[1]);
+                            const g = parseInt(rgbMatch[2]);
+                            const b = parseInt(rgbMatch[3]);
+                            input.value = rgbToHex(r, g, b);
+                        } else {
+                            throw new Error(`Formato de color no reconocido: ${valor}`);
+                        }
+                    }
+                    console.log("valor:", input.value);
+                } catch (error) {
+                    console.error("Error al procesar el color:", error.message);
+                }
+            }
+        });
+    });
+
+
+    async function saveColors() {
+        const inputs = document.querySelectorAll("#color-form input[type='color']");
+        const colors = {};
+
+        inputs.forEach(input => {
+            colors[input.name] = input.value;
+        });
+
+        const response = await fetch('/save-colors', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(colors),
+        });
+
+        if (response.ok) {
+            alert('Colores guardados exitosamente.');
+        } else {
+            alert('Error al guardar los colores.');
+        }
+    }
+</script>
+
+{% endblock %}

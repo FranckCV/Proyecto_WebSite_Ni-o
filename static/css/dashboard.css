@@ -2,6 +2,15 @@
     --width-element-column: 5vw;
 }
 
+.container-fluid {
+    padding: 0;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+
 table {
     background-color: white;
     color: #333;
@@ -37,13 +46,44 @@ button {
     border: none;
     background: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0;
 }
+
+/* p {
+    margin: 0;
+} */
 
 .button_volver {
     background-color: #7200a7;
     color: white;
     padding-inline: 10px;
     padding-block: 5px;
+}
+
+.button_borrar {
+    background-color: #a70013;
+    color: white;
+    padding-inline: 10px;
+    padding-block: 8px;
+}
+
+.campo_tiempo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.campo_tiempo input {
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    padding: .375rem .20rem .375rem .75rem;
+    font-size: 1rem;
+    font-family: Poppins, sans-serif;
 }
 
 /* TABLA RESULTADOS */
@@ -96,7 +136,7 @@ button {
     box-shadow: 0 4px 8px #0000006c;
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 77.5vh;
+    max-height: 57.5vh;
     width: 75vw;
     position: relative;
 }
@@ -127,6 +167,7 @@ button {
     font-size: 12px;
     background-color: transparent;
     border-radius: 20px;
+    width: 100%;
 }
 
 .table_listado thead {
@@ -190,7 +231,7 @@ button {
 }
 
 .table_listado th.opciones_column {
-    background-color: #111057;
+    background-color: var(--color4);
     z-index: 3;
     padding-inline: 5px;
 }
@@ -328,7 +369,8 @@ button {
 
 .celda_numero p {
     height: 30px;
-    min-width: 30px;padding-inline: 5px;
+    min-width: 30px;
+    padding-inline: 5px;
     text-align: center;
     border-radius: 10px;
     margin: 0;
@@ -366,21 +408,24 @@ th.nro_fuego {
 }
 
 th.nro_fuego {
-    background-color: color-mix(in srgb, var(--color4) 70%, var(--color-fuego)  40%);
+    background-color: color-mix(in srgb, var(--color4) 70%, var(--color-fuego) 40%);
 }
 
 th.nro_aire {
-    background-color: color-mix(in srgb, var(--color4) 70%, var(--color-aire)   40%);
+    background-color: color-mix(in srgb, var(--color4) 70%, var(--color-aire) 40%);
 }
 
 th.nro_agua {
-    background-color: color-mix(in srgb, var(--color4) 70%, var(--color-agua)   40%);
+    background-color: color-mix(in srgb, var(--color4) 70%, var(--color-agua) 40%);
 }
 
 th.nro_tierra {
     background-color: color-mix(in srgb, var(--color4) 70%, var(--color-tierra) 40%);
 }
 
+label {
+    color: black;
+}
 
 /* 
 
