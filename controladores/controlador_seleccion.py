@@ -11,7 +11,7 @@ def insertar_seleccion_positiva(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 1
             """
             cursor.execute(sql_verificar_positiva, (participante_id, grupo_id))
-            positivo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+            positivo = cursor.fetchall()  
 
             # Verificar si ya existe una selección negativa con la misma cualidad
             sql_verificar_negativo = """
@@ -20,7 +20,7 @@ def insertar_seleccion_positiva(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 0
             """
             cursor.execute(sql_verificar_negativo, (participante_id, grupo_id, cualidad_id))
-            negativo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+            negativo = cursor.fetchall() 
 
             # Eliminar la selección positiva si ya existe
             if len(positivo) == 1:
@@ -67,7 +67,7 @@ def insertar_seleccion_negativa(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 0
             """
             cursor.execute(sql_verificar_negativo, (participante_id, grupo_id))
-            negativo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+            negativo = cursor.fetchall() 
 
             # Verificar si ya existe una selección positiva con la misma cualidad
             sql_verificar_positivo = """
@@ -76,7 +76,7 @@ def insertar_seleccion_negativa(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 1
             """
             cursor.execute(sql_verificar_positivo, (participante_id, grupo_id, cualidad_id))
-            positivo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+            positivo = cursor.fetchall() 
 
             # Eliminar la selección negativa si ya existe
             if len(negativo) == 1:
