@@ -1,9 +1,7 @@
-body{
-    background-color: black;
-}
+
 body > .container {
     position: absolute;
-    top: 25%;
+    top: 30%;
     left: 50%;
     margin-left: -103px;
     width: 200px;

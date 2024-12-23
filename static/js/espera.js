@@ -18,7 +18,7 @@ function(){for(var a=0,b=["ms","moz","webkit","o"],c=0;c<b.length&&!window.reque
 
 particleground(document.getElementById('particles-foreground'), {
   dotColor: 'rgba(255, 255, 255, 1)',
-  lineColor: 'rgba(255, 255, 255, 0.05)',
+  lineColor: 'rgba(255, 255, 255,0.08)',
   minSpeedX: 0.3,
   maxSpeedX: 0.6,
   minSpeedY: 0.3,

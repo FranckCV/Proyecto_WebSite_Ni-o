@@ -236,13 +236,13 @@ def siguiente_pregunta():
     session['desordenar'] = 'true' 
     return respuesta
 
-@app.route("/pregunta_anterior", methods=["POST"])
-def pregunta_anterior():
-    id_grupo_actual = int(request.form["grupo"])
-    id_grupo = id_grupo_actual - 1
-    respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
-    session['desordenar'] = 'true'  
-    return respuesta
+# @app.route("/pregunta_anterior", methods=["POST"])
+# def pregunta_anterior():
+#     id_grupo_actual = int(request.form["grupo"])
+#     id_grupo = id_grupo_actual - 1
+#     respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
+#     session['desordenar'] = 'true'  
+#     return respuesta
 
 ###############################################################################################################
 
@@ -388,17 +388,12 @@ def error_page():
     message = request.args.get('message', 'Error desconocido')
     return render_template(generalPage("error_page.html"), message=message , redirigir=True)
 
-@app.route("/espera")
-def espera():
-    return render_template(generalPage("pagina_espera.html"))
 
-@app.route("/espera_dos")
+@app.route("/espera")
 def espera_dos():
     return render_template(generalPage("espera.html"))
 
-@app.route("/espera_tres")
-def espera_tres():
-    return render_template(generalPage("espera_dos.html"))
+
 
 
 
