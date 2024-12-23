@@ -215,7 +215,8 @@ def seleccionar_positivo():
     id_grupo = request.form["grupo"]
     cualidad_id = request.form["positive"]
     estado = True
-    controlador_seleccion.insertar_seleccion(participante_id, id_grupo, cualidad_id, estado)
+    mensaje = controlador_seleccion.insertar_seleccion_positiva(participante_id, id_grupo, cualidad_id, estado)
+    print(mensaje)
     return redirect(url_for('pregunta',id_grupo=id_grupo))
 
 @app.route("/seleccionar_negativo", methods=["POST"])
@@ -224,7 +225,8 @@ def seleccionar_negativo():
     id_grupo = request.form["grupo"]
     cualidad_id = request.form["negative"]
     estado = False
-    controlador_seleccion.insertar_seleccion(participante_id, id_grupo, cualidad_id, estado)
+    mensaje = controlador_seleccion.insertar_seleccion_negativa(participante_id, id_grupo, cualidad_id, estado)
+    print(mensaje)
     return redirect(url_for('pregunta',id_grupo=id_grupo))
 
 

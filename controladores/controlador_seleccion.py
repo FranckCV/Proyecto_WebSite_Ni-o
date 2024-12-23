@@ -1,40 +1,116 @@
 from controladores.bd import obtener_conexion
 
-def insertar_seleccion(participante_id, grupo_id, cualidad_id,estado):
+def insertar_seleccion_positiva(participante_id, grupo_id, cualidad_id, estado):
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
-            sql_select = """
+            # Verificar si ya existe una selección positiva
+            sql_verificar_positiva = """
                 SELECT * 
                 FROM seleccion 
-                WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s
+                WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 1
             """
-            cursor.execute(sql_select, (participante_id, grupo_id, cualidad_id))
-            cantidad = cursor.rowcount
+            cursor.execute(sql_verificar_positiva, (participante_id, grupo_id))
+            positivo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
 
-            if cantidad == 1:
+            # Verificar si ya existe una selección negativa con la misma cualidad
+            sql_verificar_negativo = """
+                SELECT * 
+                FROM seleccion 
+                WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 0
+            """
+            cursor.execute(sql_verificar_negativo, (participante_id, grupo_id, cualidad_id))
+            negativo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+
+            # Eliminar la selección positiva si ya existe
+            if len(positivo) == 1:
                 sql_delete = """
                     DELETE FROM seleccion 
-                    WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s
+                    WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 1
+                """
+                cursor.execute(sql_delete, (participante_id, grupo_id))
+                mensaje = "Selección positiva eliminada correctamente."
+            
+            # Eliminar la selección negativa si ya existe
+            if len(negativo) == 1:
+                sql_delete = """
+                    DELETE FROM seleccion 
+                    WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 0
                 """
                 cursor.execute(sql_delete, (participante_id, grupo_id, cualidad_id))
-                mensaje = "Selección eliminada correctamente."
-            else:
-                sql_insert = """
-                    INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid, estado) 
-                    VALUES (%s, %s, %s, %s)
-                """
-                cursor.execute(sql_insert, (participante_id, grupo_id, cualidad_id, estado))
-                mensaje = "Selección insertada correctamente."
+                mensaje = "Selección negativa eliminada correctamente."
+            
+            # Insertar la selección positiva
+            sql_insert = """
+                INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid, estado) 
+                VALUES (%s, %s, %s, %s)
+            """
+            cursor.execute(sql_insert, (participante_id, grupo_id, cualidad_id, estado))
+            mensaje = "Selección positiva insertada correctamente."
 
         conexion.commit()
-        conexion.close()
-
         return mensaje
 
     except Exception as e:
-        return f"Error al procesar la selección: {e}"
-    
+        return f"Error al procesar la selección positiva: {e}"
+
+
+
+def insertar_seleccion_negativa(participante_id, grupo_id, cualidad_id, estado):
+    conexion = obtener_conexion()
+    try:
+        with conexion.cursor() as cursor:
+            # Verificar si ya existe una selección negativa
+            sql_verificar_negativo = """
+                SELECT * 
+                FROM seleccion 
+                WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 0
+            """
+            cursor.execute(sql_verificar_negativo, (participante_id, grupo_id))
+            negativo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+
+            # Verificar si ya existe una selección positiva con la misma cualidad
+            sql_verificar_positivo = """
+                SELECT * 
+                FROM seleccion 
+                WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 1
+            """
+            cursor.execute(sql_verificar_positivo, (participante_id, grupo_id, cualidad_id))
+            positivo = cursor.fetchall()  # Usar fetchall para obtener los registros y verificar si hay resultados
+
+            # Eliminar la selección negativa si ya existe
+            if len(negativo) == 1:
+                sql_delete = """
+                    DELETE FROM seleccion 
+                    WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 0
+                """
+                cursor.execute(sql_delete, (participante_id, grupo_id))
+                mensaje = "Selección negativa eliminada correctamente."
+            
+            # Eliminar la selección positiva si ya existe
+            if len(positivo) == 1:
+                sql_delete = """
+                    DELETE FROM seleccion 
+                    WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 1
+                """
+                cursor.execute(sql_delete, (participante_id, grupo_id, cualidad_id))
+                mensaje = "Selección positiva eliminada correctamente."
+            
+            # Insertar la selección negativa
+            sql_insert = """
+                INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid, estado) 
+                VALUES (%s, %s, %s, %s)
+            """
+            cursor.execute(sql_insert, (participante_id, grupo_id, cualidad_id, estado))
+            mensaje = "Selección negativa insertada correctamente."
+
+        conexion.commit()
+        return mensaje
+
+    except Exception as e:
+        return f"Error al procesar la selección negativa: {e}"
+
+
 
 def llenar_grafico_barras(participante_id):
     conexion = obtener_conexion()
