@@ -32,51 +32,46 @@ Datos de {{resultado.1}} {{resultado.2}}
 <div class="container-fluid grid-info">
 
   <div class="campo_info">
+
     <div class="row">
       <div class="col">
+        <label for="">ID:</label>
+        <input type="text" disabled="disabled" value="{{resultado.0 }}">
+      </div>
+      <div class="col">
+        <label for="">Fecha de Registro:</label>
+        <input type="text" disabled="disabled" value="{{resultado.4.strftime('%d/%m/%Y') }}">
+      </div>
+      <div class="col">
+        <label for="">Hora de Registro:</label>
+        <input type="text" disabled="disabled" value="{{resultado.7 }}">
+      </div>
+      <div class="col">
+        <label for="">Fecha nacimiento:</label>
+        <input type="text" disabled="disabled" value="{{resultado.16.strftime('%d/%m/%Y') }}">
+      </div>
+    </div>
 
-        <div class="row">
-          <div class="col">
-            <label for="">ID:</label>
-            <input type="text" disabled="disabled" value="{{resultado.0 }}">
-          </div>
-          <div class="col">
-            <label for="">Fecha de Registro:</label>
-            <input type="text" disabled="disabled" value="{{resultado.4.strftime('%d/%m/%Y') }}">
-          </div>
-          <div class="col">
-            <label for="">Hora de Registro:</label>
-            <input type="text" disabled="disabled" value="{{resultado.7 }}">
-          </div>
-          <div class="col">
-            <label for="">Fecha nacimiento:</label>
-            <input type="text" disabled="disabled" value="{{resultado.16.strftime('%d/%m/%Y') }}">
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label for="">Nombres:</label>
-            <input type="text" disabled="disabled" value="{{resultado.1 }}">
-          </div>
-          <div class="col">
-            <label for="">Apellidos:</label>
-            <input type="text" disabled="disabled" value="{{resultado.2 }}">
-          </div>
-          <div class="col">
-            <label for="">Número Telefono:</label>
-            <input type="text" disabled="disabled" value="{{resultado.5 }}">
-          </div>
-          <div class="col">
-            <label for="">Correo Electronico:</label>
-            <input type="text" disabled="disabled" value="{{resultado.6 }}">
-          </div>
-
-        </div>
-
+    <div class="row">
+      <div class="col">
+        <label for="">Nombres:</label>
+        <input type="text" disabled="disabled" value="{{resultado.1 }}">
+      </div>
+      <div class="col">
+        <label for="">Apellidos:</label>
+        <input type="text" disabled="disabled" value="{{resultado.2 }}">
+      </div>
+      <div class="col">
+        <label for="">Número Telefono:</label>
+        <input type="text" disabled="disabled" value="{{resultado.5 }}">
+      </div>
+      <div class="col">
+        <label for="">Correo Electronico:</label>
+        <input type="text" disabled="disabled" value="{{resultado.6 }}">
       </div>
 
     </div>
+
   </div>
 
   <div class="campo_progreso">
@@ -194,8 +189,9 @@ Datos de {{resultado.1}} {{resultado.2}}
   <div class="campo_adicional">
     <input type="hidden" id="id_participante" disabled="disabled" value="{{resultado.0 }}">
     <input type="hidden" id="nombre_participante" disabled="disabled" value="{{resultado.1 }} {{resultado.2 }}">
+
     <div class="row">
-      <div class="col">
+      <div class="col-6">
         <a class="" href="{{ url_for('dashboard') }}">
           <button type="button" class="button_volver">
             <i class="fa-solid fa-left-long"></i>
