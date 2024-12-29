@@ -177,11 +177,13 @@ def pregunta(id_grupo):
         return redirect("/sign_up")
 
     ultima_seleccion = controlador_seleccion.obtener_ultima_seleccion(participante_id)
+    cantidad_seleccionada = controlador_seleccion.contar_selecciones_por_participante(participante_id)
 
     if ultima_seleccion is None:
         id_grupo = 1  
     elif id_grupo > ultima_seleccion and ultima_seleccion <28:
-        id_grupo = ultima_seleccion+1  
+        id_grupo = ultima_seleccion+1
+
 
 
     if request.path != f"/pregunta={id_grupo}":
@@ -213,7 +215,8 @@ def seleccionar_positivo():
     id_grupo = request.form["grupo"]
     cualidad_id = request.form["positive"]
     estado = True
-    controlador_seleccion.insertar_seleccion(participante_id, id_grupo, cualidad_id, estado)
+    mensaje = controlador_seleccion.insertar_seleccion_positiva(participante_id, id_grupo, cualidad_id, estado)
+    print(mensaje)
     return redirect(url_for('pregunta',id_grupo=id_grupo))
 
 @app.route("/seleccionar_negativo", methods=["POST"])
@@ -222,7 +225,8 @@ def seleccionar_negativo():
     id_grupo = request.form["grupo"]
     cualidad_id = request.form["negative"]
     estado = False
-    controlador_seleccion.insertar_seleccion(participante_id, id_grupo, cualidad_id, estado)
+    mensaje = controlador_seleccion.insertar_seleccion_negativa(participante_id, id_grupo, cualidad_id, estado)
+    print(mensaje)
     return redirect(url_for('pregunta',id_grupo=id_grupo))
 
 
@@ -234,13 +238,13 @@ def siguiente_pregunta():
     session['desordenar'] = 'true' 
     return respuesta
 
-@app.route("/pregunta_anterior", methods=["POST"])
-def pregunta_anterior():
-    id_grupo_actual = int(request.form["grupo"])
-    id_grupo = id_grupo_actual - 1
-    respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
-    session['desordenar'] = 'true'  
-    return respuesta
+# @app.route("/pregunta_anterior", methods=["POST"])
+# def pregunta_anterior():
+#     id_grupo_actual = int(request.form["grupo"])
+#     id_grupo = id_grupo_actual - 1
+#     respuesta = make_response(redirect(url_for("pregunta", id_grupo=id_grupo)))
+#     session['desordenar'] = 'true'  
+#     return respuesta
 
 ###############################################################################################################
 
@@ -276,6 +280,7 @@ def resultado():
             return redirect(url_for('pregunta', id_grupo=int(id_grupo)))
         else:
             return redirect(url_for('error_page', message='No se pudo determinar el grupo para redirigir', redirigir = False))
+    
 
     prueba = controlador_seleccion.llenar_grafico_barras(participante_id=participante_id)
     nombre_participante = controlador_participante.buscar_participante(id_participante=participante_id)
@@ -385,17 +390,12 @@ def error_page():
     message = request.args.get('message', 'Error desconocido')
     return render_template(generalPage("error_page.html"), message=message , redirigir=True)
 
-@app.route("/espera")
-def espera():
-    return render_template(generalPage("pagina_espera.html"))
 
-@app.route("/espera_dos")
+@app.route("/espera")
 def espera_dos():
     return render_template(generalPage("espera.html"))
 
-@app.route("/espera_tres")
-def espera_tres():
-    return render_template(generalPage("espera_dos.html"))
+
 
 
 

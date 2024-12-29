@@ -9,15 +9,7 @@ function verTexto(button) {
     }
   }
 
-  function disminuirProgress() {
-    var progressBar = document.getElementById('progressBar');
-    var progressText = document.getElementById('progressText');
-    
-    if (progressBar.value > progressBar.min) {  
-        progressBar.value -= 1;
-        progressText.textContent = `${progressBar.value} / 28`;  
-    }
-}
+
 
 function incrementProgress() {
     var progressBar = document.getElementById('progressBar');

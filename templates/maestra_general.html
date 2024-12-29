@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/common_styles/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/all.min.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/fontawesome.min.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/fonts.css"/>
-    <link rel="stylesheet" href="/static/css/common_styles/common_style.css"/>
-    <link rel="stylesheet" href="/static/css/general_style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/common_styles/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/all.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/fontawesome.min.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/fonts.css" />
+    <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
+    <link rel="stylesheet" href="/static/css/espera.css" />
+
     {% block estilos %}
+
     {% endblock %}
-    <title>
-        {% block titulo %}
-        {% endblock %} | Test de Temperamento
-    </title>
-</head>
-<body class="general_body">
-    <header class="general_element">
-        <div class="header_item subheader">
-        </div>
-        <nav class="general_element header_item">
-            <a class="nav_item" href="{{url_for('sign_up')}}">Sign Up</a>
-            <a class="nav_item" href="{{url_for('login')}}">Login</a>
-            <a class="nav_item" href="{{url_for('colores')}}">Colores</a>
-            <a class="nav_item" href="{{url_for('resultado')}}">Resultado</a>
-            <a class="nav_item" href="{{url_for('dashboard')}}">Dashboard</a>
-        </nav>
-    </header>
+  </head>
 
-    <aside class="general_element">
-    </aside>
+  <body>
+    <div id="particles-background" class="vertical-centered-box"></div>
+    <div id="particles-foreground" class="vertical-centered-box"></div>
 
-    <section class="general_element">
-        {% block contenido %}
-        {% endblock %}
-    </section>
+    <div class="vertical-centered-box">
+      <div class="content"></div>
+    </div>
 
-    <footer class="general_element">
-    </footer>
+    {% block contenido %}
 
-    <script src="/static/js/common_scripts/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/common_scripts/bootstrap.min.js"></script>
-    <script src="/static/js/common_scripts/common_script.js"></script>
-    <script src="/static/js/general_script.js"></script>
+
+
+    {% endblock contenido %}
+
+
+    <script src="/static/js/espera.js"></script>
+
     {% block scripts %}
-    {% endblock %}
+    
+    {% endblock scripts %}
 
-</body>
+  </body>
 </html>

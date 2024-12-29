@@ -1,160 +1,174 @@
 .container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-  
-#head{
-    margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
-
+#head {
+  margin: 40px;
+  position: relative;
+  z-index: 10;
+  color: white;
+  text-align: center;
+}
 
 .card {
-  width: 45%; 
-  background-color: #f8f9fa;
+  width: 45%;
+  background-color: rgba(255, 255, 255);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(255, 254, 254, 0.1);
   text-align: center;
-  transition: box-shadow 0.3s ease-in-out; 
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .card:hover {
-  box-shadow: 0 0 15px 5px rgba(187, 180, 180, 0.8), 
+  box-shadow: 0 0 15px 5px rgba(187, 180, 180, 0.8),
               0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-  
-  .card h2 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .icons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .icon {
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    height: 35px;
-    width: 35px;
-  }
-  
-  .positive{
-    background-color: #10833c;
-  }
-
- .negative{
-    background-color: #a42323;
-  }
-
-  .positive_desactivado,
-  .negative_desactivado {
-    background-color: #858181 !important;
-    cursor: none;
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-  }
-  
-
-
-  .icon:hover {
-    background-color: #d2a207;
-    color: white;
-    transform: none !important;
-    transition: none !important;
-  }
-  
-  .magnify button {
-    font-size: 1.5rem;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-    padding: 0px;
-    margin: 0px;
-    padding-bottom: 5px;
-  }
-  .magnify{
-    display: grid;
-    grid-template-columns: 20% 80%;
-    align-items: center;
-  }
-
-  #flechas{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 75%;
-  }
-.flecha{
-  background-color: rgb(75, 75, 203);
-  transform: none !important;
-  transition: none !important;
+.card h2 {
+  font-size: 2rem;
+  color: #000000;
+  margin-bottom: 10px;
 }
-.flecha:hover{
-  background-color: rgb(30, 30, 150);
+
+.icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
-  .texto_boton{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-right: 20px;
-  }
-  .text{
-    padding-right: 70px;
-  }
 
-  button {
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 1.5rem;
-    border-radius: 50px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 30px;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
-  
-  button:hover {
-    transform: translateY(-5px); 
-  }
-  
-  button i {
-    margin-right: 10px; 
-  }
-  
-  
+.icon {
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  margin-top: 30px;
 
-  @keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+}
+
+.positive {
+  background-color: #206d3d;
+}
+
+.negative {
+  background-color: #a71616;
+}
+
+.positive_desactivado,
+.negative_desactivado {
+  background-color: #858181 !important;
+  cursor: default;
+}
+
+.positive:hover {
+  background-color: rgba(15, 255, 51, 0.8); 
+  color: white;
+}
+
+.negative:hover {
+  background-color: rgba(255, 13, 13, 0.8); 
+  color: white;
+}
+
+
+.magnify {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  align-items: center;
+}
+
+.magnify button {
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+  margin: 0;
+  padding-bottom: 5px;
+}
+.magnify button:hover{
+  animation: bounce 0.5s ease infinite;
+}
+#flechas {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.flecha {
+  background-color: rgb(255, 255, 255);
+}
+.progress-container{
+  position: relative;
+  z-index: 10;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 40px;
+}
+#progressBar{
+  width: 60%;
+  height: 25px;
+}
+.fa-arrow-right{
+  color: black;
+}
+.form{
+  position: relative;
+  margin-right: 180px;
+}
+.flecha:hover {
+  background-color: rgb(75, 75, 81);
+}
+
+.flecha:hover .fa-arrow-right {
+  color: white; 
+}
+
+.texto_boton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.text {
+  padding-right: 70px;
+}
+
+button {
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+button i {
+  margin-right: 10px;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
   }
-  
-  button:hover {
-    animation: bounce 0.5s ease infinite; 
+  50% {
+    transform: translateY(-10px);
   }
-  
+}
