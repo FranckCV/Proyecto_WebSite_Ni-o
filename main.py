@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, redirect, flash, jsonify, ses
 import controladores.controlador_agrupacion as controlador_agrupacion
 import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
+import controladores.controlador_estado_test  as controlador_estado_test
 import hashlib
 import base64
 import clases.encriptar_cookie as encriptacion
 import jwt
-from flask_socketio import SocketIO, emit 
+from flask_socketio import SocketIO, emit, send
 import random
 from datetime import datetime, date
 from clases.User import User
@@ -110,6 +111,12 @@ def api_register_user():
     return jsonify(response)
 
 @app.route("/")
+def main():
+    estado = controlador_estado_test.obtener_estado_test()
+    if estado:
+        return redirect(url_for('sign_up'))
+    return redirect(url_for('espera_dos'))
+
 @app.route("/sign_up")
 def sign_up():
     participante_cookie = request.cookies.get('id_participante_cookie')
@@ -128,7 +135,6 @@ def sign_up():
 
     response = check_back_option("sign_up.html","general")
     return response
-
 
 @app.route("/eliminar_cookies_despues_de_resultado")
 def eliminar_cookies_despues_de_resultado():
@@ -307,11 +313,42 @@ def dashboard():
     response = check_back_option("dashboard_reporte.html","admin")
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
-    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    token = session.get('token')
+    user_info = controlador_user.get_admin_by_token(token)
+
     user_info_0 , user_info_1 , user_info_2  = user_info
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2))
+
+    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
     return response
 
+
+@app.route("/activar_test")
+@token_required
+def activarTest():
+    response = dict()
+    try:
+        controlador_estado_test.modificar_estado_test(True)
+        response['status'] = 1
+    except:
+        response['status'] = -1
+    return jsonify(response)
+
+@app.route("/desactivar_test")
+@token_required
+def desactivarTest():
+    response = dict()
+    try:
+        controlador_estado_test.modificar_estado_test(False)
+        response['status'] = 1
+    except:
+        response['status'] = -1
+    return jsonify(response)
+
+@app.route('/api/get_session')
+def get_session():
+    send = dict()
+    send["token"] = session.get('token')
+    return jsonify(send)
 
 @app.route("/buscarResultado")
 @token_required
@@ -358,6 +395,7 @@ def handle_connect():
 def handle_disconnect():
     print('Cliente desconectado')
 
+@app.route
 
 @socketio.on('get_valores_participante')
 @token_required

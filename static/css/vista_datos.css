@@ -46,6 +46,9 @@ table input {
 
 .campo_info {
   grid-area: c_info;
+  width: 100%;
+  gap: 50px;
+  display: flex;
 }
 
 .campo_progreso {
@@ -72,17 +75,12 @@ table input {
   padding-inline: 10px;
   padding-block: 5px;
   text-align: center;
+  width: 15vw;
 }
 
 table {
   border-collapse: separate;
-
 }
-/* 
-th,
-td {
-  border: 1px solid black;
-} */
 
 th {
   background-color: color-mix(in srgb, var(--color1) 30%, #2b2b2b 90%);

@@ -42,6 +42,10 @@
             <div class="aside_item">
                 {{user_info_1}}
             </div>
+            <div class="aside_item">
+                <input type="text" value="{{token}}" readonly id="input-text" style="cursor: not-allowed;">
+                <button onclick="copyToClipboard()">Copiar</button>
+            </div>
         </div>
         <hr>
         <div class="aside_options">
@@ -51,9 +55,14 @@
                     <p>Dashboard</p>
                 </button>
             </a>
-            <button class="aside_item" onclick="openModal()">
+            <button class="aside_item"  onclick="openModal()">
                 <i class="fa-solid fa-power-off"></i>
                 <p>Activar Test</p>
+            </button>
+            
+            <button class="aside_item"  onclick="disableTest()">
+                <i class="fa-solid fa-power-off"></i>
+                <p>Desactivar Test</p>
             </button>
             <a href="{{url_for('dashboard')}}">
                 <button class="aside_item falta">
@@ -61,16 +70,20 @@
                     <p>Modelo de Mensaje por Correo</p>
                 </button>
             </a>
-            <a class="aside_item falta" href="{{url_for('temas')}}">
-                <i class="fa-solid fa-brush"></i>
-                <p>Temas del Sitio</p>
+            <a href="{{url_for('temas')}}">
+                <button class="aside_item falta">
+                    <i class="fa-solid fa-brush"></i>
+                    <p>Temas del Sitio</p>
+                </button>
             </a>
         </div>
         <hr>
         <div class="aside_options">
-            <a class="aside_item falta" href="{{url_for('dashboard')}}">
-                <i class="fa-solid fa-key"></i>
-                <p>Cambiar de Contraseña</p>
+            <a href="{{url_for('dashboard')}}">
+                <button class="aside_item falta">
+                    <i class="fa-solid fa-key"></i>
+                    <p>Cambiar de Contraseña</p>
+                </button>
             </a>
             <a class="" class="" href="{{url_for('logout')}}" onclick="return confirmarLogOut()">
                 <button class="button_borrar">
@@ -92,16 +105,29 @@
         function confirmarLogOut() {
             return confirm('¿Estás seguro que deseas cerra sesión?')
         }
+        function copyToClipboard() {
+            const input = document.getElementById('input-text');
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value)
+                .then(() => alert('Texto copiado'))
+                .catch(err => console.error('Error al copiar: ', err));
+        }
     </script>
+
     <script src="/static/js/common_scripts/bootstrap.bundle.min.js"></script>
     <script src="/static/js/common_scripts/bootstrap.min.js"></script>
     <script src="/static/js/common_scripts/common_script.js"></script>
-    <script src="/static/js/token_modal.js"></script>
+    
+    
 
     <!-- <script src="/static/js/general_script.js"></script> -->
     {% block scripts %}
     {% endblock %}
 
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
+    <script src="/static/js/token_modal.js"></script>
 </body>
 
 <!-- Modal -->
@@ -117,7 +143,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="sendToken()">Enviar</button>
+                <button class="btn btn-primary" id="btnActivate" onclick="sendToken()">Enviar</button>
             </div>
         </div>
     </div>
