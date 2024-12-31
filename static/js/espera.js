@@ -32,7 +32,7 @@ particleground(document.getElementById('particles-foreground'), {
 });
 
 particleground(document.getElementById('particles-background'), {
-  dotColor: 'rgba(255, 255, 255, 0.5)',
+  dotColor: 'rgba(255, 255, 255, 1)',
   lineColor: 'rgba(255, 255, 255, 0.05)',
   minSpeedX: 0.075,
   maxSpeedX: 0.15,

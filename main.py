@@ -110,31 +110,52 @@ def api_register_user():
 
     return jsonify(response)
 
-@app.route("/")
-def main():
-    estado = controlador_estado_test.obtener_estado_test()
-    if estado:
-        return redirect(url_for('sign_up'))
-    return redirect(url_for('espera_dos'))
+# @app.route("/")
+# def main():
+#     estado = controlador_estado_test.obtener_estado_test()
+#     if estado:
+#         return redirect(url_for('sign_up'))
+#     return redirect(url_for('espera_dos'))
 
-@app.route("/sign_up")
+@app.route("/")
 def sign_up():
+    estado = controlador_estado_test.obtener_estado_test()
+    if not estado:
+        return redirect(url_for('espera_dos'))
+
     participante_cookie = request.cookies.get('id_participante_cookie')
-    
     if participante_cookie:
         id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
-        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie,id_grupo)
-        if id_grupo==28 and verificado:
+
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie, id_grupo)
+        
+        if id_grupo == 28 and verificado:
             response = make_response(render_template(generalPage("sign_up.html")))
             response.delete_cookie("id_participante_cookie")
             return response
         elif id_grupo is not None:
-            return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+            return redirect(url_for('pregunta', id_grupo=id_grupo))
         else:
             return redirect(url_for('pregunta', id_grupo=1))
 
-    response = check_back_option("sign_up.html","general")
+    response = check_back_option("sign_up.html", "general")
     return response
+    # participante_cookie = request.cookies.get('id_participante_cookie')
+    
+    # if participante_cookie:
+    #     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
+    #     verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie,id_grupo)
+    #     if id_grupo==28 and verificado:
+    #         response = make_response(render_template(generalPage("sign_up.html")))
+    #         response.delete_cookie("id_participante_cookie")
+    #         return response
+    #     elif id_grupo is not None:
+    #         return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+    #     else:
+    #         return redirect(url_for('pregunta', id_grupo=1))
+
+    # response = check_back_option("sign_up.html","general")
+    # return response
 
 @app.route("/eliminar_cookies_despues_de_resultado")
 def eliminar_cookies_despues_de_resultado():
@@ -260,7 +281,7 @@ def resultado():
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
     if not participante_cookie:
-        return render_template(generalPage("sign_up.html"))
+        return redirect(url_for('sign_up'))
 
     try:
         participante_id, hash_recibido = participante_cookie.split(":")
