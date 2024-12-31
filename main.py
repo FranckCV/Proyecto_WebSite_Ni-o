@@ -18,6 +18,7 @@ app = Flask(__name__, template_folder='templates')
 app.secret_key = 'security_key'
 socketio = SocketIO(app)
 
+
 def generalPage(page):
     return "general_pages/"+page
 
@@ -120,6 +121,7 @@ def api_register_user():
 @app.route("/")
 def sign_up():
     estado = controlador_estado_test.obtener_estado_test()
+    print(estado)
     if not estado:
         # return redirect(url_for('espera_dos'))
         return render_template(generalPage("espera.html"))
@@ -197,6 +199,12 @@ def guardar_participante():
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
+    estado = controlador_estado_test.obtener_estado_test()
+    
+    if not estado:
+        response = make_response(redirect(url_for('sign_up')))
+        response.delete_cookie("id_participante_cookie")
+        return response
     participante_id = request.cookies.get('id_participante_cookie')
     desordenar = session.get('desordenar', False)
 
@@ -204,7 +212,6 @@ def pregunta(id_grupo):
         return redirect("/sign_up")
 
     ultima_seleccion = controlador_seleccion.obtener_ultima_seleccion(participante_id)
-    cantidad_seleccionada = controlador_seleccion.contar_selecciones_por_participante(participante_id)
 
     if ultima_seleccion is None:
         id_grupo = 1  
@@ -278,6 +285,11 @@ def siguiente_pregunta():
 
 @app.route("/resultado")
 def resultado():
+    estado = controlador_estado_test.obtener_estado_test()
+    if not estado:
+        response = make_response(redirect(url_for('sign_up')))
+        response.delete_cookie("id_participante_cookie")
+        return response
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
     if not participante_cookie:
