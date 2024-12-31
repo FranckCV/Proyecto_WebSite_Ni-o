@@ -121,8 +121,8 @@ def api_register_user():
 def sign_up():
     estado = controlador_estado_test.obtener_estado_test()
     if not estado:
-        return redirect(url_for('espera_dos'))
-
+        # return redirect(url_for('espera_dos'))
+        return render_template(generalPage("espera.html"))
     participante_cookie = request.cookies.get('id_participante_cookie')
     if participante_cookie:
         id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
