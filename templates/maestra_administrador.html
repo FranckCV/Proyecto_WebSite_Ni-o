@@ -70,16 +70,20 @@
                     <p>Modelo de Mensaje por Correo</p>
                 </button>
             </a>
-            <a class="aside_item falta" href="{{url_for('temas')}}">
-                <i class="fa-solid fa-brush"></i>
-                <p>Temas del Sitio</p>
+            <a href="{{url_for('temas')}}">
+                <button class="aside_item falta">
+                    <i class="fa-solid fa-brush"></i>
+                    <p>Temas del Sitio</p>
+                </button>
             </a>
         </div>
         <hr>
         <div class="aside_options">
-            <a class="aside_item falta" href="{{url_for('dashboard')}}">
-                <i class="fa-solid fa-key"></i>
-                <p>Cambiar de Contraseña</p>
+            <a href="{{url_for('dashboard')}}">
+                <button class="aside_item falta">
+                    <i class="fa-solid fa-key"></i>
+                    <p>Cambiar de Contraseña</p>
+                </button>
             </a>
             <a class="" class="" href="{{url_for('logout')}}" onclick="return confirmarLogOut()">
                 <button class="button_borrar">

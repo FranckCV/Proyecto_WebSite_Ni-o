@@ -1,7 +1,8 @@
 :root {
-    --color-base: #002b88;
-    --color1: color-mix(in srgb, var(--color-base) 100%, #e6e6e6 0%);
-    --color2: color-mix(in srgb, var(--color-base) 100%, #ffffff 30%);
+    --color-base: #002b88; 
+    --color1: color-mix(in srgb, var(--color-base) 100%, #e6e6e6 0%); 
+    --color2: color-mix(in srgb, var(--color-base) 100%, #ffffff 30%); 
+    /* --color2: var(--color-base);  */
     --color3: color-mix(in srgb, var(--color1) 100%, black 30%);
     --color4: color-mix(in srgb, var(--color1) 50%, black 90%);
     --color5: color-mix(in srgb, var(--color1) 70%, var(--color2) 30%);
