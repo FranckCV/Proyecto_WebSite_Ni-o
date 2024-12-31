@@ -104,6 +104,7 @@
 
 .flecha {
   background-color: rgb(255, 255, 255);
+  color: #000000;
 }
 .progress-container{
   position: relative;
@@ -129,6 +130,7 @@
 }
 .flecha:hover {
   background-color: rgb(75, 75, 81);
+  color: white;
 }
 
 .flecha:hover .fa-arrow-right {

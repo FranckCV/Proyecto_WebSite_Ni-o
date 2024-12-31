@@ -457,8 +457,9 @@ def espera_dos():
 
 
 
-
-
+@app.route("/sign_up_dos")
+def sign_up_dos():
+    return render_template(generalPage("sign_up_dos.html"))
 
 
 
