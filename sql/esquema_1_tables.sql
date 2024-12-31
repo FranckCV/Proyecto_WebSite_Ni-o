@@ -54,6 +54,12 @@ CREATE TABLE seleccion (
         AGRUPACIONCUALIDADid
     )
 );
+
+
+CREATE TABLE estado_test (
+    estado char(1) NOT NULL
+);
+
 ALTER TABLE cualidad
 ADD CONSTRAINT FKcualidad987686 FOREIGN KEY (ELEMENTOid) REFERENCES elemento (id);
 ALTER TABLE agrupacion
