@@ -360,14 +360,14 @@ def handle_disconnect():
 
 
 @socketio.on('get_valores_participante')
-@token_required
+# @token_required
 def handle_get_valores_participante(id):
     valores = controlador_participante.obtener_valores_id(id)
     emit("update_valores_participante",  {"valores": valores} , broadcast=True) 
 
 
 @socketio.on('get_valores')
-@token_required
+# @token_required
 def handle_get_valores():
     resultados = controlador_participante.obtener_valores()
     emit("update_valores",  {"resultados": resultados} , broadcast=True) 
