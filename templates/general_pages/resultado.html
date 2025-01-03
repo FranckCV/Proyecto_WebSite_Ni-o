@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'maestra_general.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="../../static/css/resultado.css">
-    <title>Resultados</title>
-</head>
-
+{% block titulo %}
+Resultado
+{% endblock %}
 {% block estilos %}
+<link rel="stylesheet" href="../../static/css/pregunta.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="../../static/css/resultado.css">
 {% endblock %}
 
 {% block contenido %}
-
 <body>
     <input type="hidden" id="nombre_participante" value="{{ nombre_participante }}">
 
@@ -29,16 +23,6 @@
     <input type="hidden" id="data_3" value="{{ data['data'][2] }}">
     <input type="hidden" id="data_4" value="{{ data['data'][3] }}">
 
-    <!-- <input type="hidden" id="label_1" value="{{ data['labels'][0] }}">
-    <input type="hidden" id="label_2" value="{{ data['labels'][1] }}">
-    <input type="hidden" id="label_3" value="{{ data['labels'][2] }}">
-    <input type="hidden" id="label_4" value="{{ data['labels'][3] }}">
-
-    <input type="hidden" id="data_1" value="5">
-    <input type="hidden" id="data_2" value="25">
-    <input type="hidden" id="data_3" value="-4">
-    <input type="hidden" id="data_4" value="-3"> -->
-
     <div class="chart-container">
         <canvas id="grafica_resultado"></canvas>
     </div>
@@ -47,7 +31,7 @@
     <form action="{{ url_for('eliminar_cookies_despues_de_resultado') }}">
         <button type="submit" class="btn-try-again">Intentar nuevamente</button>
     </form>
-    
+
     <script>
         window.addEventListener("DOMContentLoaded", () => {
             const nombre_participante = document.getElementById("nombre_participante").value;
@@ -158,4 +142,9 @@
 
 </body>
 {% endblock %}
-</html>
+
+{% block scripts %}
+<!-- <script src="/static/js/pregunta.js"></script> -->
+{% endblock %}
+
+

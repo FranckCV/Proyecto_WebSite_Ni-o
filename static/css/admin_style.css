@@ -273,3 +273,6 @@ button {
     }
 }
 
+button.btn_token {
+    color: white;
+}

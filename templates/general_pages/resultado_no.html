@@ -14,3 +14,163 @@
     <script src="../../static/js/grafico_resultado.js"></script>
 </body>
 </html>
+
+
+<!-- v2 -->
+ 
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../../static/css/resultado.css">
+    <title>Resultados</title>
+</head>
+
+{% block estilos %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="../../static/css/resultado.css">
+{% endblock %}
+
+{% block contenido %}
+
+<body>
+    <input type="hidden" id="nombre_participante" value="{{ nombre_participante }}">
+
+    <input type="hidden" id="label_1" value="{{ data['labels'][0] }}">
+    <input type="hidden" id="label_2" value="{{ data['labels'][1] }}">
+    <input type="hidden" id="label_3" value="{{ data['labels'][2] }}">
+    <input type="hidden" id="label_4" value="{{ data['labels'][3] }}">
+
+    <input type="hidden" id="data_1" value="{{ data['data'][0] }}">
+    <input type="hidden" id="data_2" value="{{ data['data'][1] }}">
+    <input type="hidden" id="data_3" value="{{ data['data'][2] }}">
+    <input type="hidden" id="data_4" value="{{ data['data'][3] }}">
+
+    <div class="chart-container">
+        <canvas id="grafica_resultado"></canvas>
+    </div>
+
+
+    <form action="{{ url_for('eliminar_cookies_despues_de_resultado') }}">
+        <button type="submit" class="btn-try-again">Intentar nuevamente</button>
+    </form>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const nombre_participante = document.getElementById("nombre_participante").value;
+
+            const labels = [
+                document.getElementById("label_1").value,
+                document.getElementById("label_2").value,
+                document.getElementById("label_3").value,
+                document.getElementById("label_4").value
+            ];
+
+            const dataValues = [
+                parseFloat(document.getElementById("data_1").value),
+                parseFloat(document.getElementById("data_2").value),
+                parseFloat(document.getElementById("data_3").value),
+                parseFloat(document.getElementById("data_4").value)
+            ];
+
+            const colors = {
+                fuego: "#FF0000",
+                aire: " #ffff00",
+                agua: " #2e65a8",
+                tierra: "#000"
+            };
+
+            const fuegoVsAgua = dataValues[0] - dataValues[2];
+            const tierraVsAire = dataValues[3] - dataValues[1];
+
+            let maxElement = "";
+            if (Math.abs(fuegoVsAgua) >= Math.abs(tierraVsAire)) {
+                maxElement = fuegoVsAgua >= 0 ? "fuego" : "agua";
+            } else {
+                maxElement = tierraVsAire >= 0 ? "tierra" : "aire";
+            }
+
+            let secondElement = "";
+            if (maxElement === "fuego" || maxElement === "agua") {
+                if (Math.abs(dataValues[3]) === Math.abs(dataValues[1])) {
+                    secondElement = maxElement;
+                } else {
+                    secondElement = dataValues[3] >= dataValues[1] ? "tierra" : "aire";
+                }
+            } else {
+                if (Math.abs(dataValues[0]) === Math.abs(dataValues[2])) {
+                    secondElement = maxElement;
+                } else {
+                    secondElement = dataValues[0] >= dataValues[2] ? "fuego" : "agua";
+                }
+            }
+
+            const maxColor = colors[maxElement];
+            const secondColor = colors[secondElement];
+
+            console.log("Labels:", labels);
+            console.log("Data:", dataValues);
+            console.log("Elemento predominante:", maxElement);
+            console.log("Elemento secundario:", secondElement);
+            console.log("Color predominante:", maxColor);
+            console.log("Color secundario:", secondColor);
+
+            let miCanvas = document.getElementById("grafica_resultado").getContext("2d");
+
+            var chart = new Chart(miCanvas, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Resultado de " + nombre_participante,
+                        backgroundColor: [
+                            colors.fuego, colors.aire, colors.agua, colors.tierra
+                        ],
+                        borderColor: [
+                            colors.fuego, colors.aire, colors.agua, colors.tierra
+                        ],
+                        borderWidth: 1,
+                        data: dataValues
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                generateLabels: (chart) => {
+                                    let originalLabels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
+                                    originalLabels.forEach((label) => {
+                                        label.fillStyle = maxColor;
+                                        label.strokeStyle = secondColor;
+                                        label.lineWidth = 3;
+                                    });
+                                    return originalLabels;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            barPercentage: 0.5,
+                            categoryPercentage: 0.9
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+{% endblock %}
+
+</html> -->

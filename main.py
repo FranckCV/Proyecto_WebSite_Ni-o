@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session, make_response,  redirect, url_for
+from werkzeug.security import generate_password_hash,check_password_hash
 import controladores.controlador_agrupacion as controlador_agrupacion
 import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import controladores.controlador_estado_test  as controlador_estado_test
+import controladores.controlador_admin as controlador_admin
 import hashlib
 import base64
 import clases.encriptar_cookie as encriptacion
@@ -17,6 +19,7 @@ import controladores.controlador_user as controlador_user
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'security_key'
 socketio = SocketIO(app)
+
 
 def generalPage(page):
     return "general_pages/"+page
@@ -120,6 +123,7 @@ def api_register_user():
 @app.route("/")
 def sign_up():
     estado = controlador_estado_test.obtener_estado_test()
+    print(estado)
     if not estado:
         # return redirect(url_for('espera_dos'))
         return render_template(generalPage("espera.html"))
@@ -197,14 +201,19 @@ def guardar_participante():
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
+    estado = controlador_estado_test.obtener_estado_test()
+    
+    if not estado:
+        response = make_response(redirect(url_for('sign_up')))
+        response.delete_cookie("id_participante_cookie")
+        return response
     participante_id = request.cookies.get('id_participante_cookie')
     desordenar = session.get('desordenar', False)
 
     if not participante_id:
-        return redirect("/sign_up")
+        return redirect("/")
 
     ultima_seleccion = controlador_seleccion.obtener_ultima_seleccion(participante_id)
-    cantidad_seleccionada = controlador_seleccion.contar_selecciones_por_participante(participante_id)
 
     if ultima_seleccion is None:
         id_grupo = 1  
@@ -278,6 +287,11 @@ def siguiente_pregunta():
 
 @app.route("/resultado")
 def resultado():
+    estado = controlador_estado_test.obtener_estado_test()
+    if not estado:
+        response = make_response(redirect(url_for('sign_up')))
+        response.delete_cookie("id_participante_cookie")
+        return response
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
     if not participante_cookie:
@@ -319,8 +333,43 @@ def resultado():
 
     return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_completo))
 
+@app.route("/cambiar_contrasenia")
+def cambiar_contrasenia():
+    token = session.get('token')
+    user_info = controlador_user.get_admin_by_token(token)
 
+    user_info_0, user_info_1, user_info_2 = user_info
 
+    return render_template(
+        adminPage("cambiar_contrasenia.html"),
+        user_info_1=user_info_1,
+        user_info_2=user_info_2,
+        token=token
+    )
+
+        
+
+@app.route("/change_password", methods=["POST"])
+def change_password():
+    try:
+        user = request.form["user"]
+        clave_actual = request.form["current_password"]
+        clave_nueva = request.form["new_password"]
+
+        clave_obtenida = controlador_admin.obtener_clave(user)
+
+        if clave_obtenida and check_password_hash(clave_obtenida, clave_actual):
+            controlador_admin.cambiar_contrasenia(user, generate_password_hash(clave_nueva))
+            message = "Contraseña actualizada correctamente"
+        else:
+            message = "No se pudo actualizar la contraseña"
+    except KeyError as e:
+        return f"Falta el campo: {e}", 400
+    except Exception as e:
+        return f"Error interno: {e}", 500
+
+        
+    
 
 # @app.route("/resultado_v2")
 # def resultado_v2():

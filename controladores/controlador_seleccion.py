@@ -11,7 +11,7 @@ def insertar_seleccion_positiva(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 1
             """
             cursor.execute(sql_verificar_positiva, (participante_id, grupo_id))
-            positivo = cursor.fetchall()  
+            positivo = cursor.fetchone()  
 
             # Verificar si ya existe una selección negativa con la misma cualidad
             sql_verificar_negativo = """
@@ -20,19 +20,24 @@ def insertar_seleccion_positiva(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 0
             """
             cursor.execute(sql_verificar_negativo, (participante_id, grupo_id, cualidad_id))
-            negativo = cursor.fetchall() 
+            negativo = cursor.fetchone() 
 
             # Eliminar la selección positiva si ya existe
-            if len(positivo) == 1:
+            if positivo:
                 sql_delete = """
                     DELETE FROM seleccion 
                     WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 1
                 """
                 cursor.execute(sql_delete, (participante_id, grupo_id))
+
+                if positivo[2] == int(cualidad_id):
+                    conexion.commit()
+                    return "Selección positiva para id repetido eliminada correctamente."
+                
                 mensaje = "Selección positiva eliminada correctamente."
             
             # Eliminar la selección negativa si ya existe
-            if len(negativo) == 1:
+            if negativo :
                 sql_delete = """
                     DELETE FROM seleccion 
                     WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 0
@@ -67,7 +72,7 @@ def insertar_seleccion_negativa(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 0
             """
             cursor.execute(sql_verificar_negativo, (participante_id, grupo_id))
-            negativo = cursor.fetchall() 
+            negativo = cursor.fetchone() 
 
             # Verificar si ya existe una selección positiva con la misma cualidad
             sql_verificar_positivo = """
@@ -76,19 +81,22 @@ def insertar_seleccion_negativa(participante_id, grupo_id, cualidad_id, estado):
                 WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 1
             """
             cursor.execute(sql_verificar_positivo, (participante_id, grupo_id, cualidad_id))
-            positivo = cursor.fetchall() 
+            positivo = cursor.fetchone() 
 
             # Eliminar la selección negativa si ya existe
-            if len(negativo) == 1:
+            if negativo :
                 sql_delete = """
                     DELETE FROM seleccion 
                     WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND estado = 0
                 """
                 cursor.execute(sql_delete, (participante_id, grupo_id))
+                if negativo[2] == int(cualidad_id):
+                    conexion.commit()
+                    return "Selección positiva para id repetido eliminada correctamente."
                 mensaje = "Selección negativa eliminada correctamente."
             
             # Eliminar la selección positiva si ya existe
-            if len(positivo) == 1:
+            if positivo:
                 sql_delete = """
                     DELETE FROM seleccion 
                     WHERE PARTICIPANTEid = %s AND AGRUPACIONGRUPOid = %s AND AGRUPACIONCUALIDADid = %s AND estado = 1
