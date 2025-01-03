@@ -61,40 +61,11 @@ label {
     border-color: #4a90e2;
 }
 
-/* Cuando las contraseñas coinciden */
-input.valid {
-    border-color: green;
-  }
-  
-  /* Cuando las contraseñas no coinciden */
-  input.error {
-    border-color: red;
-  }
+
   
   
-.input-group button {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #888;
-    font-size: 1.2em;
-}
-  
-.input-group button:hover {
-    color: #4a90e2;
-}
-  
-#errorMessage {
-    font-size: 0.9em;
-    color: #e74c3c;
-    text-align: center;
-    margin-bottom: 15px;
-    display: none;
-}
+
+
   
 button[type="submit"] {
     width: 100%;
@@ -128,4 +99,44 @@ button[type="submit"]:hover {
     font-size: 1.2rem;
     color: #333;
     padding: 1.5rem; 
+  }
+  .input-group button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    font-size: 1.2em;
+}
+  
+.input-group button:hover {
+    color: #4a90e2;
+}
+  
+
+  .input-group.error input {
+    border-color: red;
+}
+
+.input-group.success input {
+    border-color: green;
+}
+
+.input-group small {
+    color: red;
+    display: none; /* Inicialmente oculto */
+}
+
+.input-group.error small {
+    display: block; /* Mostrar cuando haya error */
+}
+
+.input-group.success small {
+    display: none; /* No mostrar cuando sea válido */
+}
+.input-group.error-visible button {
+    transform: translateY(-80%);
   }
