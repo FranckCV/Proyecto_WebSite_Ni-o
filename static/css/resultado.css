@@ -84,12 +84,12 @@ form {
 }
 
 .btn-try-again:hover {
-    background-color: #0056b3; /* Azul más oscuro en hover */
+    background-color: #0056b3;
 }
 
 .btn-try-again:active {
-    background-color: #003f7f; /* Azul más intenso en clic */
-    transform: scale(0.98); /* Efecto de clic */
+    background-color: #003f7f;
+    transform: scale(0.98); 
 }
 
 /* Responsividad */
