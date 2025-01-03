@@ -1,0 +1,68 @@
+{% extends 'maestra_administrador.html' %}
+
+{% block titulo %}
+  Dashboard
+{% endblock %}
+
+{% block estilos %}
+  <link rel="stylesheet" href="/static/css/cambiar_contrasenia.css" />
+{% endblock %}
+
+{% block contenido %}
+  <div class="container">
+    <!-- Modal -->
+    <div class="modal" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modalMessage"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#0099ff" fill-opacity="1" d="M0,288L21.8,266.7C43.6,245,87,203,131,165.3C174.5,128,218,96,262,112C305.5,128,349,192,393,229.3C436.4,267,480,277,524,272C567.3,267,611,245,655,218.7C698.2,192,742,160,785,149.3C829.1,139,873,149,916,170.7C960,192,1004,224,1047,224C1090.9,224,1135,192,1178,197.3C1221.8,203,1265,245,1309,250.7C1352.7,256,1396,224,1418,208L1440,192L1440,0L1418.2,0C1396.4,0,1353,0,1309,0C1265.5,0,1222,0,1178,0C1134.5,0,1091,0,1047,0C1003.6,0,960,0,916,0C872.7,0,829,0,785,0C741.8,0,698,0,655,0C610.9,0,567,0,524,0C480,0,436,0,393,0C349.1,0,305,0,262,0C218.2,0,175,0,131,0C87.3,0,44,0,22,0L0,0Z"></path>
+      </svg>
+      <h3 class="title">Cambiar Contraseña</h3>
+      <form action="{{ url_for('change_password') }}"  method="POST" id="passwordForm">
+        <input name="user" value="{{ user_info_2 }}" type="hidden" />
+
+        <div class="form-group">
+          <label for="currentPassword">Contraseña Actual</label>
+          <div class="input-group">
+            <input type="password" id="currentPassword" name="current_password" required />
+            <button type="button" class="toggle-password" data-target="#currentPassword"><i class="icon-eye">👁️</i></button>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newPassword">Nueva Contraseña</label>
+          <div class="input-group">
+            <input type="password" id="newPassword" name="new_password" required />
+            <button type="button" class="toggle-password" data-target="#newPassword"><i class="icon-eye">👁️</i></button>
+            <small></small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Nueva Contraseña</label>
+          <div class="input-group">
+            <input type="password" id="confirmPassword" name="confirm_password" required />
+            <button type="button" class="toggle-password" data-target="#confirmPassword"><i class="icon-eye">👁️</i></button>
+            <small></small>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Actualizar Contraseña</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/cambiar_contrasenia.js"></script>
+{% endblock %}

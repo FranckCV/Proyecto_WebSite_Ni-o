@@ -670,3 +670,6 @@ INSERT INTO seleccion (PARTICIPANTEid, AGRUPACIONGRUPOid, AGRUPACIONCUALIDADid, 
 (5, 27, 100, 1),
 (5, 28, 47, 1),
 (5, 28, 94, 0);
+
+
+Insert into estado_test values ('A');

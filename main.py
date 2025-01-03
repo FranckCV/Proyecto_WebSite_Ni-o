@@ -1,21 +1,59 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session, make_response,  redirect, url_for
+from werkzeug.security import generate_password_hash,check_password_hash
 import controladores.controlador_agrupacion as controlador_agrupacion
 import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
+import controladores.controlador_estado_test  as controlador_estado_test
+import controladores.controlador_admin as controlador_admin
 import hashlib
 import base64
 import clases.encriptar_cookie as encriptacion
 import jwt
-from flask_socketio import SocketIO, emit 
+from flask_socketio import SocketIO, emit, send
 import random
 from datetime import datetime, date
 from clases.User import User
 from clases.auth import token_required
 import controladores.controlador_user as controlador_user
 
+from flask_mail import Mail, Message 
+
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'security_key'
 socketio = SocketIO(app)
+
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 587
+MAIL_USE_SSL = False
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'edgaralarconhd@gmail.com'
+# Configuración necesaria para usar el email
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Cambia según tu proveedor de correo
+app.config['MAIL_PORT'] = 587  # Cambia si tu proveedor usa otro puerto
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'edgaralarconhd@gmail.com'  # Tu dirección de correo
+app.config['MAIL_PASSWORD'] = 'xxxxxxxxx'  # Tu contraseña
+app.config['MAIL_DEFAULT_SENDER'] = 'edgaralarconhd@gmail.com'
+
+mail = Mail(app)
+
+
+@app.route('/send_template_email')
+def send_template_email():
+    try:
+        html_content = render_template(adminPage('login.html'), nombre="Usuario")
+        msg = Message(
+            "Correo con plantilla HTML",
+            recipients=["edgarelcodigos@gmail.com"]
+        )
+        msg.html = html_content
+        mail.send(msg)
+        return "Correo enviado exitosamente con plantilla HTML"
+    except Exception as e:
+        return f"Error al enviar el correo: {str(e)}"
+
 
 def generalPage(page):
     return "general_pages/"+page
@@ -109,26 +147,53 @@ def api_register_user():
 
     return jsonify(response)
 
+# @app.route("/")
+# def main():
+#     estado = controlador_estado_test.obtener_estado_test()
+#     if estado:
+#         return redirect(url_for('sign_up'))
+#     return redirect(url_for('espera_dos'))
+
 @app.route("/")
-@app.route("/sign_up")
 def sign_up():
+    estado = controlador_estado_test.obtener_estado_test()
+    print(estado)
+    if not estado:
+        # return redirect(url_for('espera_dos'))
+        return render_template(generalPage("espera.html"))
     participante_cookie = request.cookies.get('id_participante_cookie')
-    
     if participante_cookie:
         id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
-        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie,id_grupo)
-        if id_grupo==28 and verificado:
+
+        verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie, id_grupo)
+        
+        if id_grupo == 28 and verificado:
             response = make_response(render_template(generalPage("sign_up.html")))
             response.delete_cookie("id_participante_cookie")
             return response
         elif id_grupo is not None:
-            return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+            return redirect(url_for('pregunta', id_grupo=id_grupo))
         else:
             return redirect(url_for('pregunta', id_grupo=1))
 
-    response = check_back_option("sign_up.html","general")
+    response = check_back_option("sign_up.html", "general")
     return response
+    # participante_cookie = request.cookies.get('id_participante_cookie')
+    
+    # if participante_cookie:
+    #     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
+    #     verificado = controlador_seleccion.verificar_cantidad_seleccionada(participante_cookie,id_grupo)
+    #     if id_grupo==28 and verificado:
+    #         response = make_response(render_template(generalPage("sign_up.html")))
+    #         response.delete_cookie("id_participante_cookie")
+    #         return response
+    #     elif id_grupo is not None:
+    #         return redirect(url_for('pregunta', id_grupo=id_grupo)) 
+    #     else:
+    #         return redirect(url_for('pregunta', id_grupo=1))
 
+    # response = check_back_option("sign_up.html","general")
+    # return response
 
 @app.route("/eliminar_cookies_despues_de_resultado")
 def eliminar_cookies_despues_de_resultado():
@@ -170,14 +235,19 @@ def guardar_participante():
 
 @app.route("/pregunta=<int:id_grupo>")
 def pregunta(id_grupo):
+    estado = controlador_estado_test.obtener_estado_test()
+    
+    if not estado:
+        response = make_response(redirect(url_for('sign_up')))
+        response.delete_cookie("id_participante_cookie")
+        return response
     participante_id = request.cookies.get('id_participante_cookie')
     desordenar = session.get('desordenar', False)
 
     if not participante_id:
-        return redirect("/sign_up")
+        return redirect("/")
 
     ultima_seleccion = controlador_seleccion.obtener_ultima_seleccion(participante_id)
-    cantidad_seleccionada = controlador_seleccion.contar_selecciones_por_participante(participante_id)
 
     if ultima_seleccion is None:
         id_grupo = 1  
@@ -251,10 +321,15 @@ def siguiente_pregunta():
 
 @app.route("/resultado")
 def resultado():
+    estado = controlador_estado_test.obtener_estado_test()
+    if not estado:
+        response = make_response(redirect(url_for('sign_up')))
+        response.delete_cookie("id_participante_cookie")
+        return response
     participante_cookie = request.cookies.get('id_participante_cookie')
     id_grupo = controlador_seleccion.obtener_ultima_seleccion(participante_cookie)
     if not participante_cookie:
-        return render_template(generalPage("sign_up.html"))
+        return redirect(url_for('sign_up'))
 
     try:
         participante_id, hash_recibido = participante_cookie.split(":")
@@ -292,8 +367,50 @@ def resultado():
 
     return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_completo))
 
+@app.route("/cambiar_contrasenia")
+def cambiar_contrasenia():
+    token = session.get('token')
+    user_info = controlador_user.get_admin_by_token(token)
+
+    user_info_0, user_info_1, user_info_2 = user_info
+
+    return render_template(
+        adminPage("cambiar_contrasenia.html"),
+        user_info_1=user_info_1,
+        user_info_2=user_info_2,
+        token=token
+    )
+
+        
 
 
+@app.route("/change_password", methods=["POST"])
+def change_password():
+    try:
+        data = request.get_json()
+        
+        user = data.get("user")
+        clave_actual = data.get("current_password")
+        clave_nueva = data.get("new_password")
+
+        if not user or not clave_actual or not clave_nueva:
+            return jsonify({"status": "error", "message": "Todos los campos son obligatorios"}), 400
+
+        clave_obtenida = controlador_admin.obtener_clave(user)
+        if not clave_obtenida:
+            return jsonify({"status": "error", "message": "Usuario no encontrado"}), 400
+
+        if check_password_hash(clave_obtenida, clave_actual):
+            controlador_admin.cambiar_contrasenia(user, generate_password_hash(clave_nueva))
+            return jsonify({"status": "success", "message": "Contraseña cambiada exitosamente"}), 200
+        else:
+            return jsonify({"status": "error", "message": "Contraseña actual incorrecta"}), 400
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"status": "error", "message": "Hubo un error al cambiar la contraseña"}), 500
+
+    
 
 # @app.route("/resultado_v2")
 # def resultado_v2():
@@ -307,11 +424,42 @@ def dashboard():
     response = check_back_option("dashboard_reporte.html","admin")
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
-    user_info = controlador_user.get_admin_by_token(session.get('token'))
+    token = session.get('token')
+    user_info = controlador_user.get_admin_by_token(token)
+
     user_info_0 , user_info_1 , user_info_2  = user_info
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2))
+
+    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
     return response
 
+
+@app.route("/activar_test")
+@token_required
+def activarTest():
+    response = dict()
+    try:
+        controlador_estado_test.modificar_estado_test(True)
+        response['status'] = 1
+    except:
+        response['status'] = -1
+    return jsonify(response)
+
+@app.route("/desactivar_test")
+@token_required
+def desactivarTest():
+    response = dict()
+    try:
+        controlador_estado_test.modificar_estado_test(False)
+        response['status'] = 1
+    except:
+        response['status'] = -1
+    return jsonify(response)
+
+@app.route('/api/get_session')
+def get_session():
+    send = dict()
+    send["token"] = session.get('token')
+    return jsonify(send)
 
 @app.route("/buscarResultado")
 @token_required
@@ -358,6 +506,7 @@ def handle_connect():
 def handle_disconnect():
     print('Cliente desconectado')
 
+@app.route
 
 @socketio.on('get_valores_participante')
 # @token_required
@@ -398,8 +547,9 @@ def espera_dos():
 
 
 
-
-
+@app.route("/sign_up_dos")
+def sign_up_dos():
+    return render_template(generalPage("sign_up_dos.html"))
 
 
 
@@ -462,12 +612,6 @@ def save_colors():
         return jsonify({'status': 'success'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
-
-
-
-
 
 
 

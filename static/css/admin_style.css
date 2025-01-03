@@ -58,7 +58,7 @@ nav.header_item {
 
 aside {
     padding: 20px;
-    gap: 10px;
+    gap: 15px;
     background-color: var(--color3);
     grid-area: body_aside;
     flex-direction: column;
@@ -273,3 +273,17 @@ button {
     }
 }
 
+button.btn_token {
+    color: white;
+}
+
+#img_element{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+#activar_test{
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) ;
+    
+}

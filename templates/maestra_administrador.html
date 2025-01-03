@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/css/common_styles/fonts.css" />
     <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
     <link rel="stylesheet" href="/static/css/admin_style.css">
+    <link rel="stylesheet" href="/static/css/token.css">
     {% block estilos %}
     {% endblock %}
     <title>
@@ -19,28 +20,21 @@
 </head>
 
 <body class="general_body">
-    <header class="general_element">
-        <div class="header_item subheader">
-            <p class="fw-bolder">
-                {% block header %}
-                {% endblock %}
-            </p>
-        </div>
-        <nav class="header_item general_element">
-            <p class="">
-                {% block nav %}
-                {% endblock %}
-            </p>
-        </nav>
-    </header>
+    {% block elementos %}
+    {% endblock elementos %}
 
     <aside class="general_element">
+        <img src="/static/img/elementos.jpg" id="img_element"/>
         <div class="aside_info">
             <div class="aside_item">
                 <i class="fa-solid fa-user"></i> <b>{{user_info_2}}</b>
             </div>
             <div class="aside_item">
                 {{user_info_1}}
+            </div>
+            <div class="aside_item">
+                <input type="text" value="{{token}}" readonly id="input-text" style="cursor: not-allowed;">
+                <button class="btn_token" onclick="copyToClipboard()">Copiar</button>
             </div>
         </div>
         <hr>
@@ -51,26 +45,23 @@
                     <p>Dashboard</p>
                 </button>
             </a>
-            <button class="aside_item" onclick="openModal()">
-                <i class="fa-solid fa-power-off"></i>
-                <p>Activar Test</p>
-            </button>
-            <a href="{{url_for('dashboard')}}">
-                <button class="aside_item falta">
-                    <i class="fa-solid fa-envelope"></i>
-                    <p>Modelo de Mensaje por Correo</p>
-                </button>
-            </a>
-            <a href="{{url_for('temas')}}">
-                <button class="aside_item falta">
-                    <i class="fa-solid fa-brush"></i>
-                    <p>Temas del Sitio</p>
-                </button>
-            </a>
+
+            <p id="activar_test">Activar test</p>
+
+            <div class="toggle-switch">
+                <input type="checkbox" id="switch" onchange="toggleTest()" />
+                <label for="switch" class="slider">
+                  <span class="on">ON</span>
+                  <span class="off">OFF</span>
+                </label>
+              </div>
+              
+            
+
         </div>
         <hr>
         <div class="aside_options">
-            <a href="{{url_for('dashboard')}}">
+            <a href="{{url_for('cambiar_contrasenia')}}">
                 <button class="aside_item falta">
                     <i class="fa-solid fa-key"></i>
                     <p>Cambiar de Contraseña</p>
@@ -87,6 +78,7 @@
 
     <section class="general_element">
         {% block contenido %}
+        
         {% endblock %}
     </section>
 
@@ -96,22 +88,29 @@
         function confirmarLogOut() {
             return confirm('¿Estás seguro que deseas cerra sesión?')
         }
+        function copyToClipboard() {
+            const input = document.getElementById('input-text');
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value)
+                .then(() => alert('Texto copiado'))
+                .catch(err => console.error('Error al copiar: ', err));
+        }
     </script>
-    
+
     <script src="/static/js/common_scripts/bootstrap.bundle.min.js"></script>
     <script src="/static/js/common_scripts/bootstrap.min.js"></script>
     <script src="/static/js/common_scripts/common_script.js"></script>
-    <script src="/static/js/token_modal.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
-    <script>
-        const socket = io()
-        
-    </script>
+    
+    
 
     <!-- <script src="/static/js/general_script.js"></script> -->
     {% block scripts %}
     {% endblock %}
 
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
+    <script src="/static/js/token_modal.js"></script>
 </body>
 
 <!-- Modal -->
@@ -127,12 +126,11 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="sendToken()">Enviar</button>
+                <button class="btn btn-primary" id="btnActivate" onclick="sendToken()">Enviar</button>
             </div>
         </div>
     </div>
 </div>
-
 
 
 </html>

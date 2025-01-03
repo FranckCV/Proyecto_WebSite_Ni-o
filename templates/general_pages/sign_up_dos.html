@@ -1,0 +1,49 @@
+{% extends "maestra_form.html" %}
+
+{% block titulo %}
+Regístrate
+{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="../../static/css/sign_up_dos.css">
+{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="pinkbox">
+        <h1>Regístrate</h1>
+        <form class="sign_up_form" action="{{ url_for('guardar_participante') }}" method="POST">
+            <div class="form-field">
+                <input required type="text" id="nombres" name="nombres" placeholder="Nombres">
+                <small></small>
+            </div>
+            <div class="form-field">
+                <input required type="text" id="apellidos" name="apellidos" placeholder="Apellidos">
+                <small></small>
+            </div>
+            <div class="form-field">
+                <input required type="date" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de Nacimiento">
+                <small></small>
+            </div>
+            <div class="form-field">
+                <input required type="text" id="telefono" name="telefono" placeholder="Nro Teléfono">
+                <small></small>
+            </div>
+            <div class="form-field">
+                <input required type="email" id="email" name="correo" placeholder="Correo Electrónico">
+                <small></small>
+            </div>
+            <button class="submit" type="submit">Crear Cuenta</button>
+        </form>
+    </div>
+    <div class="welcome">
+        <div id = "photo">
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="../../static/js/sign_up.js"></script>
+{% endblock %}
