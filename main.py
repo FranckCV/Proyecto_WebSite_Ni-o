@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, flash, jsonify, session, make_response,  redirect, url_for
+from werkzeug.security import generate_password_hash,check_password_hash
 import controladores.controlador_agrupacion as controlador_agrupacion
 import controladores.controlador_participante as controlador_participante
 import controladores.controlador_seleccion  as controlador_seleccion
 import controladores.controlador_estado_test  as controlador_estado_test
+import controladores.controlador_admin as controlador_admin
 import hashlib
 import base64
 import clases.encriptar_cookie as encriptacion
@@ -209,7 +211,7 @@ def pregunta(id_grupo):
     desordenar = session.get('desordenar', False)
 
     if not participante_id:
-        return redirect("/sign_up")
+        return redirect("/")
 
     ultima_seleccion = controlador_seleccion.obtener_ultima_seleccion(participante_id)
 
@@ -331,8 +333,43 @@ def resultado():
 
     return render_template(generalPage("resultado.html"), data=data, nombre_participante=str(nombre_completo))
 
+@app.route("/cambiar_contrasenia")
+def cambiar_contrasenia():
+    token = session.get('token')
+    user_info = controlador_user.get_admin_by_token(token)
 
+    user_info_0, user_info_1, user_info_2 = user_info
 
+    return render_template(
+        adminPage("cambiar_contrasenia.html"),
+        user_info_1=user_info_1,
+        user_info_2=user_info_2,
+        token=token
+    )
+
+        
+
+@app.route("/change_password", methods=["POST"])
+def change_password():
+    try:
+        user = request.form["user"]
+        clave_actual = request.form["current_password"]
+        clave_nueva = request.form["new_password"]
+
+        clave_obtenida = controlador_admin.obtener_clave(user)
+
+        if clave_obtenida and check_password_hash(clave_obtenida, clave_actual):
+            controlador_admin.cambiar_contrasenia(user, generate_password_hash(clave_nueva))
+            message = "Contraseña actualizada correctamente"
+        else:
+            message = "No se pudo actualizar la contraseña"
+    except KeyError as e:
+        return f"Falta el campo: {e}", 400
+    except Exception as e:
+        return f"Error interno: {e}", 500
+
+        
+    
 
 # @app.route("/resultado_v2")
 # def resultado_v2():

@@ -19,20 +19,8 @@
 </head>
 
 <body class="general_body">
-    <header class="general_element">
-        <div class="header_item subheader">
-            <p class="fw-bolder">
-                {% block header %}
-                {% endblock %}
-            </p>
-        </div>
-        <nav class="header_item general_element">
-            <p class="">
-                {% block nav %}
-                {% endblock %}
-            </p>
-        </nav>
-    </header>
+    {% block elementos %}
+    {% endblock elementos %}
 
     <aside class="general_element">
         <div class="aside_info">
@@ -44,7 +32,7 @@
             </div>
             <div class="aside_item">
                 <input type="text" value="{{token}}" readonly id="input-text" style="cursor: not-allowed;">
-                <button onclick="copyToClipboard()">Copiar</button>
+                <button class="btn_token" onclick="copyToClipboard()">Copiar</button>
             </div>
         </div>
         <hr>
@@ -64,22 +52,10 @@
                 <i class="fa-solid fa-power-off"></i>
                 <p>Desactivar Test</p>
             </button>
-            <a href="{{url_for('dashboard')}}">
-                <button class="aside_item falta">
-                    <i class="fa-solid fa-envelope"></i>
-                    <p>Modelo de Mensaje por Correo</p>
-                </button>
-            </a>
-            <a href="{{url_for('temas')}}">
-                <button class="aside_item falta">
-                    <i class="fa-solid fa-brush"></i>
-                    <p>Temas del Sitio</p>
-                </button>
-            </a>
         </div>
         <hr>
         <div class="aside_options">
-            <a href="{{url_for('dashboard')}}">
+            <a href="{{url_for('cambiar_contrasenia')}}">
                 <button class="aside_item falta">
                     <i class="fa-solid fa-key"></i>
                     <p>Cambiar de Contraseña</p>
@@ -96,6 +72,7 @@
 
     <section class="general_element">
         {% block contenido %}
+        
         {% endblock %}
     </section>
 
@@ -148,7 +125,6 @@
         </div>
     </div>
 </div>
-
 
 
 </html>
