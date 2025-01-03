@@ -420,13 +420,11 @@ def change_password():
 @app.route("/dashboard")
 @token_required
 def dashboard():
-    # response = check_back_option("dashboard_reporte.html")
     response = check_back_option("dashboard_reporte.html","admin")
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
     token = session.get('token')
     user_info = controlador_user.get_admin_by_token(token)
-
     user_info_0 , user_info_1 , user_info_2  = user_info
 
     response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
@@ -470,7 +468,8 @@ def buscarResultado():
     user_info_0 , user_info_1 , user_info_2  = user_info
     resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
-    response.set_data(render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2))
+    token = session.get('token')
+    response.set_data(render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2,token = token))
     return response
 
 
@@ -492,7 +491,8 @@ def ver_informacion(id):
     user_info_0 , user_info_1 , user_info_2  = user_info
     resultado = controlador_participante.obtener_resultado_id(id)
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
-    response.set_data(render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso ))
+    token = session.get('token')
+    response.set_data(render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso , token = token))
     return response
 
 @socketio.on('connect')

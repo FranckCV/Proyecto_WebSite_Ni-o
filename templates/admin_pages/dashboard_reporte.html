@@ -1,38 +1,39 @@
 {% extends 'maestra_administrador.html' %}
 
+
 {% block titulo %}
 Dashboard
 {% endblock %}
+
+
 
 {% block estilos %}
 <link rel="stylesheet" href="/static/css/dashboard.css" />
 {% endblock %}
 
-{% block elementos %}
-<header class="general_element">
-  <div class="header_item subheader">
-    <p class="fw-bolder">
-      Dashboard de Resultados de Participantes
-    </p>
-  </div>
-  <nav class="header_item general_element">
-    <p class="">
-      Lista de Resultados
-    </p>
-  </nav>
-</header>
-{% endblock elementos %}
+
+{% block header %}
+Dashboard de Resultados de Participantes
+{% endblock %}
+
+
+
+{% block nav %}
+Lista de Resultados
+{% endblock %}
+
+
 
 {% block contenido %}
 <div class="container-fluid">
 
   <div class="row">
+
     <div class="col campo_buscar">
       <form enctype="multipart/form-data" method="GET" action="{{ url_for('buscarResultado') }}">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Buscar por nombres y apellidos"
-             id="buscarElemento" name="buscarElemento"
-            maxlength="85" {% if nombreBusqueda %} value="{{ nombreBusqueda }}" {% endif %} />
+          <input type="text" class="form-control" placeholder="Buscar por nombres y apellidos" id="buscarElemento"
+            name="buscarElemento" maxlength="85" {% if nombreBusqueda %} value="{{nombreBusqueda}}" {% endif %} />
           <button class="btn btn-outline-secondary searchi" type="submit" id="">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
@@ -54,10 +55,13 @@ Dashboard
       </div>
     </div>
     {% endif %}
+
   </div>
 
-  <div class="row">
-    <div class="col-4">
+  <div class="row campo_info_dash">
+
+    <div class="col col-4 campo_tabla">
+
       <table id="" cellspacing="0" class="table_results">
         <tbody>
           <tr>
@@ -75,9 +79,10 @@ Dashboard
           </tr>
         </tbody>
       </table>
+
     </div>
 
-    <div class="col-2">
+    <div class="col col-2 campo_proceso">
       <label class="">Filtrar por estado:</label>
       <select class="form-select choosie" id="estadoSelect">
         <option value="0" selected>Todos</option>
@@ -86,8 +91,9 @@ Dashboard
       </select>
     </div>
 
-    <div class="col">
+    <div class="col campo_periodo">
       <label class="">Filtrar por periodo entre:</label>
+
       <div class="row">
         <div class="col campo_tiempo">
           <input type="date" class="" name="" id="dateInicio">
@@ -99,13 +105,18 @@ Dashboard
           <input type="time" class="" name="" id="hourFinal">
         </div>
       </div>
+
     </div>
 
-    <div class="col-1">
+    <div class="col col-1 campo_botones">
       <button id="clearFilters" class="button_borrar">
         <i class="fa-solid fa-x"></i>
       </button>
+      <button id="resetPage" class="button_reset">
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
     </div>
+
   </div>
 
   <div class="table-container">
@@ -125,29 +136,33 @@ Dashboard
       </thead>
       <tbody id="productTableBody">
         {% for res in resultados %}
-        <tr data-person-id="{{ res[0] }}" class="
-              {% if res[3] == cant_max_progreso %}
+        <tr data-person-id="{{ res.0 }}" class="
+              {% if res.3 == cant_max_progreso %}
                 fila_disp_si
               {% else %}
                 fila_disp_no
               {% endif %}
               ">
           <td class="celda_id">
-            <div data-fecha="{{ res[6] }}" data-hora="{{ res[7] }}"
-              data-estado="{% if res[3] == cant_max_progreso %}2{% else %}1{% endif %}">
-              {{ res[0] }}
+            <div data-fecha="{{ res[6].strftime('%d/%m/%Y') }}" data-hora="{{ res.7 }}"
+              data-estado="{% if res.3 == cant_max_progreso %}2{% else %}1{% endif %}">
+              {{ res.0 }}
             </div>
           </td>
           <td>
-            <p>{{ res[1] }}</p>
-            <p>{{ res[2] }}</p>
+            <p>
+              {{ res.1 }}
+            </p>
+            <p>
+              {{ res.2 }}
+            </p>
           </td>
           <td>
-            <p>{{ res[6].strftime('%d/%m/%Y') }}</p>
-            <p>{{ res[7] }}</p>
+            <p>{{ res.6.strftime('%d/%m/%Y') }}</p>
+            <p>{{ res.7 }}</p>
           </td>
           <td>
-            <div class="bloque_progreso" data-person-id="{{ res[0] }}">
+            <div class="bloque_progreso" data-person-id="{{ res.0 }}">
               <span id="progressText">
                 <input disabled class="progreso_input" id="progressInput" min="0" max="100">
                 <p class="percent">%</p>
@@ -156,46 +171,48 @@ Dashboard
                 <div class="progress-bar" id="progressBar"></div>
               </div>
               <p class="progressNow">
-                <span id="cant_now_progreso">{{ res[3] }}</span>
+                <span id="cant_now_progreso">{{res.3}}</span>
                 /
-                <span id="cant_max_progreso">{{ cant_max_progreso }}</span>
+                <span id="cant_max_progreso">{{cant_max_progreso}}</span>
               </p>
             </div>
           </td>
           <td>
-            <div class="celda_numero nro_fuego" data-person-id="{{ res[0] }}">
-              <p>{{ res[8] * 1 + res[9] * -1 }}</p>
+            <div class="celda_numero nro_fuego" data-person-id="{{ res.0 }}">
+              <p>{{ res.8*(1) + res.9*(-1) }} </p>
             </div>
           </td>
           <td>
-            <div class="celda_numero nro_aire" data-person-id="{{ res[0] }}">
-              <p>{{ res[10] * 1 + res[11] * -1 }}</p>
+            <div class="celda_numero nro_aire" data-person-id="{{ res.0 }}">
+              <p>{{ res.10*(1) + res.11*(-1) }} </p>
             </div>
           </td>
           <td>
-            <div class="celda_numero nro_agua" data-person-id="{{ res[0] }}">
-              <p>{{ res[12] * 1 + res[13] * -1 }}</p>
+            <div class="celda_numero nro_agua" data-person-id="{{ res.0 }}">
+              <p>{{ res.12*(1) + res.13*(-1) }}</p>
             </div>
           </td>
           <td>
-            <div class="celda_numero nro_tierra" data-person-id="{{ res[0] }}">
-              <p>{{ res[14] * 1 + res[15] * -1 }}</p>
+            <div class="celda_numero nro_tierra" data-person-id="{{ res.0 }}">
+              <p>{{ res.14*(1) + res.15*(-1) }}</p>
             </div>
           </td>
           <td class="opciones_column">
             <div class="acciones">
-              <a class="opciones_fila" href="{{ url_for('ver_informacion', id=res[0]) }}">
+
+              <a class="opciones_fila" href="{{url_for('ver_informacion', id=res[0])}}">
                 <button type="submit">
                   <i class="fa-solid fa-circle-info"></i>
                 </button>
               </a>
               <form class="opciones_fila" action="{{ url_for('eliminar_info_participante') }}" method="POST"
                 onsubmit="return confirmarEliminacion()" id="deleteF">
-                <input type="hidden" name="par_id" id="par_id" value="{{ res[0] }}" />
+                <input type="hidden" name="par_id" id="par_id" value="{{ res.0 }}" />
                 <button type="submit">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </form>
+
             </div>
           </td>
         </tr>
@@ -203,19 +220,26 @@ Dashboard
       </tbody>
     </table>
 
-    <input type="hidden" id="cantidad_maxima_progreso" value="{{ cant_max_progreso }}">
+    <input type="hidden" id="cantidad_maxima_progreso" value="{{cant_max_progreso}}">
 
   </div>
 
 </div>
-{% endblock contenido %}
+
+
+{% endblock %}
+
+
 
 {% block scripts %}
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
-  integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+<!-- <script src="/static/js/socket.io.min.js"></script> -->
 <script src="/static/js/filtroCRUDListado.js"></script>
-
 <script>
+
+  document.getElementById('resetPage').addEventListener('click', () => {
+    location.reload();
+  });
+
   function confirmarEliminacion() {
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
   }
@@ -223,11 +247,11 @@ Dashboard
   const socket = io();
 
   socket.on("connect", function () {
-    // console.log("Socket Activo.!"); 
+    // console.log("Socket Activo.!");
   });
 
   socket.on("disconnect", function () {
-    // console.log("Socket Desconectado.!"); 
+    // console.log("Socket Desconectado.!");
   });
 
   function pintarFila(fila) {
@@ -260,9 +284,9 @@ Dashboard
   function actualizarFilas(datos) {
     datos.forEach(res => {
       putValueCellNumber(res[0], "#cant_now_progreso", (res[1]));
-      putValueCellNumber(res[0], ".nro_fuego p", (res[2] - res[3]));
-      putValueCellNumber(res[0], ".nro_aire p", (res[4] - res[5]));
-      putValueCellNumber(res[0], ".nro_agua p", (res[6] - res[7]));
+      putValueCellNumber(res[0], ".nro_fuego  p", (res[2] - res[3]));
+      putValueCellNumber(res[0], ".nro_aire   p", (res[4] - res[5]));
+      putValueCellNumber(res[0], ".nro_agua   p", (res[6] - res[7]));
       putValueCellNumber(res[0], ".nro_tierra p", (res[8] - res[9]));
     });
   }
@@ -279,6 +303,7 @@ Dashboard
     // progresoResultado();
     socket.emit("get_valores");
   }, 1500);
+
 
   function mostrarProgreso() {
     const bloques = document.querySelectorAll(".bloque_progreso");
@@ -299,16 +324,26 @@ Dashboard
 
       function calcularValor() {
         var percentage = parseFloat(progressInput.value);
-        progressBar.style.width = percentage + "%";
+        progressBar.style.width = `${percentage}%`;
         progressBar.style.backgroundColor = calculateColor(percentage);
+
+        if (!isNaN(percentage)) {
+          progressInput.value = percentage.toFixed(2);
+        }
       }
 
-      progressInput.addEventListener("input", function () {
+      calcularValor();
+
+      progressInput.addEventListener("input", () => {
         calcularValor();
       });
 
-      calcularValor();
     });
+
   }
+  mostrarProgreso();
+
+
 </script>
+
 {% endblock %}

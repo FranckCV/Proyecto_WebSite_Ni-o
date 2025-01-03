@@ -4,11 +4,23 @@ body {
     background-color: #f5f6fa;
     color: #333;
 }
-  
+
+header.general_element {
+    display: none;
+}
+
+.general_body {
+    grid-template-areas:
+        "body_aside body_section"
+        "body_aside body_section"
+    ;
+}
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
 }
   
 .card {

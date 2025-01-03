@@ -57,13 +57,24 @@ th {
     font-family: Poppins, sans-serif;
 }
 
+.campo_botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.campo_botones button {
+    height: 35px;
+    width: 35px;
+}
+
 /* TABLA RESULTADOS */
 
 .table_results {
     border-radius: 10px;
     font-size: 90%;
     box-shadow: 0 4px 8px #0000006c;
-
 }
 
 .table_results th {
@@ -97,7 +108,6 @@ th {
 .table_results tbody td {
     border-radius: 10px;
 }
-
 
 /* TABLA LISTADO */
 
@@ -400,4 +410,115 @@ label {
 
 
 
+@media (min-width:600px) and (max-width:1000px) {
+    .table-container {
+        max-height: 55vh;
+        width: 62.5vw;
+    }
 
+    .campo_info_dash {
+        display: grid;
+        grid-template-columns: 67.5% auto;
+        grid-template-areas:
+            "c_tabla c_proce"
+            "c_perio c_boton"
+        ;
+        gap: 10px;
+        justify-items: center;
+    }
+
+    .campo_tabla {
+        grid-area: c_tabla;
+        width: 100%;
+    }
+
+    .campo_proceso {
+        grid-area: c_proce;
+        width: 100%;
+    }
+
+    .campo_proceso select {
+        width: 100%;
+    }
+
+    .campo_periodo {
+        grid-area: c_perio;
+        width: 100%;
+    }
+
+    .campo_periodo .row {
+        gap: 10px;
+        display: flex;
+    }
+
+    .campo_periodo .campo_tiempo input {
+        width: 15vw;
+    }
+
+    .campo_botones {
+        grid-area: c_boton;
+    }
+
+
+}
+
+@media (max-width:599px) {
+    .table-container {
+        max-height: 42.5vh;
+        width: 84.5vw;
+    }
+
+    .campo_info_dash {
+        display: grid;
+        grid-template-columns: 80% auto;
+        grid-template-areas:
+            "c_tabla c_tabla"
+            "c_proce c_boton"
+            "c_perio c_perio"
+        ;
+        gap: 20px;
+        justify-items: center;
+    }
+
+    .campo_tabla {
+        grid-area: c_tabla;
+        width: 100%;
+    }
+
+    .campo_proceso {
+        grid-area: c_proce;
+        width: 100%;
+    }
+
+    .campo_proceso select {
+        width: 100%;
+    }
+
+    .campo_periodo {
+        grid-area: c_perio;
+        width: 100%;
+    }
+
+    .campo_periodo .row {
+        gap: 10px;
+        display: flex;
+    }
+
+    .campo_periodo .campo_tiempo input {
+        width: 37.5vw;
+    }
+
+    .campo_botones {
+        grid-area: c_boton;
+    }
+
+    .progreso_input {
+        width: 10vw;
+    }
+/* 
+    .percent {
+        position: relative;
+        left: 10px;
+    } */
+
+}
