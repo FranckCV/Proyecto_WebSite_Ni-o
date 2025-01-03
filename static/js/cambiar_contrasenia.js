@@ -30,7 +30,7 @@ function validatePasswords(event) {
     confirmPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
     confirmPasswordInput.classList.remove('valid');
-    event.preventDefault();  // Evita que se envíe el formulario
+    event.preventDefault(); 
   } else if (newPassword === "" || confirmPassword === "") {
     errorMessage.style.display = 'block';
     errorMessage.textContent = "Por favor, complete ambos campos de contraseña.";
@@ -38,7 +38,7 @@ function validatePasswords(event) {
     confirmPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
     confirmPasswordInput.classList.remove('valid');
-    event.preventDefault();  // Evita que se envíe el formulario
+    event.preventDefault();
   } else if (newPassword !== confirmPassword) {
     errorMessage.style.display = 'block';
     errorMessage.textContent = "Las contraseñas no coinciden.";
@@ -46,13 +46,13 @@ function validatePasswords(event) {
     confirmPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
     confirmPasswordInput.classList.remove('valid');
-    event.preventDefault();  // Evita que se envíe el formulario
+    event.preventDefault();  
   } else if (newPassword === currentPassword) {
     errorMessage.style.display = 'block';
     errorMessage.textContent = "La nueva contraseña no puede ser igual a la actual.";
     newPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
-    event.preventDefault();  // Evita que se envíe el formulario
+    event.preventDefault(); 
   } else {
     errorMessage.style.display = 'none';
     newPasswordInput.classList.add('valid');
