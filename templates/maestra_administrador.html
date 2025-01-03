@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/css/common_styles/fonts.css" />
     <link rel="stylesheet" href="/static/css/common_styles/common_style.css" />
     <link rel="stylesheet" href="/static/css/admin_style.css">
+    <link rel="stylesheet" href="/static/css/token.css">
     {% block estilos %}
     {% endblock %}
     <title>
@@ -44,15 +45,19 @@
                     <p>Dashboard</p>
                 </button>
             </a>
-            <button class="aside_item"  onclick="openModal()">
-                <i class="fa-solid fa-power-off"></i>
-                <p>Activar Test</p>
-            </button>
+
+            <p id="activar_test">Activar test</p>
+
+            <div class="toggle-switch">
+                <input type="checkbox" id="switch" onchange="toggleTest()" />
+                <label for="switch" class="slider">
+                  <span class="on">ON</span>
+                  <span class="off">OFF</span>
+                </label>
+              </div>
+              
             
-            <button class="aside_item"  onclick="disableTest()">
-                <i class="fa-solid fa-power-off"></i>
-                <p>Desactivar Test</p>
-            </button>
+
         </div>
         <hr>
         <div class="aside_options">

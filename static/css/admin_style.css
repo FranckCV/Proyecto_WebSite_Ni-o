@@ -282,3 +282,8 @@ button.btn_token {
     height: 150px;
     border-radius: 50%;
 }
+
+#activar_test{
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) ;
+    
+}
