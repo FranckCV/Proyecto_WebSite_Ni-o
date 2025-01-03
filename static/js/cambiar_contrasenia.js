@@ -15,7 +15,7 @@ document.querySelectorAll('.toggle-password').forEach(button => {
 document.getElementById('newPassword').addEventListener('input', validatePasswords);
 document.getElementById('confirmPassword').addEventListener('input', validatePasswords);
 
-function validatePasswords() {
+function validatePasswords(event) {
   const currentPassword = document.getElementById('currentPassword').value;
   const newPassword = document.getElementById('newPassword').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
@@ -30,6 +30,7 @@ function validatePasswords() {
     confirmPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
     confirmPasswordInput.classList.remove('valid');
+    event.preventDefault();  // Evita que se envíe el formulario
   } else if (newPassword === "" || confirmPassword === "") {
     errorMessage.style.display = 'block';
     errorMessage.textContent = "Por favor, complete ambos campos de contraseña.";
@@ -37,6 +38,7 @@ function validatePasswords() {
     confirmPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
     confirmPasswordInput.classList.remove('valid');
+    event.preventDefault();  // Evita que se envíe el formulario
   } else if (newPassword !== confirmPassword) {
     errorMessage.style.display = 'block';
     errorMessage.textContent = "Las contraseñas no coinciden.";
@@ -44,11 +46,13 @@ function validatePasswords() {
     confirmPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
     confirmPasswordInput.classList.remove('valid');
+    event.preventDefault();  // Evita que se envíe el formulario
   } else if (newPassword === currentPassword) {
     errorMessage.style.display = 'block';
     errorMessage.textContent = "La nueva contraseña no puede ser igual a la actual.";
     newPasswordInput.classList.add('error');
     newPasswordInput.classList.remove('valid');
+    event.preventDefault();  // Evita que se envíe el formulario
   } else {
     errorMessage.style.display = 'none';
     newPasswordInput.classList.add('valid');
@@ -57,6 +61,7 @@ function validatePasswords() {
     confirmPasswordInput.classList.remove('error');
   }
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const passwordForm = document.getElementById('passwordForm');
