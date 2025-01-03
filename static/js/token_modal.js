@@ -1,33 +1,46 @@
-// Abrir el modal
+function toggleTest() {
+    var switchElement = document.getElementById("switch");
+
+    if (switchElement.checked) {
+        console.log("Test activado");
+        openModal();
+    } else {
+        console.log("Test desactivado");
+        disableTest();
+    }
+}
+
 function openModal() {
     const modal = document.getElementById('tokenModal');
     modal.style.display = 'flex';
 }
 
-// Cerrar el modal
 function closeModal() {
     const modal = document.getElementById('tokenModal');
     modal.style.display = 'none';
+    
+    const switchElement = document.getElementById("switch");
+    switchElement.checked = false; 
 }
 
 const socketMessage = io();
 
 async function getSessionData() {
-  const url = '/api/get_session';
+    const url = '/api/get_session';
 
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const sessionData = await response.json();
+        return sessionData.token;  // Devuelve el token que el servidor tiene almacenado
+
+    } catch (error) {
+        console.error('Error fetching session data:', error);
+        return null;
     }
-
-    const sessionData = await response.json();
-    return sessionData.token;  // Devuelve el token que el servidor tiene almacenado
-
-  } catch (error) {
-    console.error('Error fetching session data:', error);
-    return null;
-  }
 }
 
 // Activar Test: Llama a la ruta /activar_test

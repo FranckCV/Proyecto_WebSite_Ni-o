@@ -383,26 +383,33 @@ def cambiar_contrasenia():
 
         
 
+
 @app.route("/change_password", methods=["POST"])
 def change_password():
     try:
-        user = request.form["user"]
-        clave_actual = request.form["current_password"]
-        clave_nueva = request.form["new_password"]
+        data = request.get_json()
+        
+        user = data.get("user")
+        clave_actual = data.get("current_password")
+        clave_nueva = data.get("new_password")
+
+        if not user or not clave_actual or not clave_nueva:
+            return jsonify({"status": "error", "message": "Todos los campos son obligatorios"}), 400
 
         clave_obtenida = controlador_admin.obtener_clave(user)
+        if not clave_obtenida:
+            return jsonify({"status": "error", "message": "Usuario no encontrado"}), 400
 
-        if clave_obtenida and check_password_hash(clave_obtenida, clave_actual):
+        if check_password_hash(clave_obtenida, clave_actual):
             controlador_admin.cambiar_contrasenia(user, generate_password_hash(clave_nueva))
-            message = "Contraseña actualizada correctamente"
+            return jsonify({"status": "success", "message": "Contraseña cambiada exitosamente"}), 200
         else:
-            message = "No se pudo actualizar la contraseña"
-    except KeyError as e:
-        return f"Falta el campo: {e}", 400
-    except Exception as e:
-        return f"Error interno: {e}", 500
+            return jsonify({"status": "error", "message": "Contraseña actual incorrecta"}), 400
 
-        
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"status": "error", "message": "Hubo un error al cambiar la contraseña"}), 500
+
     
 
 # @app.route("/resultado_v2")

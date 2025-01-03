@@ -70,7 +70,6 @@ def generate_token(user):
 
 def login(username,password):
     user = get_user_by_username(username)
-    print(user)
     if not user or not user.check_password(password) :
         return {
             "message":"error",
