@@ -22,17 +22,25 @@ function validatePasswords() {
   const newPasswordInput = document.getElementById('newPassword');
   const confirmPasswordInput = document.getElementById('confirmPassword');
 
-  if (newPassword !== confirmPassword) {
-    errorMessage.style.display = 'block';  // Muestra el mensaje de error
-    newPasswordInput.classList.add('error');  // Aplica clase de error al input de nueva contraseña
-    confirmPasswordInput.classList.add('error');  // Aplica clase de error al input de confirmación
-    newPasswordInput.classList.remove('valid');  // Elimina clase de validación si las contraseñas no coinciden
-    confirmPasswordInput.classList.remove('valid');  // Elimina clase de validación si las contraseñas no coinciden
+  if (newPassword === "" || confirmPassword === "") {
+    errorMessage.style.display = 'block'; 
+    errorMessage.textContent = "Por favor, complete ambos campos de contraseña."; 
+    newPasswordInput.classList.add('error');
+    confirmPasswordInput.classList.add('error');
+    newPasswordInput.classList.remove('valid');
+    confirmPasswordInput.classList.remove('valid');
+  } else if (newPassword !== confirmPassword) {
+    errorMessage.style.display = 'block';
+    errorMessage.textContent = "Las contraseñas no coinciden.";  
+    newPasswordInput.classList.add('error');
+    confirmPasswordInput.classList.add('error');
+    newPasswordInput.classList.remove('valid');
+    confirmPasswordInput.classList.remove('valid');
   } else {
-    errorMessage.style.display = 'none';  // Oculta el mensaje de error
-    newPasswordInput.classList.add('valid');  // Aplica clase de validación al input de nueva contraseña
-    confirmPasswordInput.classList.add('valid');  // Aplica clase de validación al input de confirmación
-    newPasswordInput.classList.remove('error');  // Elimina clase de error si las contraseñas coinciden
-    confirmPasswordInput.classList.remove('error');  // Elimina clase de error si las contraseñas coinciden
+    errorMessage.style.display = 'none'; 
+    newPasswordInput.classList.add('valid');
+    confirmPasswordInput.classList.add('valid');
+    newPasswordInput.classList.remove('error');
+    confirmPasswordInput.classList.remove('error');
   }
 }
