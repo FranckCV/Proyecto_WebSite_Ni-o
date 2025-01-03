@@ -41,17 +41,21 @@ body {
     align-items: center;
     margin: 20px;
     padding: 20px;
-    background-color: #fff;
+    /* background-color: #fff; */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     width: 90%;
     max-width: 800px;
     margin: 20px auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgba(0, 0, 0, 0.6);
+    z-index: 10;
 }
 
 canvas {
     max-width: 100%;
     height: auto !important;
+    z-index: 10;
 }
 
 /* Contenedor del botón */
@@ -59,6 +63,7 @@ form {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    z-index: 10;
 }
 
 /* Estilo del botón */
@@ -79,12 +84,12 @@ form {
 }
 
 .btn-try-again:hover {
-    background-color: #0056b3; /* Azul más oscuro en hover */
+    background-color: #0056b3;
 }
 
 .btn-try-again:active {
-    background-color: #003f7f; /* Azul más intenso en clic */
-    transform: scale(0.98); /* Efecto de clic */
+    background-color: #003f7f;
+    transform: scale(0.98); 
 }
 
 /* Responsividad */
