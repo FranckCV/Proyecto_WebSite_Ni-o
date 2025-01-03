@@ -16,9 +16,43 @@ from clases.User import User
 from clases.auth import token_required
 import controladores.controlador_user as controlador_user
 
+from flask_mail import Mail, Message 
+
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'security_key'
 socketio = SocketIO(app)
+
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 587
+MAIL_USE_SSL = False
+MAIL_USE_TLS = True
+MAIL_USERNAME = 'edgaralarconhd@gmail.com'
+# Configuración necesaria para usar el email
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Cambia según tu proveedor de correo
+app.config['MAIL_PORT'] = 587  # Cambia si tu proveedor usa otro puerto
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'edgaralarconhd@gmail.com'  # Tu dirección de correo
+app.config['MAIL_PASSWORD'] = 'xxxxxxxxx'  # Tu contraseña
+app.config['MAIL_DEFAULT_SENDER'] = 'edgaralarconhd@gmail.com'
+
+mail = Mail(app)
+
+
+@app.route('/send_template_email')
+def send_template_email():
+    try:
+        html_content = render_template(adminPage('login.html'), nombre="Usuario")
+        msg = Message(
+            "Correo con plantilla HTML",
+            recipients=["edgarelcodigos@gmail.com"]
+        )
+        msg.html = html_content
+        mail.send(msg)
+        return "Correo enviado exitosamente con plantilla HTML"
+    except Exception as e:
+        return f"Error al enviar el correo: {str(e)}"
 
 
 def generalPage(page):
