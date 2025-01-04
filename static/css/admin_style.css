@@ -70,6 +70,11 @@ aside {
     width: var(--width-aside);
 }
 
+#menu_button {
+    cursor: pointer;
+    display: none;
+}
+
 aside::-webkit-scrollbar {
     display: none;
 }
@@ -107,6 +112,9 @@ aside hr {
     background-color: #7f2f00;
     color: white;
 }
+
+
+
 
 /* SECTION */
 
@@ -171,8 +179,8 @@ p {
     color: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     margin: auto;
-    max-width: 90%; /* Evita que sea demasiado ancho en pantallas grandes */
-    width: fit-content; /* Ajusta al tamaño del contenido */
+    max-width: 90%;
+    width: fit-content;
 }
 
 .modal-header,
@@ -232,10 +240,6 @@ button {
     padding: 0;
 }
 
-/* p {
-    margin: 0;
-} */
-
 .button_volver {
     background-color: #7200a7;
     color: white;
@@ -250,27 +254,11 @@ button {
     padding-block: 8px;
 }
 
-
-@media (min-width:600px) and (max-width:1000px) {
-    :root {
-        --width-aside: 30vw;
-        --heigh-header: 105px;
-    }
-}
-
-
-
-@media (max-width:599px) {
-    :root {
-        --width-aside: 0vw;
-        --width-aside2: 100vw;
-        --heigh-header: 125px;
-    }
-
-    aside.general_element {
-        display: none;
-        width: 0;
-    }
+.button_reset {
+    background-color: #5ea700;
+    color: white;
+    padding-inline: 10px;
+    padding-block: 8px;
 }
 
 button.btn_token {
@@ -285,5 +273,38 @@ button.btn_token {
 
 #activar_test{
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) ;
+}
+
+@media (min-width:600px) and (max-width:1000px) {
+    :root {
+        --width-aside: 30vw;
+        --heigh-header: 105px;
+    }
+}
+
+@media (max-width:599px) {
+
+    :root {
+        --width-aside: 0vw;
+        /* --width-aside2: 100vw; */
+        --heigh-header: 125px;
+    }
+
+    aside.general_element {
+        left: 0;
+        width: 100vw;
+        transition: left 0.5s ease;
+    }
+
+    aside.general_element.desplegar {
+        left: -100vw;
+    }
+
+    #menu_button {
+        display: flex;
+        color: white;
+    }
     
+    
+
 }

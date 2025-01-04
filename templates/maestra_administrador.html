@@ -20,14 +20,35 @@
 </head>
 
 <body class="general_body">
-    {% block elementos %}
-    {% endblock elementos %}
+    <header class="general_element">
+        <div class="header_item subheader">
+            <p class="fw-bolder">
+                {% block header %}
+                {% endblock %}
+            </p>
+        </div>
+        <nav class="header_item general_element">
+            <button id="menu_button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
+<<<<<<< HEAD
     <div id="estado_test" data-estado="{{ estado }}"></div>
 
 
     <aside class="general_element">
         <img src="/static/img/elementos.jpg" id="img_element"/>
+=======
+            <p class="">
+                {% block nav %}
+                {% endblock %}
+            </p>
+        </nav>
+    </header>
+
+    <aside class="general_element desplegar">
+        <img src="/static/img/elementos.jpg" id="img_element" />
+>>>>>>> 057bb817a89c3ec75e9520b1c9060aa9ba5773e4
         <div class="aside_info">
             <div class="aside_item">
                 <i class="fa-solid fa-user"></i> <b>{{user_info_2}}</b>
@@ -52,14 +73,20 @@
             <p id="activar_test">Activar test</p>
 
             <div class="toggle-switch">
-                <input type="checkbox" id="switch" onchange="toggleTest()" />
+                <input type="checkbox" id="switch" onchange="toggleTest()"/>
                 <label for="switch" class="slider">
-                  <span class="on">ON</span>
-                  <span class="off">OFF</span>
+                    <span class="on">ON</span>
+                    <span class="off">OFF</span>
                 </label>
+<<<<<<< HEAD
               </div>
               
               <div id="estado_test" data-estado="{{ estado }}"></div>
+=======
+            </div>
+
+
+>>>>>>> 057bb817a89c3ec75e9520b1c9060aa9ba5773e4
 
         </div>
         <hr>
@@ -81,12 +108,10 @@
 
     <section class="general_element">
         {% block contenido %}
-        
+
         {% endblock %}
     </section>
 
-    <!-- <footer class="general_element">
-    </footer> -->
     <script>
         function confirmarLogOut() {
             return confirm('¿Estás seguro que deseas cerra sesión?')
@@ -104,15 +129,14 @@
     <script src="/static/js/common_scripts/bootstrap.bundle.min.js"></script>
     <script src="/static/js/common_scripts/bootstrap.min.js"></script>
     <script src="/static/js/common_scripts/common_script.js"></script>
-    
-    
+    <script src="/static/js/toggleMenu.js"></script>
+    <script src="/static/js/socket.io.min.js"></script>
 
-    <!-- <script src="/static/js/general_script.js"></script> -->
     {% block scripts %}
     {% endblock %}
 
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script> -->
     <script src="/static/js/token_modal.js"></script>
 </body>
 

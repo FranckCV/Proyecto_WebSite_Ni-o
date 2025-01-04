@@ -191,7 +191,7 @@ Datos de {{resultado.1}} {{resultado.2}}
     <input type="hidden" id="nombre_participante" disabled="disabled" value="{{resultado.1 }} {{resultado.2 }}">
 
     <div class="row">
-      <div class="col-6">
+      <div class="col ">
         <a class="" href="{{ url_for('dashboard') }}">
           <button type="button" class="button_volver">
             <i class="fa-solid fa-left-long"></i>
@@ -200,13 +200,13 @@ Datos de {{resultado.1}} {{resultado.2}}
         </a>
       </div>
 
-      <div class="col-4">
+      <div class="col">
         <form class="" action="{{ url_for('eliminar_info_participante') }}" method="POST"
           onsubmit="return confirmarEliminacion()" id="deleteF">
           <input type="hidden" name="par_id" id="par_id" value="{{ resultado.0 }}" />
           <button type="submit" class="button_borrar">
             <i class="fa-solid fa-trash-can"></i>
-            <p>Eliminar Información del Participante</p>
+            <p>Eliminar Participante</p>
           </button>
         </form>
       </div>
@@ -219,8 +219,8 @@ Datos de {{resultado.1}} {{resultado.2}}
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"
-  integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+<!-- <script src="/static/js/socket.io.min.js"></script> -->
+<!-- <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"  integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>

@@ -120,3 +120,58 @@ th.nro_agua {
 th.nro_tierra {
   background-color: color-mix(in srgb, var(--color1) 60%, var(--color-tierra) 80%);
 }
+
+
+@media (min-width:600px) and (max-width:1000px) {}
+
+@media (max-width:599px) {
+
+  section.general_element {
+    min-height: 100%;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .campo_info input {
+    width: 35vw;
+  }
+
+  .grid-info {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-areas:
+      "c_info"
+      "c_progreso"
+      "c_grafico"
+      "c_tabla"
+      "c_adicional"
+    ;
+  }
+
+  .campo_info .row {
+    gap:  30px;
+  }
+
+  .campo_adicional {
+    display: flex;
+    justify-content: center;
+  }
+
+  .campo_adicional .row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .campo_adicional .row a {
+    width: vw;
+  }
+
+  /* .campo_adicional .row button {
+    width: 60vw;
+  } */
+
+
+}
