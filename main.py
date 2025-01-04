@@ -454,7 +454,6 @@ def dashboard():
     
     token = session.get('token')
     user_info = controlador_user.get_admin_by_token(token)
-<<<<<<< HEAD
     user_info_0 , user_info_1 , user_info_2 = user_info
 
     response.set_data(render_template(
@@ -466,11 +465,9 @@ def dashboard():
         token=token,
         estado=estado
     ))
-=======
     user_info_0 , user_info_1 , user_info_2  = user_info
 
     response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
->>>>>>> 057bb817a89c3ec75e9520b1c9060aa9ba5773e4
     return response
 
 
