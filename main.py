@@ -468,14 +468,16 @@ def dashboard():
     return response
 
 
-@app.route("/activar_test")
+@app.route("/activar_test", methods=['POST'])
 @token_required
 def activarTest():
     response = dict()
     try:
-        controlador_estado_test.modificar_estado_test(True)
+        estado = controlador_estado_test.modificar_estado_test(True)
+        print('El estado es:', estado)
         response['status'] = 1
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         response['status'] = -1
     return jsonify(response)
 

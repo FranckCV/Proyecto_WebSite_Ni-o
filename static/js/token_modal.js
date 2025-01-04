@@ -32,13 +32,18 @@ function openModal() {
 }
 
 // Función para cerrar el modal
-function closeModal() {
+function closeModal(shouldUncheck = true) {
     const modal = document.getElementById('tokenModal');
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
-    const switchElement = document.getElementById("switch");
-    switchElement.checked = false; // Desmarca el switch si se cierra el modal
+
+    // Solo desmarcar el switch si se indica en el parámetro `shouldUncheck`
+    if (shouldUncheck) {
+        const switchElement = document.getElementById("switch");
+        switchElement.checked = false; 
+    }
 }
+
 
 // Función para activar el Test
 async function sendToken() {
@@ -73,18 +78,25 @@ async function sendToken() {
             const data = await response.json();
             if (data.status === 1) {
                 alert('Test activado');
+                const switchElement = document.getElementById('switch');
+                switchElement.checked = true;  
+                closeModal(false);
+
             } else {
                 alert('Error al activar el test');
+                closeModal(true);
             }
 
             inputToken.value = '';
-            closeModal();
+
         } else {
             alert('Token no válido o no encontrado');
+            closeModal(true); 
         }
     } catch (error) {
         console.error('Error al activar el test:', error);
         alert('Error al verificar el token. Intenta nuevamente.');
+        closeModal(true); 
     }
 }
 
