@@ -48,19 +48,28 @@ async function getSessionData() {
     }
 }
 
+
 // Activar Test: Llama a la ruta /activar_test
 async function sendToken() {
     const inputToken = document.getElementById('adminToken');
-    const token = inputToken.value.trim();
+    let token = inputToken.value.trim();
 
     if (!token) {
         alert('Por favor, ingrese su token de administrador.');
         return;
     }
 
+    // Detecta y elimina el prefijo `b'` y el sufijo `'` si están presentes
+    if (token.startsWith("b'") && token.endsWith("'")) {
+        token = token.slice(2, -1);
+    }
+
     try {
         const sessionToken = await getSessionData();
+        console.log("Token ingresado:", token);
+        console.log("Token de sesión:", sessionToken);
 
+        // Comparar los tokens como strings
         if (sessionToken && sessionToken === token) {
             const response = await fetch('/activar_test', {
                 method: 'GET',
@@ -70,7 +79,6 @@ async function sendToken() {
                 }
             });
 
-            // Si el servidor redirige, manejamos la redirección
             if (response.redirected) {
                 window.location.href = response.url;
                 return;
@@ -88,11 +96,13 @@ async function sendToken() {
         } else {
             alert('Token no válido o no encontrado');
         }
+
     } catch (error) {
         console.error('Error checking session or sending token:', error);
         alert('Error al verificar el token. Intenta nuevamente.');
     }
 }
+
 
 // Desactivar Test: Llama a la ruta /desactivar_test
 async function disableTest() {

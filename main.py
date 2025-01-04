@@ -429,7 +429,6 @@ def dashboard():
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
 
-    # Aquí asumimos que res[6] ya es un objeto datetime
     print(type(resultados[0][6]))
     resultados = [
         (
@@ -439,7 +438,7 @@ def dashboard():
             res[3],
             res[4],
             res[5],
-            res[6],  # Suponiendo que es un objeto datetime
+            res[6],
             res[7],
             res[8],
             res[9],
@@ -496,8 +495,15 @@ def desactivarTest():
 @app.route('/api/get_session')
 def get_session():
     send = dict()
-    send["token"] = session.get('token')
+    token = session.get('token')
+    print(f"Token: {token}, Tipo: {type(token)}")  # Diagnóstico
+    if token and isinstance(token, bytes):
+        send["token"] = token.decode('utf-8')  # Convierte bytes a string
+    else:
+        send["token"] = token
     return jsonify(send)
+
+
 
 @app.route("/buscarResultado")
 @token_required
