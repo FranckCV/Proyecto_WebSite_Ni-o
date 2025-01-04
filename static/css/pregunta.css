@@ -4,6 +4,9 @@
   gap: 20px;
   justify-content: center;
 }
+#contenedor_mayor{
+  height: 100vh;
+}
 
 #head {
   margin: 40px;
@@ -38,6 +41,7 @@
   display: flex;
   justify-content: center;
   gap: 10px;
+  flex-direction: row;
 }
 
 .icon {
@@ -178,18 +182,80 @@ button i {
   }
 }
 
-/* Media Query para pantallas pequeñas */
-@media (max-width: 715px) {
-  .container {
-    flex-direction: column; /* Las tarjetas se apilan verticalmente */
-    align-items: center; /* Alinea las tarjetas al centro */
-    gap: 5px;
+@media (max-width: 768px) {
+
+  .container{
+    flex-direction: column;
+    align-items: center;
+  }
+  
+
+  h1#head {
+    font-size: 1.5rem;
+    margin: 30px;
+    margin-bottom: 20px;
+  }
+  .icon{
+    height: 25px;
+    width: 25px;
+    font-size: 1.5rem;
+    margin-top: 5px;
   }
 
-  /* Modificar el ancho de las tarjetas */
   .card {
-    width: 90%; /* Las tarjetas ocuparán el 90% del ancho */
-    margin-bottom: 20px; /* Separación entre tarjetas */
+    padding: 15px;
+  }
+
+  .magnify button{
+    font-size: 1.2rem;
+  }
+  .card h2{
+    font-size: 1.2rem;
+  }
+  .progress-container {
+    margin-top: 15px;
+  }
+
+  .flecha{
+    width: 20px;
+    font-size: 1rem;
+    height: 20px;
+    text-align: center;
+  }
+
+  .form{
+    margin-right: 100px;
+  }
+
+  .flechas {
+    margin-top: 15px;
   }
 }
 
+/* Responsividad para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  h1#head {
+    font-size: 1.2rem;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .icons {
+    align-items: center;
+  }
+
+  .magnify {
+    text-align: center;
+  }
+
+
+
+  .flechas {
+    margin-top: 10px;
+  }
+  .form{
+    margin-right: 100px;
+  }
+}

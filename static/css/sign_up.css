@@ -14,6 +14,14 @@
     border-color: var(--success-color);
 }
 
+.sign_up_form{
+    padding-inline: 0 !important;
+    padding-top: 0 !important;
+}
+svg{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
 .form-field small {
     color: var(--error-color);
     font-size: 12px;
@@ -52,6 +60,11 @@ form {
 
 
 @media (max-width: 768px) {
+    .sign_up_form{
+        width: 37vh;
+        margin: 0;
+    }
+    
     .form-field input {
         font-size: 14px;
     }

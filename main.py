@@ -423,6 +423,7 @@ def dashboard():
 
     
     estado = controlador_estado_test.obtener_estado_test()
+    print(estado)
     response = check_back_option("dashboard_reporte.html", "admin")
 
     response = check_back_option("dashboard_reporte.html","admin")
@@ -464,9 +465,6 @@ def dashboard():
         token=token,
         estado=estado
     ))
-    user_info_0 , user_info_1 , user_info_2  = user_info
-
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
     return response
 
 
@@ -481,16 +479,31 @@ def activarTest():
         response['status'] = -1
     return jsonify(response)
 
-@app.route("/desactivar_test")
+
+@app.route("/desactivar_test", methods=['POST'])
 @token_required
 def desactivarTest():
     response = dict()
     try:
+        # Imprimir los encabezados para asegurarse de que el Authorization esté presente
+        print("Encabezados:", request.headers)
+
+        # Verificar si el encabezado Authorization está presente
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            token_str = auth_header.split(' ')[1]  # Obtener el token después de "Bearer"
+            print("Token recibido:", token_str)  # Mostrar el token
+        else:
+            raise ValueError("Authorization header missing")
+
+        # Aquí ya puedes trabajar con token_str directamente
         controlador_estado_test.modificar_estado_test(False)
         response['status'] = 1
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         response['status'] = -1
     return jsonify(response)
+
 
 @app.route('/api/get_session')
 def get_session():
