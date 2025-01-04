@@ -14,7 +14,7 @@
 }
 
 .card {
-  width: 45%;
+  width: 45%; /* 45% de ancho en pantallas grandes */
   background-color: rgba(255, 255, 255);
   padding: 20px;
   border-radius: 10px;
@@ -48,7 +48,6 @@
   height: 45px;
   width: 45px;
   margin-top: 20px;
-
 }
 
 .positive {
@@ -66,15 +65,14 @@
 }
 
 .positive:hover {
-  background-color: rgba(15, 255, 51, 0.8); 
+  background-color: rgba(15, 255, 51, 0.8);
   color: white;
 }
 
 .negative:hover {
-  background-color: rgba(255, 13, 13, 0.8); 
+  background-color: rgba(255, 13, 13, 0.8);
   color: white;
 }
-
 
 .magnify {
   display: grid;
@@ -92,9 +90,11 @@
   margin: 0;
   padding-bottom: 5px;
 }
-.magnify button:hover{
+
+.magnify button:hover {
   animation: bounce 0.5s ease infinite;
 }
+
 #flechas {
   display: flex;
   justify-content: flex-end;
@@ -106,7 +106,8 @@
   background-color: rgb(255, 255, 255);
   color: #000000;
 }
-.progress-container{
+
+.progress-container {
   position: relative;
   z-index: 10;
   color: white;
@@ -117,24 +118,28 @@
   width: 100%;
   margin-top: 40px;
 }
-#progressBar{
+
+#progressBar {
   width: 60%;
   height: 25px;
 }
-.fa-arrow-right{
+
+.fa-arrow-right {
   color: black;
 }
-.form{
+
+.form {
   position: relative;
   margin-right: 180px;
 }
+
 .flecha:hover {
   background-color: rgb(75, 75, 81);
   color: white;
 }
 
 .flecha:hover .fa-arrow-right {
-  color: white; 
+  color: white;
 }
 
 .texto_boton {
@@ -160,8 +165,6 @@ button {
   justify-content: center;
 }
 
-
-
 button i {
   margin-right: 10px;
 }
@@ -174,3 +177,19 @@ button i {
     transform: translateY(-10px);
   }
 }
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 715px) {
+  .container {
+    flex-direction: column; /* Las tarjetas se apilan verticalmente */
+    align-items: center; /* Alinea las tarjetas al centro */
+    gap: 5px;
+  }
+
+  /* Modificar el ancho de las tarjetas */
+  .card {
+    width: 90%; /* Las tarjetas ocuparán el 90% del ancho */
+    margin-bottom: 20px; /* Separación entre tarjetas */
+  }
+}
+

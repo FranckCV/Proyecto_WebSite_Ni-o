@@ -16,43 +16,42 @@ from clases.User import User
 from clases.auth import token_required
 import controladores.controlador_user as controlador_user
 
-from flask_mail import Mail, Message 
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'security_key'
 socketio = SocketIO(app)
 
-MAIL_SERVER = 'smtp.gmail.com'
-MAIL_PORT = 587
-MAIL_USE_SSL = False
-MAIL_USE_TLS = True
-MAIL_USERNAME = 'edgaralarconhd@gmail.com'
-# Configuración necesaria para usar el email
+# MAIL_SERVER = 'smtp.gmail.com'
+# MAIL_PORT = 587
+# MAIL_USE_SSL = False
+# MAIL_USE_TLS = True
+# MAIL_USERNAME = 'edgaralarconhd@gmail.com'
+# # Configuración necesaria para usar el email
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Cambia según tu proveedor de correo
-app.config['MAIL_PORT'] = 587  # Cambia si tu proveedor usa otro puerto
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'edgaralarconhd@gmail.com'  # Tu dirección de correo
-app.config['MAIL_PASSWORD'] = 'xxxxxxxxx'  # Tu contraseña
-app.config['MAIL_DEFAULT_SENDER'] = 'edgaralarconhd@gmail.com'
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Cambia según tu proveedor de correo
+# app.config['MAIL_PORT'] = 587  # Cambia si tu proveedor usa otro puerto
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USE_SSL'] = False
+# app.config['MAIL_USERNAME'] = 'edgaralarconhd@gmail.com'  # Tu dirección de correo
+# app.config['MAIL_PASSWORD'] = 'xxxxxxxxx'  # Tu contraseña
+# app.config['MAIL_DEFAULT_SENDER'] = 'edgaralarconhd@gmail.com'
 
-mail = Mail(app)
+# mail = Mail(app)
 
 
-@app.route('/send_template_email')
-def send_template_email():
-    try:
-        html_content = render_template(adminPage('login.html'), nombre="Usuario")
-        msg = Message(
-            "Correo con plantilla HTML",
-            recipients=["edgarelcodigos@gmail.com"]
-        )
-        msg.html = html_content
-        mail.send(msg)
-        return "Correo enviado exitosamente con plantilla HTML"
-    except Exception as e:
-        return f"Error al enviar el correo: {str(e)}"
+# @app.route('/send_template_email')
+# def send_template_email():
+#     try:
+#         html_content = render_template(adminPage('login.html'), nombre="Usuario")
+#         msg = Message(
+#             "Correo con plantilla HTML",
+#             recipients=["edgarelcodigos@gmail.com"]
+#         )
+#         msg.html = html_content
+#         mail.send(msg)
+#         return "Correo enviado exitosamente con plantilla HTML"
+#     except Exception as e:
+#         return f"Error al enviar el correo: {str(e)}"
 
 
 def generalPage(page):
@@ -417,19 +416,52 @@ def change_password():
 #     return render_template(generalPage("resultado_v2.html"))
 
 
+
 @app.route("/dashboard")
 @token_required
 def dashboard():
-    # response = check_back_option("dashboard_reporte.html")
-    response = check_back_option("dashboard_reporte.html","admin")
+    
+    estado = controlador_estado_test.obtener_estado_test()
+    response = check_back_option("dashboard_reporte.html", "admin")
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
+
+    # Aquí asumimos que res[6] ya es un objeto datetime
+    print(type(resultados[0][6]))
+    resultados = [
+        (
+            res[0],
+            res[1],
+            res[2],
+            res[3],
+            res[4],
+            res[5],
+            res[6],  # Suponiendo que es un objeto datetime
+            res[7],
+            res[8],
+            res[9],
+            res[10],
+            res[11],
+            res[12],
+            res[13],
+            res[14],
+            res[15]
+        ) for res in resultados
+    ]
+    
     token = session.get('token')
     user_info = controlador_user.get_admin_by_token(token)
+    user_info_0 , user_info_1 , user_info_2 = user_info
 
-    user_info_0 , user_info_1 , user_info_2  = user_info
-
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
+    response.set_data(render_template(
+        adminPage("dashboard_reporte.html"),
+        resultados=resultados,
+        cant_max_progreso=cant_max_progreso,
+        user_info_1=user_info_1,
+        user_info_2=user_info_2,
+        token=token,
+        estado=estado
+    ))
     return response
 
 

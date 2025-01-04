@@ -1,28 +1,33 @@
+// Función para alternar el estado del Test
 function toggleTest() {
     var switchElement = document.getElementById("switch");
 
+    // Si el switch está activado, activar el test
     if (switchElement.checked) {
         console.log("Test activado");
-        openModal();
+        openModal(); // Abre el modal para ingresar el token
     } else {
         console.log("Test desactivado");
-        disableTest();
+        disableTest(); // Llama a la función para desactivar el test
     }
 }
 
+// Función para abrir el modal
 function openModal() {
     const modal = document.getElementById('tokenModal');
     modal.style.display = 'flex';
 }
 
+// Función para cerrar el modal
 function closeModal() {
     const modal = document.getElementById('tokenModal');
     modal.style.display = 'none';
     
     const switchElement = document.getElementById("switch");
-    switchElement.checked = false; 
+    switchElement.checked = false;  // Desmarca el switch si se cierra el modal
 }
 
+// Función para obtener el token de sesión del servidor
 const socketMessage = io();
 
 async function getSessionData() {
@@ -79,7 +84,7 @@ async function sendToken() {
             }
 
             inputToken.value = "";
-            closeModal();
+            closeModal();  // Cierra el modal una vez activado el test
         } else {
             alert('Token no válido o no encontrado');
         }
@@ -91,6 +96,8 @@ async function sendToken() {
 
 // Desactivar Test: Llama a la ruta /desactivar_test
 async function disableTest() {
+    const switchElement = document.getElementById('switch');
+    
     try {
         const sessionToken = await getSessionData(); // Obtén el token del servidor
 
@@ -107,17 +114,33 @@ async function disableTest() {
             });
 
             const data = await response.json();
-            if (data.status === 1) {   
+            if (data.status === 1) {
                 alert('Test desactivado');
             } else {
                 alert('Error al desactivar el test');
             }
-
         } else {
             alert('Token no válido o no encontrado');
         }
     } catch (error) {
         console.error('Error checking session or disabling token:', error);
         alert('Error al verificar el token. Intenta nuevamente.');
+
+        // Si ocurre un error, no desmarcar el switch
+        // Esto evita que el switch se quede en OFF por un error
+        switchElement.checked = true;  // Mantiene el switch activado
     }
 }
+
+// Función para verificar el estado del test y ajustar el switch al cargar la página
+window.addEventListener('DOMContentLoaded', function() {
+    const estadoTest = document.getElementById('estado_test').getAttribute('data-estado');
+    const switchElement = document.getElementById('switch');
+    
+    console.log("Estado del test: ", estadoTest);  // Verifica el valor
+    if (estadoTest === 'True') {
+        switchElement.checked = true;  // Si está ON, marca el switch
+    } else {
+        switchElement.checked = false;  // Si está OFF, desmarca el switch
+    }
+});
