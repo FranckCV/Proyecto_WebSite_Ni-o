@@ -420,13 +420,12 @@ def change_password():
 @app.route("/dashboard")
 @token_required
 def dashboard():
-<<<<<<< HEAD
+
     
     estado = controlador_estado_test.obtener_estado_test()
     response = check_back_option("dashboard_reporte.html", "admin")
-=======
+
     response = check_back_option("dashboard_reporte.html","admin")
->>>>>>> 057bb817a89c3ec75e9520b1c9060aa9ba5773e4
     cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     resultados = controlador_participante.obtener_resultados()
 
