@@ -337,3 +337,12 @@ def eliminar_participante_id(participante_id):
     conexion.commit()
     conexion.close()
 
+def obtenerParticipantes():
+    conexion= obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql = "select id from participante"
+        cursor.execute(sql)
+        participantes_id = cursor.fetchall()
+    
+    conexion.close()
+    return participantes_id

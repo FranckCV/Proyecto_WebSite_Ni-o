@@ -543,7 +543,6 @@ def eliminar_info_participante():
     return redirect("/dashboard")
 
 
-
 @app.route("/ver_informacion=<int:id>")
 @token_required
 def ver_informacion(id):
