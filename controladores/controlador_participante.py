@@ -110,7 +110,7 @@ def obtener_resultados():
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro desc
+                grupos_seleccionados desc, p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
