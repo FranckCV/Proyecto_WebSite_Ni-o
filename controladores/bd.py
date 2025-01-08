@@ -4,7 +4,7 @@ from psycopg2 import sql
 def obtener_conexion():
     try:
         conexion = psycopg2.connect(
-            host='dpg-ctveif0gph6c73eurn40-a',
+            host='dpg-ctveif0gph6c73eurn40-a.oregon-postgres.render.com',
             port=5432,
             user='root',
             password='Vd3QqCAEeMSLJSxp2fLADRNoGYrPTqFZ',

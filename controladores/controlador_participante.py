@@ -284,20 +284,27 @@ def insertar_participante(nombres, apellidos, fecha_nacimiento, telefono, correo
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
+            # Consulta con RETURNING para obtener el ID generado
             sql = """
                 INSERT INTO participante (nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
-                VALUES (%s, %s, %s, %s, %s, NOW());
+                VALUES (%s, %s, %s, %s, %s, NOW())
+                RETURNING id;
             """
-            
             cursor.execute(sql, (nombres, apellidos, fecha_nacimiento, telefono, correo))
-            conexion.commit()
-            participante_id = cursor.lastrowid
             
+            # Obtener el ID generado
+            participante_id = cursor.fetchone()[0]
+            
+            # Confirmar los cambios
+            conexion.commit()
+        
         conexion.close()
         return participante_id
     except Exception as e:
-        conexion.close()
+        if conexion:
+            conexion.close()
         return f"Error al insertar participante: {str(e)}"
+
 
 
 def buscar_participante(id_participante):
