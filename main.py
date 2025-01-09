@@ -52,7 +52,8 @@ socketio = SocketIO(app)
 #         return "Correo enviado exitosamente con plantilla HTML"
 #     except Exception as e:
 #         return f"Error al enviar el correo: {str(e)}"
-
+def estadoTest():
+    return controlador_estado_test.obtener_estado_test()
 
 def generalPage(page):
     return "general_pages/"+page
@@ -415,18 +416,15 @@ def change_password():
 # def resultado_v2():
 #     return render_template(generalPage("resultado_v2.html"))
 
-
-
 @app.route("/dashboard")
 @token_required
 def dashboard():
-
     
-    estado = controlador_estado_test.obtener_estado_test()
+    estado = estadoTest()
     response = check_back_option("dashboard_reporte.html", "admin")
 
     response = check_back_option("dashboard_reporte.html","admin")
-    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso()
     resultados = controlador_participante.obtener_resultados()
 
     print(type(resultados[0][6]))
@@ -450,7 +448,7 @@ def dashboard():
             res[15]
         ) for res in resultados
     ]
-    
+
     token = session.get('token')
     user_info = controlador_user.get_admin_by_token(token)
     user_info_0 , user_info_1 , user_info_2 = user_info
@@ -464,33 +462,46 @@ def dashboard():
         token=token,
         estado=estado
     ))
-    user_info_0 , user_info_1 , user_info_2  = user_info
-
-    response.set_data(render_template(adminPage("dashboard_reporte.html"), resultados = resultados , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2, token=token))
     return response
 
-
-@app.route("/activar_test")
+@app.route("/activar_test", methods=['POST'])
 @token_required
 def activarTest():
     response = dict()
     try:
-        controlador_estado_test.modificar_estado_test(True)
+        estado = controlador_estado_test.modificar_estado_test(True)
+        print('El estado es:', estado)
         response['status'] = 1
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         response['status'] = -1
     return jsonify(response)
 
-@app.route("/desactivar_test")
+
+@app.route("/desactivar_test", methods=['POST'])
 @token_required
 def desactivarTest():
     response = dict()
     try:
+        # Imprimir los encabezados para asegurarse de que el Authorization esté presente
+        print("Encabezados:", request.headers)
+
+        # Verificar si el encabezado Authorization está presente
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            token_str = auth_header.split(' ')[1]  # Obtener el token después de "Bearer"
+            print("Token recibido:", token_str)  # Mostrar el token
+        else:
+            raise ValueError("Authorization header missing")
+
+        # Aquí ya puedes trabajar con token_str directamente
         controlador_estado_test.modificar_estado_test(False)
         response['status'] = 1
-    except:
+    except Exception as e:
+        print(f"Error: {e}")
         response['status'] = -1
     return jsonify(response)
+
 
 @app.route('/api/get_session')
 def get_session():
@@ -508,14 +519,15 @@ def get_session():
 @app.route("/buscarResultado")
 @token_required
 def buscarResultado():
+    estado = estadoTest()
     response = check_back_option("dashboard_reporte.html","admin")
     nombreBusqueda = request.args.get("buscarElemento")
     user_info = controlador_user.get_admin_by_token(session.get('token'))
     user_info_0 , user_info_1 , user_info_2  = user_info
-    resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
-    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     token = session.get('token')
-    response.set_data(render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2,token = token))
+    resultados = controlador_participante.buscar_resultado_nombre(nombreBusqueda)
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso()
+    response.set_data(render_template(adminPage("dashboard_reporte.html") , resultados = resultados , nombreBusqueda = nombreBusqueda , cant_max_progreso = cant_max_progreso , user_info_1 = user_info_1 , user_info_2 = user_info_2 , token = token, estado=estado))
     return response
 
 
@@ -528,17 +540,17 @@ def eliminar_info_participante():
     return redirect("/dashboard")
 
 
-
 @app.route("/ver_informacion=<int:id>")
 @token_required
 def ver_informacion(id):
+    estado = estadoTest()
     response = check_back_option("dashboard_reporte.html","admin")
     user_info = controlador_user.get_admin_by_token(session.get('token'))
     user_info_0 , user_info_1 , user_info_2  = user_info
     resultado = controlador_participante.obtener_resultado_id(id)
-    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso() 
     token = session.get('token')
-    response.set_data(render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso , token = token))
+    cant_max_progreso = controlador_agrupacion.obtener_cantidad_maxima_progreso()
+    response.set_data(render_template(adminPage("ver_informacion.html") , resultado = resultado , user_info_1 = user_info_1 , user_info_2 = user_info_2 , cant_max_progreso = cant_max_progreso , token = token,estado=estado))
     return response
 
 @socketio.on('connect')
@@ -663,4 +675,4 @@ def save_colors():
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=8000, debug=True)
-    socketio.run(app, host='0.0.0.0', port=8000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True)

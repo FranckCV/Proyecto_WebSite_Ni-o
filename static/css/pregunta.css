@@ -1,3 +1,5 @@
+
+
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -5,8 +7,10 @@
   justify-content: center;
 }
 
+
+
 #head {
-  margin: 40px;
+  margin: 30px;
   position: relative;
   z-index: 10;
   color: white;
@@ -38,6 +42,7 @@
   display: flex;
   justify-content: center;
   gap: 10px;
+  flex-direction: row;
 }
 
 .icon {
@@ -96,6 +101,8 @@
 }
 
 #flechas {
+  display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -116,7 +123,7 @@
   align-items: center;
   flex-direction: column;
   width: 100%;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 #progressBar {
@@ -178,18 +185,99 @@ button i {
   }
 }
 
-/* Media Query para pantallas pequeñas */
-@media (max-width: 715px) {
-  .container {
-    flex-direction: column; /* Las tarjetas se apilan verticalmente */
-    align-items: center; /* Alinea las tarjetas al centro */
-    gap: 5px;
+@media (max-width: 768px) {
+
+  .text{
+    padding-right:10px ;
   }
 
-  /* Modificar el ancho de las tarjetas */
+  .container{
+    flex-direction: column;
+    align-items: center;
+    justify-content: unset;
+    gap:15px;
+  }
+  
+  .text{
+    padding-right: 13px;
+    font-size: 0.8rem;
+    padding-top: 5px
+  }
+  h1#head {
+    font-size: 1.5rem;
+    margin: 12px;
+  }
+  .icon{
+    height: 25px;
+    width: 25px;
+    font-size: 1.5rem;
+    margin-top: 5px;
+  }
+
   .card {
-    width: 90%; /* Las tarjetas ocuparán el 90% del ancho */
-    margin-bottom: 20px; /* Separación entre tarjetas */
+    padding: 10px;
+  }
+
+  .magnify button{
+    font-size: 1.2rem;
+  }
+  .card h2{
+    font-size: 1.3rem;
+  }
+  .progress-container {
+    margin-top: 8px;
+  }
+
+  .flecha{
+    width: 20px;
+    font-size: 1rem;
+    height: 20px;
+    text-align: center;
+  }
+
+  .form{
+    margin-right: 150px;
+  }
+
+  .flechas {
+    margin-top: 15px;
   }
 }
 
+/* Responsividad para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  h1#head {
+    font-size: 1.4rem;
+  }
+
+  .card {
+    padding: 8px;
+  }
+
+  .icons {
+    align-items: center;
+  }
+
+  .magnify {
+    text-align: center;
+  }
+
+
+
+  .flechas {
+    margin-top: 10px;
+  }
+  .form{
+    margin-right: 80px;
+  }
+}
+
+@media (max-width: 380px) {
+
+
+  .card {
+    padding: 4px;
+    height: 20%;
+  }
+
+}
