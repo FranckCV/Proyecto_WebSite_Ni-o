@@ -282,14 +282,17 @@ Lista de Resultados
   }
 
   function actualizarFilas(datos) {
-    datos.forEach(res => {
-      putValueCellNumber(res[0], "#cant_now_progreso", (res[1]));
-      putValueCellNumber(res[0], ".nro_fuego  p", (res[2] - res[3]));
-      putValueCellNumber(res[0], ".nro_aire   p", (res[4] - res[5]));
-      putValueCellNumber(res[0], ".nro_agua   p", (res[6] - res[7]));
-      putValueCellNumber(res[0], ".nro_tierra p", (res[8] - res[9]));
-    });
-  }
+  // Ordenar los datos de mayor a menor según una columna específica (por ejemplo, `res[1]`)
+  datos.sort((a, b) => b[1] - a[1]); // Cambia `res[1]` al índice correspondiente para tu criterio
+
+  datos.forEach(res => {
+    putValueCellNumber(res[0], "#cant_now_progreso", (res[1]));
+    putValueCellNumber(res[0], ".nro_fuego  p", (res[2] - res[3]));
+    putValueCellNumber(res[0], ".nro_aire   p", (res[4] - res[5]));
+    putValueCellNumber(res[0], ".nro_agua   p", (res[6] - res[7]));
+    putValueCellNumber(res[0], ".nro_tierra p", (res[8] - res[9]));
+  });
+}
 
   socket.on("update_valores", (data) => {
     // console.log(data.resultados);
