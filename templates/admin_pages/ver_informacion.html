@@ -21,7 +21,6 @@ Información del Participante
 
 
 {% block nav %}
-<!-- ID: {{resultado.0}} - {{resultado.1}} {{resultado.2}}  -->
 Datos de {{resultado.1}} {{resultado.2}}
 {% endblock %}
 
@@ -227,15 +226,15 @@ Datos de {{resultado.1}} {{resultado.2}}
   function confirmarEliminacion() {
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
   }
-  const socket = io();
+  //const socket = io();
 
-  socket.on("connect", function () {
+//  socket.on("connect", function () {
     // console.log("Socket Activo.!");
-  });
+//  });
 
-  socket.on("disconnect", function () {
+ // socket.on("disconnect", function () {
     // console.log("Socket Desconectado.!");
-  });
+ // });
 
 
   function putValueInput(input, valor) {
@@ -261,7 +260,7 @@ Datos de {{resultado.1}} {{resultado.2}}
 
 
   setInterval(() => {
-    socket.emit("get_valores_participante", participanteID);
+    //socket.emit("get_valores_participante", participanteID);
   }, 1500);
 
 
@@ -443,15 +442,15 @@ Datos de {{resultado.1}} {{resultado.2}}
 
   mostrarProgreso();
 
-  socket.on("update_valores_participante", (data) => {
-    if (data.valores) {
+  //socket.on("update_valores_participante", (data) => {
+   // if (data.valores) {
       // console.log(data.valores);
-      actualizarInputs(data.valores);
-      mostrarProgreso();
-    } else {
-      data.valores = new Array;
-    }
-  });
+   //   actualizarInputs(data.valores);
+  //    mostrarProgreso();
+  //  } else {
+  //    data.valores = new Array;
+  //  }
+  //});
 
   document.querySelectorAll('table tbody input').forEach(input => {
     input.addEventListener('input', () => {

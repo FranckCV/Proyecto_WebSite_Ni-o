@@ -5,6 +5,7 @@ body {
     color: #333;
 }
 
+
 header.general_element {
     display: none;
 }
@@ -16,13 +17,14 @@ header.general_element {
     ;
 }
 
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
 }
-  
+
 .card {
     background-color: #ffffff;
     border-radius: 15px;
@@ -31,11 +33,11 @@ header.general_element {
     max-width: 400px;
     padding: 20px;
 }
-  
+
 label {
     font-weight: bold;
 }
-  
+
 .card h3 {
     font-size: 1.5em;
     text-align: center;
@@ -44,20 +46,20 @@ label {
     margin-top: 10px;
     font-weight: bold;
 }
-  
+
 .form-label {
     font-size: 0.9em;
     color: #333;
     margin-bottom: 5px;
     display: block;
 }
-  
+
 .input-group {
     position: relative;
     margin-bottom: 15px;
     margin-top: 10px;
 }
-  
+
 .input-group input {
     width: 100%;
     padding: 10px 15px;
@@ -66,19 +68,19 @@ label {
     border-radius: 10px !important;
     outline: none;
     transition: border-color 0.3s;
-    box-sizing: border-box;  
+    box-sizing: border-box;
 }
-  
+
 .input-group input:focus {
     border-color: #4a90e2;
 }
 
 
-  
-  
 
 
-  
+
+
+
 button[type="submit"] {
     width: 100%;
     background-color: #4a90e2;
@@ -90,7 +92,7 @@ button[type="submit"] {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-  
+
 button[type="submit"]:hover {
     background-color: #080055;
     color: white;
@@ -100,17 +102,17 @@ button[type="submit"]:hover {
 
 
   .modal-content {
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25); 
-    border-radius: 12px; 
-    background: linear-gradient(145deg, #ffffff, #f1f1f1); 
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    background: linear-gradient(145deg, #ffffff, #f1f1f1);
     border: 1px solid #ddd;
   }
-  
+
   .modal-body {
     text-align: center;
     font-size: 1.2rem;
     color: #333;
-    padding: 1.5rem; 
+    padding: 1.5rem;
   }
   .input-group button {
     position: absolute;
@@ -123,11 +125,11 @@ button[type="submit"]:hover {
     color: #888;
     font-size: 1.2em;
 }
-  
+
 .input-group button:hover {
     color: #4a90e2;
 }
-  
+
 
   .input-group.error input {
     border-color: red;
@@ -152,3 +154,31 @@ button[type="submit"]:hover {
 .input-group.error-visible button {
     transform: translateY(-80%);
   }
+
+
+
+@media (max-width:599px) {
+
+
+
+header.general_element {
+    display: flex;
+}
+
+.general_body {
+    grid-template-areas:
+        "body_aside body_header"
+        "body_aside body_section"
+    ;
+}
+
+
+
+
+
+
+}
+
+
+
+
