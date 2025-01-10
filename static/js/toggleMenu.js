@@ -1,4 +1,4 @@
-// Ajustar el espaciado del menú desplegable basado en el tamaño del header
+// Ajustarr el espaciado del menú desplegable basado en el tamaño del header
 function adjustPadding() {
     const aside = document.querySelector('aside.general_element');
     const headerHeight = document.querySelector('header').offsetHeight;
