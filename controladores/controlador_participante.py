@@ -110,7 +110,7 @@ def obtener_resultados():
             GROUP BY 
                 p.id, p.nombres, p.apellidos, p.telefono, p.correo, p.fecha_registro
             ORDER BY 
-                grupos_seleccionados , p.fecha_registro desc
+                grupos_seleccionados desc, p.fecha_registro desc
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -284,20 +284,27 @@ def insertar_participante(nombres, apellidos, fecha_nacimiento, telefono, correo
     conexion = obtener_conexion()
     try:
         with conexion.cursor() as cursor:
+            # Consulta para insertar los datos
             sql = """
                 INSERT INTO participante (nombres, apellidos, fecha_nacimiento, telefono, correo, fecha_registro)
                 VALUES (%s, %s, %s, %s, %s, NOW());
             """
-            
             cursor.execute(sql, (nombres, apellidos, fecha_nacimiento, telefono, correo))
-            conexion.commit()
+            
+            # Obtener el ID generado
             participante_id = cursor.lastrowid
             
+            # Confirmar los cambios
+            conexion.commit()
+        
         conexion.close()
         return participante_id
     except Exception as e:
-        conexion.close()
+        if conexion:
+            conexion.close()
         return f"Error al insertar participante: {str(e)}"
+
+
 
 
 def buscar_participante(id_participante):
@@ -337,3 +344,12 @@ def eliminar_participante_id(participante_id):
     conexion.commit()
     conexion.close()
 
+def obtenerParticipantes():
+    conexion= obtener_conexion()
+    with conexion.cursor() as cursor:
+        sql = "select id from participante"
+        cursor.execute(sql)
+        participantes_id = cursor.fetchall()
+    
+    conexion.close()
+    return participantes_id

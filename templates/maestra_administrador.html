@@ -32,12 +32,22 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
 
+<<<<<<< HEAD
+    <div id="estado_test" data-estado="{{ estado }}"></div>
+
+
+        
+        <img src="/static/img/elementos.jpg" id="img_element"/>
+=======
+>>>>>>> d7c397dc3deb45ca9cb9916dffba672813802290
             <p class="">
                 {% block nav %}
                 {% endblock %}
             </p>
         </nav>
     </header>
+
+    <div id="estado_test" data-estado="{{ estado }}"></div>
 
     <aside class="general_element desplegar">
         <img src="/static/img/elementos.jpg" id="img_element" />
@@ -65,12 +75,14 @@
             <p id="activar_test">Activar test</p>
 
             <div class="toggle-switch">
-                <input type="checkbox" id="switch" onchange="toggleTest()"/>
+                <input type="checkbox" id="switch" onchange="toggleTest()"
+                {% if estado_test %}checked{% endif %} />
                 <label for="switch" class="slider">
                     <span class="on">ON</span>
                     <span class="off">OFF</span>
                 </label>
             </div>
+
 
 
 
@@ -135,7 +147,7 @@
             </div>
             <div class="modal-body">
                 <p>Ingrese su token de administrador</p>
-                <input type="password" id="adminToken" class="form-control" placeholder="Token de administrador" />
+                <input type="text" id="adminToken" class="form-control" placeholder="Token de administrador" />
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
