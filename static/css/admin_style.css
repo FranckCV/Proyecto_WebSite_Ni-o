@@ -251,14 +251,14 @@ button {
     background-color: #a70013;
     color: white;
     padding-inline: 10px;
-    padding-block: 8px;
+    padding-block: 5px;
 }
 
 .button_reset {
     background-color: #5ea700;
     color: white;
     padding-inline: 10px;
-    padding-block: 8px;
+    padding-block: 5px;
 }
 
 button.btn_token {

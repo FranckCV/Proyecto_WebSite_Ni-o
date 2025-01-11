@@ -46,7 +46,7 @@ th {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 7px;
 }
 
 .campo_tiempo input {
@@ -62,11 +62,12 @@ th {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    width: 12%;
 }
 
 .campo_botones button {
-    height: 35px;
-    width: 35px;
+    height: auto;
+    width: 100%;
 }
 
 /* TABLA RESULTADOS */
@@ -457,6 +458,7 @@ label {
 
     .campo_botones {
         grid-area: c_boton;
+        width: 100%;
     }
 
 
@@ -470,7 +472,7 @@ label {
 
     .campo_info_dash {
         display: grid;
-        grid-template-columns: 80% auto;
+        grid-template-columns: 45% 55%;
         grid-template-areas:
             "c_tabla c_tabla"
             "c_proce c_boton"
@@ -510,12 +512,18 @@ label {
 
     .campo_botones {
         grid-area: c_boton;
+        width: 100%;
     }
+
+    .campo_botones button {
+    height: auto;
+    width: 100%;
+}
 
     .progreso_input {
         width: 10vw;
     }
-/* 
+/*
     .percent {
         position: relative;
         left: 10px;

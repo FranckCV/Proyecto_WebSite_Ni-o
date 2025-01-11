@@ -159,16 +159,16 @@ Datos de {{resultado.1}} {{resultado.2}}
             Resultado
           </td>
           <td>
-            <input disabled id="data_1" value="">
+            <input disabled id="data_1" value="{{ resultado.8 - resultado.9 }}">
           </td>
           <td>
-            <input disabled id="data_2" value="">
+            <input disabled id="data_2" value="{{ resultado.10 - resultado.11 }}">
           </td>
           <td>
-            <input disabled id="data_3" value="">
+            <input disabled id="data_3" value="{{ resultado.12 - resultado.13 }}">
           </td>
           <td>
-            <input disabled id="data_4" value="">
+            <input disabled id="data_4" value="{{ resultado.14 - resultado.15 }}">
           </td>
         </tr>
       </tbody>
@@ -199,6 +199,13 @@ Datos de {{resultado.1}} {{resultado.2}}
         </a>
       </div>
 
+        <div class="col">
+            <button id="resetPage" class="button_reset">
+                <i class="fa-solid fa-rotate-right"></i>
+                <p>Reiniciar Página</p>
+            </button>
+        </div>
+
       <div class="col">
         <form class="" action="{{ url_for('eliminar_info_participante') }}" method="POST"
           onsubmit="return confirmarEliminacion()" id="deleteF">
@@ -223,6 +230,10 @@ Datos de {{resultado.1}} {{resultado.2}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+document.getElementById('resetPage').addEventListener('click', () => {
+    location.reload();
+  });
+
   function confirmarEliminacion() {
     return confirm('¿Estás seguro que deseas eliminar este registro? Esta acción no se puede deshacer.')
   }
@@ -390,8 +401,8 @@ Datos de {{resultado.1}} {{resultado.2}}
           },
           y: {
             beginAtZero: true,
-            min: -30,
-            max: 30,
+            //min: -30,
+            //max: 30,
             ticks: {
               stepSize: 10
             }

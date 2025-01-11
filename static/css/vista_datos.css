@@ -18,6 +18,10 @@ label {
   flex-direction: column;
 }
 
+.button_reset {
+    width: fit-content;
+}
+
 table input {
   background-color: transparent;
   border: 0;
